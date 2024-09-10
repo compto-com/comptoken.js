@@ -15,7 +15,11 @@ export declare class ComptokenProof {
     nonce: Buffer;
     hash: Buffer;
     static MIN_NUM_ZEROED_BITS: number;
-    constructor(pubkey: PublicKey, recentBlockHash: Uint8Array, nonce: number | bigint);
+    constructor(
+        pubkey: PublicKey,
+        recentBlockHash: Uint8Array,
+        nonce: number | bigint
+    );
     generateHash(): Buffer;
     static leadingZeroes(hash: Buffer): number;
     serializeData(): Buffer;
@@ -27,12 +31,34 @@ export declare enum Instruction {
     GET_VALID_BLOCKHASHES = 5,
     GET_OWED_COMPTOKENS = 6,
     GROW_USER_DATA_ACCOUNT = 7,
-    VERIFY_HUMAN = 8
+    VERIFY_HUMAN = 8,
 }
-export declare function createProofSubmissionInstruction(comptoken_proof: ComptokenProof, user_wallet_address: PublicKey, user_comptoken_token_account_address: PublicKey): Promise<TransactionInstruction>;
-export declare function createCreateUserDataAccountInstruction(connection: Connection, user_data_size: number, payer_address: PublicKey, user_wallet_address: PublicKey, user_comptoken_token_account_address: PublicKey): Promise<TransactionInstruction>;
+export declare function createProofSubmissionInstruction(
+    comptoken_proof: ComptokenProof,
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+export declare function createCreateUserDataAccountInstruction(
+    connection: Connection,
+    num_proofs: number,
+    payer_address: PublicKey,
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
 export declare function createDailyDistributionEventInstruction(): Promise<TransactionInstruction>;
 export declare function createGetValidBlockhashesInstruction(): Promise<TransactionInstruction>;
-export declare function createGetOwedComptokensInstruction(user_wallet_address: PublicKey, user_comptoken_token_account_address: PublicKey): Promise<TransactionInstruction>;
-export declare function createGrowUserDataAccountInstruction(connection: Connection, new_user_data_size: number, payer_address: PublicKey, user_wallet_address: PublicKey, user_comptoken_wallet_address: PublicKey): Promise<TransactionInstruction>;
-export declare function createVerifyHumanInstruction(user_wallet_address: PublicKey, user_comptoken_token_account_address: PublicKey): Promise<TransactionInstruction>;
+export declare function createGetOwedComptokensInstruction(
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+export declare function createGrowUserDataAccountInstruction(
+    connection: Connection,
+    new_user_data_size: number,
+    payer_address: PublicKey,
+    user_wallet_address: PublicKey,
+    user_comptoken_wallet_address: PublicKey
+): Promise<TransactionInstruction>;
+export declare function createVerifyHumanInstruction(
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;

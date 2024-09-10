@@ -282,7 +282,8 @@ export async function createProofSubmissionInstruction(comptoken_proof, user_wal
 //    });
 //}
 
-export async function createCreateUserDataAccountInstruction(connection, user_data_size, payer_address, user_wallet_address, user_comptoken_token_account_address) {
+export async function createCreateUserDataAccountInstruction(connection, num_proofs, payer_address, user_wallet_address, user_comptoken_token_account_address) {
+    const user_data_size = 88 + 32 * (num_proofs - 1);
     const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
