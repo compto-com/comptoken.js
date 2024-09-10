@@ -1,11 +1,5 @@
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
-import {
-    Connection,
-    PublicKey,
-    SystemProgram,
-    SYSVAR_SLOT_HASHES_PUBKEY,
-    TransactionInstruction,
-} from "@solana/web3.js";
+import { PublicKey, SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, TransactionInstruction, } from "@solana/web3.js";
 import { createHash } from "crypto";
 
 import * as bs58_ from "bs58";
@@ -15,34 +9,16 @@ export const COMPTOKEN_DECIMALS = 2;
 export const COMPTOKEN_WALLET_SIZE = 171; // 165 (base account) + 1 (account type discriminator) + 5 (Transfer hook extension)
 const GLOBAL_DATA_SIZE = 5960; // MAGIC NUMBER keep consistent with Compto program
 
-export const compto_program_id_pubkey = new PublicKey(
-    bs58.decode("6351sU4nPxMuxGNYNVK17DXC2fP2juh8YHfiMYCR7Zvh")
-); // devnet
-export const comptoken_mint_pubkey = new PublicKey(
-    bs58.decode("76KRec9fujGWqdCuPzwiMgxFzQyYMSZa9HeySkbsyufV")
-); // devnet
-export const global_data_account_pubkey = new PublicKey(
-    bs58.decode("2TchvJKnE3tsdr5RKyiu1jGofnL8rhLZ9XU5nFwKVLSP")
-); // devnet
+export const compto_program_id_pubkey = new PublicKey(bs58.decode("6351sU4nPxMuxGNYNVK17DXC2fP2juh8YHfiMYCR7Zvh")); // devnet
+export const comptoken_mint_pubkey = new PublicKey(bs58.decode("76KRec9fujGWqdCuPzwiMgxFzQyYMSZa9HeySkbsyufV")); // devnet
+export const global_data_account_pubkey = new PublicKey(bs58.decode("2TchvJKnE3tsdr5RKyiu1jGofnL8rhLZ9XU5nFwKVLSP")); // devnet
+export const interest_bank_account_pubkey = new PublicKey(bs58.decode("EaZvWXqhb6kX1rdZkr9yCBRcCTpnYwubSyhxrZtzcfhf")); // devnet
+export const verified_human_ubi_bank_account_pubkey = new PublicKey(bs58.decode("GoAPpRxCpRgVU6VCW3RAVf9fg4Jysuxt4PqSUpG3H9Xd")); // devnet
+export const future_ubi_bank_account_pubkey = new PublicKey(bs58.decode("2DXVGENSY9vTdozeFL888yPffC7nrakQAzdxSHanTHmN")); // devnet
+export const compto_transfer_hook_id_pubkey = new PublicKey(bs58.decode("4GG3aGgaMXDKtrD9pMcmQ4P87pKKCKRxAxR4LGTKpmYt")); // devnet
+export const compto_extra_account_metas_account_pubkey = new PublicKey(bs58.decode("7oy4vA2rSTXkjKUQVERGRK2SkhNjTDL8xcMBQK6zB9zU")); // devnet
 
-export const interest_bank_account_pubkey = new PublicKey(
-    bs58.decode("EaZvWXqhb6kX1rdZkr9yCBRcCTpnYwubSyhxrZtzcfhf")
-); // devnet
-export const verified_human_ubi_bank_account_pubkey = new PublicKey(
-    bs58.decode("GoAPpRxCpRgVU6VCW3RAVf9fg4Jysuxt4PqSUpG3H9Xd")
-); // devnet
-export const future_ubi_bank_account_pubkey = new PublicKey(
-    bs58.decode("2DXVGENSY9vTdozeFL888yPffC7nrakQAzdxSHanTHmN")
-); // devnet
-
-export const compto_transfer_hook_id_pubkey = new PublicKey(
-    bs58.decode("4GG3aGgaMXDKtrD9pMcmQ4P87pKKCKRxAxR4LGTKpmYt")
-); // devnet
-export const compto_extra_account_metas_account_pubkey = new PublicKey(
-    bs58.decode("7oy4vA2rSTXkjKUQVERGRK2SkhNjTDL8xcMBQK6zB9zU")
-); // devnet
-
-function bigintAsU64ToBytes(int: bigint): number[] {
+function bigintAsU64ToBytes(int) {
     let arr = new Array(8);
     for (let i = 0; int > 0n; ++i) {
         arr[i] = Number(int & 255n);
@@ -52,45 +28,31 @@ function bigintAsU64ToBytes(int: bigint): number[] {
 }
 
 export class ComptokenProof {
-    pubkey: PublicKey;
-    recentBlockHash: Uint8Array;
-    nonce: Buffer;
-    hash: Buffer;
-
-    static MIN_NUM_ZEROED_BITS = 12;
-
-    constructor(
-        pubkey: PublicKey,
-        recentBlockHash: Uint8Array,
-        nonce: number | bigint
-    ) {
+    constructor(pubkey, recentBlockHash, nonce) {
         this.pubkey = pubkey;
         this.recentBlockHash = recentBlockHash;
         this.nonce = Buffer.from(bigintAsU64ToBytes(BigInt(nonce)));
         this.hash = this.generateHash();
-        if (
-            ComptokenProof.leadingZeroes(this.hash) <
-            ComptokenProof.MIN_NUM_ZEROED_BITS
-        ) {
+        if (ComptokenProof.leadingZeroes(this.hash) <
+            ComptokenProof.MIN_NUM_ZEROED_BITS) {
             throw new Error("The provided proof does not have enough zeroes");
         }
     }
-
-    generateHash(): Buffer {
+    generateHash() {
         let hasher = createHash("sha256");
         hasher.update(this.pubkey.toBuffer());
         hasher.update(this.recentBlockHash);
         hasher.update(this.nonce);
         return hasher.digest();
     }
-
-    static leadingZeroes(hash: Buffer): number {
+    static leadingZeroes(hash) {
         let numZeroes = 0;
         for (let i = 0; i < hash.length; i++) {
             let byte = hash[i];
             if (byte == 0) {
                 numZeroes += 8;
-            } else {
+            }
+            else {
                 let mask = 0x80; // 10000000
                 // mask > 0 is defensive, not technically necessary
                 // because the above if case checks for all 0's
@@ -103,8 +65,7 @@ export class ComptokenProof {
         }
         return numZeroes;
     }
-
-    serializeData(): Buffer {
+    serializeData() {
         let buffer = Buffer.concat([
             this.recentBlockHash,
             this.nonce,
@@ -116,18 +77,20 @@ export class ComptokenProof {
         return buffer;
     }
 }
+ComptokenProof.MIN_NUM_ZEROED_BITS = 12;
 
-export enum Instruction {
-    PROOF_SUBMISSION = 1,
+export var Instruction;
+(function (Instruction) {
+    Instruction[Instruction["PROOF_SUBMISSION"] = 1] = "PROOF_SUBMISSION";
     //INITIALIZE_COMPTOKEN_PROGRAM = 2, // not for users
-    CREATE_USER_DATA_ACCOUNT = 3,
-    DAILY_DISTRIBUTION_EVENT = 4,
-    GET_VALID_BLOCKHASHES = 5,
-    GET_OWED_COMPTOKENS = 6,
-    GROW_USER_DATA_ACCOUNT = 7,
-    VERIFY_HUMAN = 8,
+    Instruction[Instruction["CREATE_USER_DATA_ACCOUNT"] = 3] = "CREATE_USER_DATA_ACCOUNT";
+    Instruction[Instruction["DAILY_DISTRIBUTION_EVENT"] = 4] = "DAILY_DISTRIBUTION_EVENT";
+    Instruction[Instruction["GET_VALID_BLOCKHASHES"] = 5] = "GET_VALID_BLOCKHASHES";
+    Instruction[Instruction["GET_OWED_COMPTOKENS"] = 6] = "GET_OWED_COMPTOKENS";
+    Instruction[Instruction["GROW_USER_DATA_ACCOUNT"] = 7] = "GROW_USER_DATA_ACCOUNT";
+    Instruction[Instruction["VERIFY_HUMAN"] = 8] = "VERIFY_HUMAN";
     //TEST = 255,
-}
+})(Instruction || (Instruction = {}));
 
 //export async function createTestInstruction(
 //    user_wallet_address: PublicKey,
@@ -170,15 +133,8 @@ export enum Instruction {
 //    });
 //}
 
-export async function createProofSubmissionInstruction(
-    comptoken_proof: ComptokenProof,
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
-): Promise<TransactionInstruction> {
-    const user_data_account_address = PublicKey.findProgramAddressSync(
-        [user_comptoken_token_account_address.toBytes()],
-        compto_program_id_pubkey
-    )[0];
+export async function createProofSubmissionInstruction(comptoken_proof, user_wallet_address, user_comptoken_token_account_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -326,17 +282,8 @@ export async function createProofSubmissionInstruction(
 //    });
 //}
 
-export async function createCreateUserDataAccountInstruction(
-    connection: Connection,
-    user_data_size: number,
-    payer_address: PublicKey,
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
-): Promise<TransactionInstruction> {
-    const user_data_account_address = PublicKey.findProgramAddressSync(
-        [user_comptoken_token_account_address.toBytes()],
-        compto_program_id_pubkey
-    )[0];
+export async function createCreateUserDataAccountInstruction(connection, user_data_size, payer_address, user_wallet_address, user_comptoken_token_account_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -365,19 +312,13 @@ export async function createCreateUserDataAccountInstruction(
         ],
         data: Buffer.from([
             Instruction.CREATE_USER_DATA_ACCOUNT,
-            ...bigintAsU64ToBytes(
-                BigInt(
-                    await connection.getMinimumBalanceForRentExemption(
-                        user_data_size
-                    )
-                )
-            ),
+            ...bigintAsU64ToBytes(BigInt(await connection.getMinimumBalanceForRentExemption(user_data_size))),
             ...bigintAsU64ToBytes(BigInt(user_data_size)),
         ]),
     });
 }
 
-export async function createDailyDistributionEventInstruction(): Promise<TransactionInstruction> {
+export async function createDailyDistributionEventInstruction() {
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -434,7 +375,7 @@ export async function createDailyDistributionEventInstruction(): Promise<Transac
     });
 }
 
-export async function createGetValidBlockhashesInstruction(): Promise<TransactionInstruction> {
+export async function createGetValidBlockhashesInstruction() {
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -455,14 +396,8 @@ export async function createGetValidBlockhashesInstruction(): Promise<Transactio
     });
 }
 
-export async function createGetOwedComptokensInstruction(
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
-): Promise<TransactionInstruction> {
-    const user_data_account_address = PublicKey.findProgramAddressSync(
-        [user_comptoken_token_account_address.toBytes()],
-        compto_program_id_pubkey
-    )[0];
+export async function createGetOwedComptokensInstruction(user_wallet_address, user_comptoken_token_account_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -498,19 +433,13 @@ export async function createGetOwedComptokensInstruction(
             },
             //  needed by the transfer hook program (doesn't really exist)
             {
-                pubkey: PublicKey.findProgramAddressSync(
-                    [interest_bank_account_pubkey.toBytes()],
-                    compto_program_id_pubkey
-                )[0],
+                pubkey: PublicKey.findProgramAddressSync([interest_bank_account_pubkey.toBytes()], compto_program_id_pubkey)[0],
                 isSigner: false,
                 isWritable: false,
             },
             //  needed by the transfer hook program (doesn't really exist)
             {
-                pubkey: PublicKey.findProgramAddressSync(
-                    [verified_human_ubi_bank_account_pubkey.toBytes()],
-                    compto_program_id_pubkey
-                )[0],
+                pubkey: PublicKey.findProgramAddressSync([verified_human_ubi_bank_account_pubkey.toBytes()], compto_program_id_pubkey)[0],
                 isSigner: false,
                 isWritable: false,
             },
@@ -551,17 +480,8 @@ export async function createGetOwedComptokensInstruction(
     });
 }
 
-export async function createGrowUserDataAccountInstruction(
-    connection: Connection,
-    new_user_data_size: number,
-    payer_address: PublicKey,
-    user_wallet_address: PublicKey,
-    user_comptoken_wallet_address: PublicKey
-): Promise<TransactionInstruction> {
-    const user_data_account_address = PublicKey.findProgramAddressSync(
-        [user_comptoken_wallet_address.toBytes()],
-        compto_program_id_pubkey
-    )[0];
+export async function createGrowUserDataAccountInstruction(connection, new_user_data_size, payer_address, user_wallet_address, user_comptoken_wallet_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_wallet_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -590,26 +510,14 @@ export async function createGrowUserDataAccountInstruction(
         ],
         data: Buffer.from([
             Instruction.GROW_USER_DATA_ACCOUNT,
-            ...bigintAsU64ToBytes(
-                BigInt(
-                    await connection.getMinimumBalanceForRentExemption(
-                        new_user_data_size
-                    )
-                )
-            ),
+            ...bigintAsU64ToBytes(BigInt(await connection.getMinimumBalanceForRentExemption(new_user_data_size))),
             ...bigintAsU64ToBytes(BigInt(new_user_data_size)),
         ]),
     });
 }
 
-export async function createVerifyHumanInstruction(
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
-): Promise<TransactionInstruction> {
-    const user_data_account_address = PublicKey.findProgramAddressSync(
-        [user_comptoken_token_account_address.toBytes()],
-        compto_program_id_pubkey
-    )[0];
+export async function createVerifyHumanInstruction(user_wallet_address, user_comptoken_token_account_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
         keys: [
@@ -639,10 +547,7 @@ export async function createVerifyHumanInstruction(
             },
             //  needed by the transfer hook program (doesn't really exist)
             {
-                pubkey: PublicKey.findProgramAddressSync(
-                    [future_ubi_bank_account_pubkey.toBytes()],
-                    compto_program_id_pubkey
-                )[0],
+                pubkey: PublicKey.findProgramAddressSync([future_ubi_bank_account_pubkey.toBytes()], compto_program_id_pubkey)[0],
                 isSigner: false,
                 isWritable: false,
             },
