@@ -1,9 +1,9 @@
 {
     "type": "module",
     "name": "@compto/comptoken-js-offchain",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "helper functions to create instructions for calling the Comptoken RPC calls on Solana",
-    "main": "instruction.js",
+    "main": "instruction.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
