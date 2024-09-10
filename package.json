@@ -1,9 +1,31 @@
 {
     "type": "module",
+    "name": "@compto/comptoken-js-offchain",
+    "version": "0.1.0",
+    "description": "helper functions to create instructions for calling the Comptoken RPC calls on Solana",
+    "main": "instruction.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/compto-com/comptoken-js-offchain.git"
+    },
+    "keywords": [
+        "api",
+        "blockchain"
+    ],
+    "author": "Compto",
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/compto-com/comptoken-js-offchain/issues"
+    },
+    "homepage": "https://github.com/compto-com/comptoken-js-offchain#readme",
     "dependencies": {
         "@solana/spl-token": "^0.4.8",
         "@solana/web3.js": "^1.95.0",
         "bs58": "^4.0.1",
         "base64-js": "^1.5.1"
-    }
+    },
+    "devDependencies": {}
 }
