@@ -1,3 +1,3 @@
-export * from "./constants.js";
-export * from "./instructions.js";
+export * from "./lib/constants.js";
+export * from "./lib/instruction.js";
 
