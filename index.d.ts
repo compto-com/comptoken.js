@@ -62,3 +62,8 @@ export declare function createVerifyHumanInstruction(
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey
 ): Promise<TransactionInstruction>;
+
+export declare function getDistributionOwed(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promise<number[]>;

@@ -1,40 +1,42 @@
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
-import { PublicKey, SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, TransactionInstruction, } from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, SYSVAR_SLOT_HASHES_PUBKEY, TransactionInstruction, } from "@solana/web3.js";
 import { createHash } from "crypto";
 
-import * as bs58_ from "bs58";
-const bs58 = bs58_.default;
-
-export const COMPTOKEN_DECIMALS = 2;
-export const COMPTOKEN_WALLET_SIZE = 171; // 165 (base account) + 1 (account type discriminator) + 5 (Transfer hook extension)
-const GLOBAL_DATA_SIZE = 5960; // MAGIC NUMBER keep consistent with Compto program
-
-export const compto_program_id_pubkey = new PublicKey(bs58.decode("6351sU4nPxMuxGNYNVK17DXC2fP2juh8YHfiMYCR7Zvh")); // devnet
-export const comptoken_mint_pubkey = new PublicKey(bs58.decode("76KRec9fujGWqdCuPzwiMgxFzQyYMSZa9HeySkbsyufV")); // devnet
-export const global_data_account_pubkey = new PublicKey(bs58.decode("2TchvJKnE3tsdr5RKyiu1jGofnL8rhLZ9XU5nFwKVLSP")); // devnet
-export const interest_bank_account_pubkey = new PublicKey(bs58.decode("EaZvWXqhb6kX1rdZkr9yCBRcCTpnYwubSyhxrZtzcfhf")); // devnet
-export const verified_human_ubi_bank_account_pubkey = new PublicKey(bs58.decode("GoAPpRxCpRgVU6VCW3RAVf9fg4Jysuxt4PqSUpG3H9Xd")); // devnet
-export const future_ubi_bank_account_pubkey = new PublicKey(bs58.decode("2DXVGENSY9vTdozeFL888yPffC7nrakQAzdxSHanTHmN")); // devnet
-export const compto_transfer_hook_id_pubkey = new PublicKey(bs58.decode("4GG3aGgaMXDKtrD9pMcmQ4P87pKKCKRxAxR4LGTKpmYt")); // devnet
-export const compto_extra_account_metas_account_pubkey = new PublicKey(bs58.decode("7oy4vA2rSTXkjKUQVERGRK2SkhNjTDL8xcMBQK6zB9zU")); // devnet
-
-function bigintAsU64ToBytes(int) {
-    let arr = new Array(8);
-    for (let i = 0; int > 0n; ++i) {
-        arr[i] = Number(int & 255n);
-        int >>= 8n;
-    }
-    return arr;
-}
+import {
+    Account,
+    GlobalData,
+    GlobalDataAccount,
+    TokenAccount,
+    UserDataAccount,
+} from "./accounts.js";
+import {
+    compto_extra_account_metas_account_pubkey,
+    compto_program_id_pubkey,
+    compto_transfer_hook_id_pubkey,
+    comptoken_mint_pubkey,
+    future_ubi_bank_account_pubkey,
+    global_data_account_pubkey,
+    interest_bank_account_pubkey,
+    SEC_PER_DAY,
+    verified_human_ubi_bank_account_pubkey,
+} from "./constants.js";
+import { bigintAsU64ToBytes, ringBuffer } from "./utils.js";
 
 export class ComptokenProof {
+    pubkey;
+    recentBlockHash;
+    nonce;
+    hash;
+
+    static MIN_NUM_ZEROED_BITS = 12;
+
     constructor(pubkey, recentBlockHash, nonce) {
         this.pubkey = pubkey;
         this.recentBlockHash = recentBlockHash;
         this.nonce = Buffer.from(bigintAsU64ToBytes(BigInt(nonce)));
         this.hash = this.generateHash();
-        if (ComptokenProof.leadingZeroes(this.hash) <
-            ComptokenProof.MIN_NUM_ZEROED_BITS) {
+        if (ComptokenProof.leadingZeroes(this.hash)
+            < ComptokenProof.MIN_NUM_ZEROED_BITS) {
             throw new Error("The provided proof does not have enough zeroes");
         }
     }
@@ -51,8 +53,7 @@ export class ComptokenProof {
             let byte = hash[i];
             if (byte == 0) {
                 numZeroes += 8;
-            }
-            else {
+            } else {
                 let mask = 0x80; // 10000000
                 // mask > 0 is defensive, not technically necessary
                 // because the above if case checks for all 0's
@@ -77,7 +78,6 @@ export class ComptokenProof {
         return buffer;
     }
 }
-ComptokenProof.MIN_NUM_ZEROED_BITS = 12;
 
 export var Instruction;
 (function (Instruction) {
@@ -282,7 +282,9 @@ export async function createProofSubmissionInstruction(comptoken_proof, user_wal
 //    });
 //}
 
-export async function createCreateUserDataAccountInstruction(connection, num_proofs, payer_address, user_wallet_address, user_comptoken_token_account_address) {
+export async function createCreateUserDataAccountInstruction(
+    connection, num_proofs, payer_address, user_wallet_address, user_comptoken_token_account_address
+) {
     const user_data_size = 88 + 32 * (num_proofs - 1);
     const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_token_account_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
@@ -481,7 +483,9 @@ export async function createGetOwedComptokensInstruction(user_wallet_address, us
     });
 }
 
-export async function createGrowUserDataAccountInstruction(connection, new_user_data_size, payer_address, user_wallet_address, user_comptoken_wallet_address) {
+export async function createGrowUserDataAccountInstruction(
+    connection, new_user_data_size, payer_address, user_wallet_address, user_comptoken_wallet_address
+) {
     const user_data_account_address = PublicKey.findProgramAddressSync([user_comptoken_wallet_address.toBytes()], compto_program_id_pubkey)[0];
     return new TransactionInstruction({
         programId: compto_program_id_pubkey,
@@ -587,4 +591,102 @@ export async function createVerifyHumanInstruction(user_wallet_address, user_com
         ],
         data: Buffer.from([Instruction.VERIFY_HUMAN]),
     });
+}
+
+/**
+ * @template {Account} T
+ * @template {typeof T} U
+ * @param {Connection} connection
+ * @param {PublicKey} address
+ * @param {U} type
+ * @returns {T}
+ */
+async function getAccount(connection, address, type) {
+    const accountInfo = await connection.getAccountInfo(address);
+    return type.fromAccountInfoBytes(address, accountInfo);
+}
+
+/**
+ * @param {Connection} connection
+ * @param {PublicKey} user_comptoken_token_account_address
+ */
+export async function getDistributionOwed(
+    connection,
+    user_comptoken_token_account_address
+) {
+    const user_data_account_address = PublicKey.findProgramAddressSync(
+        [user_comptoken_token_account_address.toBytes()],
+        compto_program_id_pubkey
+    )[0];
+    const accountInfo = await connection.getAccountInfo(
+        user_data_account_address
+    );
+    const user_data_account = UserDataAccount.fromAccountInfoBytes(
+        user_data_account_address,
+        accountInfo
+    );
+    const user_data = user_data_account.data;
+
+    const daysSinceLastPayout = await getDaysSinceLastPayout(connection, user_comptoken_token_account_address);
+
+    const globalDataAccount = await getAccount(
+        connection,
+        global_data_account_pubkey,
+        GlobalDataAccount
+    );
+    const globalData = globalDataAccount.data;
+    const userComptokenAccount = await getAccount(
+        connection,
+        user_comptoken_token_account_address,
+        TokenAccount
+    );
+
+    const end =
+        globalData.dailyDistributionData_.oldestHistoricValue +
+        globalData.dailyDistributionData_.historicDistributions.length;
+    const start = end - daysSinceLastPayout;
+    let interestOwed = userComptokenAccount.data.amount;
+    let ubiOwed = 0;
+    for (let i of ringBuffer(
+        globalData.dailyDistributionData_.historicDistributions,
+        start,
+        end
+    )) {
+        interestOwed *= i[0];
+        ubiOwed += i[1];
+    }
+
+    if (!user_data.isVerifiedHuman) {
+        ubiOwed = 0;
+    }
+    return [interestOwed, ubiOwed];
+}
+
+/**
+ * @param {Connection} connection 
+ * @param {PublicKey} user_comptoken_token_account_address 
+ * @returns {number}
+ */
+export async function getDaysSinceLastPayout(connection, user_comptoken_token_account_address) {
+    const user_data_account_address = PublicKey.findProgramAddressSync(
+        [user_comptoken_token_account_address.toBytes()],
+        compto_program_id_pubkey
+    )[0];
+    const accountInfo = await connection.getAccountInfo(
+        user_data_account_address
+    );
+    const user_data_account = UserDataAccount.fromAccountInfoBytes(
+        user_data_account_address,
+        accountInfo
+    );
+    const user_data = user_data_account.data;
+
+    const daysSinceLastPayout = Math.min(
+        GlobalData.DAILY_DISTRIBUTION_HISTORY_SIZE,
+        Math.floor(
+            (new Date().getTime() - user_data.last_interest_payout_date) /
+            SEC_PER_DAY
+        )
+    );
+    return daysSinceLastPayout;
 }
