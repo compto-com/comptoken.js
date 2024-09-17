@@ -67,3 +67,126 @@ export declare function getDistributionOwed(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey
 ): Promise<number[]>;
+
+import { AccountState } from "@solana/spl-token";
+import { Connection, PublicKey } from "@solana/web3.js";
+
+declare class TLV {
+    type; // u16
+    length; // u16
+    value; // [u8; length]
+}
+
+declare class DataType {
+    constructor(rawType);
+    getSize();
+    static fromBytes(bytes);
+    toBytes();
+}
+
+declare class DataTypeWithExtensions extends DataType {
+    extensions: TLV[];
+
+    constructor(rawType);
+    encodeExtensions(buffer);
+    static decodeExtensions(buffer);
+    addExtensions(...extensions);
+    static fromBytes(bytes);
+    toBytes();
+}
+
+declare class Account<T extends DataType> {
+    address: PublicKey;
+    lamports: number;
+    owner: PublicKey;
+    data: T;
+
+    constructor(address, lamports, owner, data);
+    toAddedAccount();
+    static fromAccountInfoBytes(address, accountInfo);
+}
+
+export declare class Token extends DataTypeWithExtensions {
+    mint: PublicKey; //  PublicKey
+    nominalOwner: PublicKey; //  PublicKey
+    amount: bigint; //  u64
+    delegate: PublicKey | null; //  optional PublicKey
+    isNative: bigint | null; //  optional u64
+    state: AccountState; //  AccountState
+    delegatedAmount: bigint; //  u64
+    closeAuthority: PublicKey | null; //  optional PublicKey
+}
+
+export class TokenAccount extends Account<Token> {}
+
+type Hash = Uint8Array;
+
+export class UserData extends DataType {
+    static MIN_SIZE: number; // MAGIC NUMBER: CHANGE NEEDS TO BE REFLECTED IN user_data.rs
+
+    lastInterestPayoutDate: bigint; // i64
+    isVerifiedHuman: boolean; // bool
+    length: bigint; // usize
+    recentBlockhash: Hash; // Hash
+    proofs: Hash[]; // [Hash]
+}
+
+export class UserDataAccount extends Account<UserData> {}
+
+type ValidBlockhashes = {
+    announcedBlockhash: Hash;
+    announcedBlockhashTime: bigint; // i64
+    validBlockhash: Hash;
+    validBlockhashTime: bigint; // i64
+};
+
+type DailyDistributionData = {
+    yesterdaySupply: bigint; // u64
+    highWaterMark: bigint; // u64
+    lastDailyDistributionTime: bigint; // i64
+    verifiedHumans: bigint; // u64
+    oldestHistoricValue: bigint; // u64
+    historicDistributions: {
+        interestRate: number; // f64
+        ubiAmount: bigint; // u64
+    }[];
+};
+
+declare class GlobalData extends DataType {
+    static DAILY_DISTRIBUTION_HISTORY_SIZE: number; // MAGIC NUMBER: remain consistent with rust
+
+    validBlockhashes: ValidBlockhashes;
+    dailyDistributionData: DailyDistributionData;
+}
+
+export class GlobalDataAccount extends Account<GlobalData> {}
+
+interface DistributionOwed {
+    interestOwed: number;
+    ubiOwed: number;
+}
+
+export async function getDistributionOwed(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promise<DistributionOwed>;
+
+export async function getDaysSinceLastPayout(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promise<number>;
+
+export async function isVerifiedHuman(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promies<boolean>;
+
+export async function getComptokenBalance(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promise<number>;
+
+export async function getNominalOwner(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Promise<PublicKey>;
