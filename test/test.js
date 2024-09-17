@@ -1,7 +1,7 @@
 import { getAccount, getAssociatedTokenAddressSync, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { comptoken_mint_pubkey, getDistributionOwed } from "../index.js";
+import { comptoken_mint_pubkey, getDistributionOwed, getLastPayoutDate } from "../index.js";
 
 let connection = new Connection("https://api.devnet.solana.com");
 
@@ -16,3 +16,5 @@ console.log(distribution);
 
 let account = await getAccount(connection, comptokenAccount, undefined, TOKEN_2022_PROGRAM_ID);
 console.log(account);
+
+console.log(await getLastPayoutDate(connection, comptokenAccount));
