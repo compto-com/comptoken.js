@@ -7,12 +7,12 @@ let connection = new Connection("https://api.devnet.solana.com");
 
 let owner = new PublicKey("2UnTj2n1dYcB9nKmype5XAUebt9e9NswSTAGwFmHPaZA")
 
-let ata = getAssociatedTokenAddressSync(comptoken_mint_pubkey, owner, undefined, TOKEN_2022_PROGRAM_ID);
+let comptokenAccount = getAssociatedTokenAddressSync(comptoken_mint_pubkey, owner, undefined, TOKEN_2022_PROGRAM_ID);
 
-console.log(ata.toBase58());
+console.log(comptokenAccount.toBase58());
 
-let distribution = await getDistributionOwed(connection, ata);
+let distribution = await getDistributionOwed(connection, comptokenAccount);
 console.log(distribution);
 
-let account = await getAccount(connection, ata, undefined, TOKEN_2022_PROGRAM_ID);
+let account = await getAccount(connection, comptokenAccount, undefined, TOKEN_2022_PROGRAM_ID);
 console.log(account);
