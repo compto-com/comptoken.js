@@ -77,17 +77,14 @@ declare class TLV {
     value; // [u8; length]
 }
 
-declare class DataType {
-    constructor(rawType);
-    getSize();
-    static fromBytes(bytes);
-    toBytes();
+declare interface DataType {
+    getSize(): number;
+    static fromBytes(bytes: Uint8Array): DataType;
+    toBytes(): Uint8Array;
 }
 
-declare class DataTypeWithExtensions extends DataType {
+declare interface DataTypeWithExtensions extends DataType {
     extensions: TLV[];
-
-    constructor(rawType);
     encodeExtensions(buffer);
     static decodeExtensions(buffer);
     addExtensions(...extensions);
@@ -95,18 +92,20 @@ declare class DataTypeWithExtensions extends DataType {
     toBytes();
 }
 
-declare class Account<T extends DataType> {
+declare class Account<T> {
     address: PublicKey;
     lamports: number;
     owner: PublicKey;
     data: T;
 
     constructor(address, lamports, owner, data);
-    toAddedAccount();
-    static fromAccountInfoBytes(address, accountInfo);
 }
 
-export declare class Token extends DataTypeWithExtensions {
+declare interface FromAccountInfoBytes {
+    static fromAccountInfoBytes(address, accountInfo): ThisType;
+}
+
+export declare class Token {
     mint: PublicKey; //  PublicKey
     nominalOwner: PublicKey; //  PublicKey
     amount: bigint; //  u64
@@ -117,7 +116,12 @@ export declare class Token extends DataTypeWithExtensions {
     closeAuthority: PublicKey | null; //  optional PublicKey
 }
 
-export class TokenAccount extends Account<Token> {}
+export class TokenAccount extends Account<Token> {
+    static fromAccountInfoBytes(
+        address: PublicKey,
+        accountInfo: AccountInfo<Uint8Array>
+    ): ThisType;
+}
 
 type Hash = Uint8Array;
 
@@ -131,7 +135,12 @@ export class UserData extends DataType {
     proofs: Hash[]; // [Hash]
 }
 
-export class UserDataAccount extends Account<UserData> {}
+export class UserDataAccount extends Account<UserData> {
+    static fromAccountInfoBytes(
+        address: PublicKey,
+        accountInfo: AccountInfo<Uint8Array>
+    ): ThisType;
+}
 
 type ValidBlockhashes = {
     announcedBlockhash: Hash;
@@ -159,7 +168,12 @@ declare class GlobalData extends DataType {
     dailyDistributionData: DailyDistributionData;
 }
 
-export class GlobalDataAccount extends Account<GlobalData> {}
+export class GlobalDataAccount extends Account<GlobalData> {
+    static fromAccountInfoBytes(
+        address: PublicKey,
+        accountInfo: AccountInfo<Uint8Array>
+    ): ThisType;
+}
 
 interface DistributionOwed {
     interestOwed: number;
@@ -190,3 +204,14 @@ export async function getNominalOwner(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey
 ): Promise<PublicKey>;
+
+export async function getValidBlockhashes(
+    connection: Connection
+): Promise<Promise<ValidBlockhashes>> {
+    const globalData = await getGlobalData(connection);
+    return globalData.validBlockhashes;
+}
+
+export async function* getHistoricDistributions(
+    connection: Connection
+): Promise<Generator<{ interestRate: number; ubiAmount: bigint }, void, any>>;
