@@ -215,3 +215,8 @@ export async function getValidBlockhashes(
 export async function* getHistoricDistributions(
     connection: Connection
 ): Promise<Generator<{ interestRate: number; ubiAmount: bigint }, void, any>>;
+
+export async function getLastPayoutDate(
+    connection: Connection,
+    user_comptoken_token_account_address: PublicKey
+): Date;
