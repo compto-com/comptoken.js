@@ -1,4 +1,12 @@
-import { Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
+import { AccountState } from "@solana/spl-token";
+import {
+    AccountInfo,
+    Commitment,
+    Connection,
+    PublicKey,
+    TransactionInstruction,
+} from "@solana/web3.js";
+
 export declare const COMPTOKEN_DECIMALS = 2;
 export declare const COMPTOKEN_WALLET_SIZE = 171;
 export declare const compto_program_id_pubkey: PublicKey;
@@ -63,27 +71,19 @@ export declare function createVerifyHumanInstruction(
     user_comptoken_token_account_address: PublicKey
 ): Promise<TransactionInstruction>;
 
-export declare function getDistributionOwed(
-    connection: Connection,
-    user_comptoken_token_account_address: PublicKey
-): Promise<number[]>;
-
-import { AccountState } from "@solana/spl-token";
-import { Connection, PublicKey } from "@solana/web3.js";
-
 declare class TLV {
     type; // u16
     length; // u16
     value; // [u8; length]
 }
 
-declare interface DataType {
+declare class DataType {
     getSize(): number;
     static fromBytes(bytes: Uint8Array): DataType;
     toBytes(): Uint8Array;
 }
 
-declare interface DataTypeWithExtensions extends DataType {
+declare class DataTypeWithExtensions extends DataType {
     extensions: TLV[];
     encodeExtensions(buffer);
     static decodeExtensions(buffer);
@@ -101,10 +101,6 @@ declare class Account<T> {
     constructor(address, lamports, owner, data);
 }
 
-declare interface FromAccountInfoBytes {
-    static fromAccountInfoBytes(address, accountInfo): ThisType;
-}
-
 export declare class Token {
     mint: PublicKey; //  PublicKey
     nominalOwner: PublicKey; //  PublicKey
@@ -120,7 +116,7 @@ export class TokenAccount extends Account<Token> {
     static fromAccountInfoBytes(
         address: PublicKey,
         accountInfo: AccountInfo<Uint8Array>
-    ): ThisType;
+    ): TokenAccount;
 }
 
 type Hash = Uint8Array;
@@ -139,7 +135,7 @@ export class UserDataAccount extends Account<UserData> {
     static fromAccountInfoBytes(
         address: PublicKey,
         accountInfo: AccountInfo<Uint8Array>
-    ): ThisType;
+    ): UserDataAccount;
 }
 
 type ValidBlockhashes = {
@@ -172,7 +168,7 @@ export class GlobalDataAccount extends Account<GlobalData> {
     static fromAccountInfoBytes(
         address: PublicKey,
         accountInfo: AccountInfo<Uint8Array>
-    ): ThisType;
+    ): GlobalDataAccount;
 }
 
 interface DistributionOwed {
@@ -180,43 +176,48 @@ interface DistributionOwed {
     ubiOwed: number;
 }
 
-export async function getDistributionOwed(
+export declare function getDistributionOwed(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
 ): Promise<DistributionOwed>;
 
-export async function getDaysSinceLastPayout(
+export declare function getDaysSinceLastPayout(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
 ): Promise<number>;
 
-export async function isVerifiedHuman(
+export declare function isVerifiedHuman(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
-): Promies<boolean>;
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
+): Promise<boolean>;
 
-export async function getComptokenBalance(
+export declare function getComptokenBalance(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
 ): Promise<number>;
 
-export async function getNominalOwner(
+export declare function getNominalOwner(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
 ): Promise<PublicKey>;
 
-export async function getValidBlockhashes(
-    connection: Connection
-): Promise<Promise<ValidBlockhashes>> {
-    const globalData = await getGlobalData(connection);
-    return globalData.validBlockhashes;
-}
+export declare function getValidBlockhashes(
+    connection: Connection,
+    commitment?: Commitment
+): Promise<Promise<ValidBlockhashes>>;
 
-export async function* getHistoricDistributions(
-    connection: Connection
+export declare function getHistoricDistributions(
+    connection: Connection,
+    commitment?: Commitment
 ): Promise<Generator<{ interestRate: number; ubiAmount: bigint }, void, any>>;
 
-export async function getLastPayoutDate(
+export declare function getLastPayoutDate(
     connection: Connection,
-    user_comptoken_token_account_address: PublicKey
-): Date;
+    user_comptoken_token_account_address: PublicKey,
+    commitment?: Commitment
+): Promise<Date>;
