@@ -1,5 +1,5 @@
 {
-    "type": "module",
+    "type": "commonjs",
     "name": "@compto/comptoken-js-offchain",
     "version": "0.1.3",
     "description": "helper functions to create instructions for calling the Comptoken RPC calls on Solana",
