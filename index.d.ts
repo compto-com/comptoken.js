@@ -136,6 +136,10 @@ export class UserDataAccount extends Account<UserData> {
         address: PublicKey,
         accountInfo: AccountInfo<Uint8Array>
     ): UserDataAccount;
+
+    static addressFromComptokenAccount(
+        comptokenAccountAddress: PublicKey
+    ): PublicKey;
 }
 
 type ValidBlockhashes = {
