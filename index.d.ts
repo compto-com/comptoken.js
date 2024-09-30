@@ -19,7 +19,8 @@ export declare const compto_transfer_hook_id_pubkey: PublicKey;
 export declare const compto_extra_account_metas_account_pubkey: PublicKey;
 export declare class ComptokenProof {
     pubkey: PublicKey;
-    recentBlockHash: Uint8Array;
+    recentBlockHash: Buffer;
+    extraData: Buffer;
     nonce: Buffer;
     version: Buffer;
     timestamp: Buffer;
