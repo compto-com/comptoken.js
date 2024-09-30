@@ -18,7 +18,7 @@ export declare const future_ubi_bank_account_pubkey: PublicKey;
 export declare const compto_transfer_hook_id_pubkey: PublicKey;
 export declare const compto_extra_account_metas_account_pubkey: PublicKey;
 export declare class ComptokenProof {
-    pubkey: PublicKey;
+    pubkey: Buffer;
     recentBlockHash: Buffer;
     extraData: Buffer;
     nonce: Buffer;
@@ -27,7 +27,7 @@ export declare class ComptokenProof {
     hash: Buffer;
     static MIN_NUM_ZEROED_BITS: number;
     constructor(
-        pubkey: PublicKey,
+        pubkey: Buffer,
         recentBlockHash: Buffer,
         extraData: Buffer,
         nonce: Buffer,
