@@ -21,12 +21,17 @@ export declare class ComptokenProof {
     pubkey: PublicKey;
     recentBlockHash: Uint8Array;
     nonce: Buffer;
+    version: Buffer;
+    timestamp: Buffer;
     hash: Buffer;
     static MIN_NUM_ZEROED_BITS: number;
     constructor(
         pubkey: PublicKey,
-        recentBlockHash: Uint8Array,
-        nonce: number | bigint
+        recentBlockHash: Buffer,
+        extraData: Buffer,
+        nonce: Buffer,
+        version: Buffer,
+        timestamp: Buffer,
     );
     generateHash(): Buffer;
     static leadingZeroes(hash: Buffer): number;
