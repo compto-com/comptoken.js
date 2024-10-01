@@ -12,6 +12,7 @@ const {
     future_ubi_bank_account_pubkey,
     compto_transfer_hook_id_pubkey,
     compto_extra_account_metas_account_pubkey,
+    test_account,
 } = require("./lib/constants.js");
 
 const {
@@ -73,6 +74,7 @@ module.exports = {
     future_ubi_bank_account_pubkey,
     compto_transfer_hook_id_pubkey,
     compto_extra_account_metas_account_pubkey,
+    test_account,
     ComptokenProof, // instruction.js
     Instruction,
     createProofSubmissionInstruction,
