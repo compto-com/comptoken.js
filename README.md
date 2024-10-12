@@ -130,8 +130,86 @@ To get a local copy up and running follow these simple example steps.
 
 ## Usage
 
+This package exports several constants, the most important being
+
+-   COMPTOKEN_DECIMALS - the comptoken decimals
+-   compto_program_id_pubkey - the publickey id of the compto program
+-   comptoken_mint_pubkey - the publickey of the comptoken mint
+
+There are classes for the different types of accounts the compto program uses, as well as their corresponding data fields
+
+-   TokenAccount with data Token
+-   UserDataAccount with data UserData
+-   GlobalDataAccount with data GlobalData
+
+Accounts can be constructed like
+
+```js
+let accountInfo = await connection.getAccountInfo(address);
+let tokenAccount = TokenAccount.fromAccountInfoBytes(address, accountInfo);
+
+let token = tokenAccount.data;
+```
+
+There are also a number of convenience functions for accessing specific fields of different accounts, the most useful being
+
+-   getDistributionOwed
+-   getHistoricDistributions
+
+Finally there are functions for creating every instruction the compto program recognizes
+
+```ts
+function createProofSubmissionInstruction(
+    comptoken_proof: ComptokenProof,
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+
+function createCreateUserDataAccountInstruction(
+    connection: Connection,
+    num_proofs: number,
+    payer_address: PublicKey,
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+
+function createDailyDistributionEventInstruction(): Promise<TransactionInstruction>;
+
+function createGetValidBlockhashesInstruction(): Promise<TransactionInstruction>;
+
+function createGetOwedComptokensInstruction(
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+
+function createGrowUserDataAccountInstruction(
+    connection: Connection,
+    new_user_data_size: number,
+    payer_address: PublicKey,
+    user_wallet_address: PublicKey,
+    user_comptoken_wallet_address: PublicKey
+): Promise<TransactionInstruction>;
+```
+
+the verify_human instruction is not stable in the compto program, so the api here may also need to change
+
+```ts
+function createVerifyHumanInstruction(
+    user_wallet_address: PublicKey,
+    user_comptoken_token_account_address: PublicKey
+): Promise<TransactionInstruction>;
+```
+
+const {
+ComptokenProof,
+Instruction,
+
+} = require("./lib/instruction.js");
+
+### Example
+
 note: this example includes mining for comptokens in javascript. This is a terrible
-idea because, and we recommend using a dedicated bitcoin miner through our [stratum server](https://compto.com/info/mining)
+idea, and we recommend using a dedicated bitcoin miner through our [stratum server](https://compto.com/info/mining)
 
 ```js
 import {
@@ -322,6 +400,7 @@ function bytesToBigInt(arr) {
 -   [ ] Add helper functions
     -   [ ] create Token Account and data account
     -   [ ] parse getValidBlockhashes output
+-   [ ] Add Tests
 
 See the [open issues](https://github.com/compto-com/comptoken.js/issues) for a full list of proposed features (and known issues).
 
