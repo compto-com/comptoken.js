@@ -32,7 +32,7 @@ export declare class ComptokenProof {
         extraData: Buffer,
         nonce: Buffer,
         version: Buffer,
-        timestamp: Buffer,
+        timestamp: Buffer
     );
     generateHash(): Buffer;
     static leadingZeroes(hash: Buffer): number;
@@ -72,6 +72,9 @@ export declare function createGrowUserDataAccountInstruction(
     user_wallet_address: PublicKey,
     user_comptoken_wallet_address: PublicKey
 ): Promise<TransactionInstruction>;
+/**
+ * @beta
+ */
 export declare function createVerifyHumanInstruction(
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey
