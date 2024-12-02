@@ -84,6 +84,16 @@ declare class TLV {
     type; // u16
     length; // u16
     value; // [u8; length]
+
+    static Uninitialized(): TLV;
+    static TransferHook(
+        programId: PublicKey,
+        authority: PublicKey | null = null
+    ): TLV;
+    static TransferHookAccount(): TLV;
+
+    static fromBytes(bytes: Uint8Array): TLV;
+    toBytes(): Uint8Array;
 }
 
 declare class DataType {

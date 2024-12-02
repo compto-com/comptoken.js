@@ -16,6 +16,7 @@ const {
 } = require("./lib/constants.js");
 
 const {
+    TLV,
     Token,
     TokenAccount,
     UserData,
@@ -47,7 +48,8 @@ const {
 
 
 module.exports = {
-    Token, // accounts.js
+    TLV, // accounts.js
+    Token,
     TokenAccount,
     UserData,
     UserDataAccount,
