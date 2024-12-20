@@ -11,6 +11,8 @@ const {
 
 const {
     Account,
+    DataType,
+    DataTypeWithExtensions,
     TLV,
     Token,
     TokenAccount,
@@ -44,6 +46,8 @@ const {
 
 module.exports = {
     Account, // account.js
+    DataType,
+    DataTypeWithExtensions,
     TLV,
     Token,
     TokenAccount,
