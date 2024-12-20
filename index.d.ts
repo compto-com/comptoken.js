@@ -242,7 +242,7 @@ export class UserDataAccount extends Account<UserData> {
 
     static addressFromComptokenAccount(
         comptokenAccountAddress: PublicKey,
-        compto_program_id_pubkey: ComptoPublicKeys | null
+        compto_public_keys: ComptoPublicKeys | null
     ): PublicKey;
 }
 
