@@ -4,18 +4,13 @@ const {
     GLOBAL_DATA_SIZE,
     SEC_PER_DAY,
     DAILY_DISTRIBUTION_HISTORY_SIZE,
-    compto_program_id_pubkey,
-    comptoken_mint_pubkey,
-    global_data_account_pubkey,
-    interest_bank_account_pubkey,
-    verified_human_ubi_bank_account_pubkey,
-    future_ubi_bank_account_pubkey,
-    compto_transfer_hook_id_pubkey,
-    compto_extra_account_metas_account_pubkey,
-    test_account,
+    devnet_compto_public_keys,
+    compto_public_keys,
+    ComptoPublicKeys,
 } = require("./lib/constants.js");
 
 const {
+    Account,
     TLV,
     Token,
     TokenAccount,
@@ -48,7 +43,8 @@ const {
 
 
 module.exports = {
-    TLV, // accounts.js
+    Account, // account.js
+    TLV,
     Token,
     TokenAccount,
     UserData,
@@ -68,15 +64,9 @@ module.exports = {
     GLOBAL_DATA_SIZE,
     SEC_PER_DAY,
     DAILY_DISTRIBUTION_HISTORY_SIZE,
-    compto_program_id_pubkey,
-    comptoken_mint_pubkey,
-    global_data_account_pubkey,
-    interest_bank_account_pubkey,
-    verified_human_ubi_bank_account_pubkey,
-    future_ubi_bank_account_pubkey,
-    compto_transfer_hook_id_pubkey,
-    compto_extra_account_metas_account_pubkey,
-    test_account,
+    devnet_compto_public_keys,
+    compto_public_keys,
+    ComptoPublicKeys,
     ComptokenProof, // instruction.js
     Instruction,
     createProofSubmissionInstruction,

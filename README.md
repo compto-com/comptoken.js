@@ -133,8 +133,9 @@ To get a local copy up and running follow these simple example steps.
 This package exports several constants, the most important being
 
 -   COMPTOKEN_DECIMALS - the comptoken decimals
--   compto_program_id_pubkey - the publickey id of the compto program
--   comptoken_mint_pubkey - the publickey of the comptoken mint
+-   compto_public_keys - an object containing several publickKeys associated with the compto program including:
+    -   compto_program_id_pubkey - the publickey id of the compto program
+    -   comptoken_mint_pubkey - the publickey of the comptoken mint
 
 There are classes for the different types of accounts the compto program uses, as well as their corresponding data fields
 
@@ -162,7 +163,8 @@ Finally there are functions for creating every instruction the compto program re
 function createProofSubmissionInstruction(
     comptoken_proof: ComptokenProof,
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 
 function createCreateUserDataAccountInstruction(
@@ -170,16 +172,22 @@ function createCreateUserDataAccountInstruction(
     num_proofs: number,
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 
-function createDailyDistributionEventInstruction(): Promise<TransactionInstruction>;
+function createDailyDistributionEventInstruction(
+    compto_public_keys: ComptoPublicKeys | null
+): Promise<TransactionInstruction>;
 
-function createGetValidBlockhashesInstruction(): Promise<TransactionInstruction>;
+function createGetValidBlockhashesInstruction(
+    compto_public_keys: ComptoPublicKeys | null
+): Promise<TransactionInstruction>;
 
 function createGetOwedComptokensInstruction(
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 
 function createGrowUserDataAccountInstruction(
@@ -187,7 +195,8 @@ function createGrowUserDataAccountInstruction(
     new_user_data_size: number,
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
-    user_comptoken_wallet_address: PublicKey
+    user_comptoken_wallet_address: PublicKey,
+    compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 ```
 
@@ -196,24 +205,19 @@ the verify_human instruction is not stable in the compto program, so the api her
 ```ts
 function createVerifyHumanInstruction(
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 ```
-
-const {
-ComptokenProof,
-Instruction,
-
-} = require("./lib/instruction.js");
 
 ### Example
 
 note: this example includes mining for comptokens in javascript. This is a terrible
-idea, and we recommend using a dedicated bitcoin miner through our [stratum server](https://compto.com/info/mining)
+idea, and we recommend using a dedicated bitcoin miner through our [stratum server](https://compto.com/info/mining). It only works because the devnet has a greatly reduced mining difficulty.
 
 ```js
 import {
-    comptoken_mint_pubkey,
+    devnet_compto_public_keys, // devnet version of compto_public_keys
     ComptokenProof,
     createCreateUserDataAccountInstruction,
     createGetValidBlockhashesInstruction,
@@ -261,13 +265,14 @@ tx0.add(
         300, // number of proofs the data account can store. min is 1
         compto_wallet.publicKey, // payer
         compto_wallet.publicKey, // owner
-        compto_comptoken_account // comptoken token account
+        compto_comptoken_account, // comptoken token account
+        devnet_compto_public_keys // sets the program to devnet
     )
 );
 let result0 = await sendAndConfirmTransaction(connection, tx0, [compto_wallet]);
 
 let tx1 = new Transaction();
-tx1.add(await createGetValidBlockhashesInstruction());
+tx1.add(await createGetValidBlockhashesInstruction(devnet_compto_public_keys));
 
 let getValidBlockhashesTransactionSignature = await sendAndConfirmTransaction(
     connection,
@@ -337,7 +342,8 @@ async function submitProof(
         await createProofSubmissionInstruction(
             comptoken_proof,
             compto_wallet.publicKey,
-            compto_comptoken_account
+            compto_comptoken_account,
+            devnet_compto_public_keys
         )
     );
 
