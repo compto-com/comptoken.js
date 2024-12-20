@@ -37,7 +37,7 @@ type KeyMappings = {
     test_account: _KeyMapping;
 };
 
-class ComptoPublicKeys {
+export class ComptoPublicKeys {
     compto_program_id_pubkey: PublicKey;
     comptoken_mint_pubkey: PublicKey;
     global_data_account_pubkey: PublicKey;
@@ -204,7 +204,7 @@ declare class Account<T> {
     );
 }
 
-export declare class Token {
+export declare class Token extends DataTypeWithExtensions {
     mint: PublicKey; //  PublicKey
     nominalOwner: PublicKey; //  PublicKey
     amount: bigint; //  u64
