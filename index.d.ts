@@ -6,6 +6,7 @@ import {
     Keypair,
     PublicKey,
     TransactionInstruction,
+    TransactionResponse,
 } from "@solana/web3.js";
 
 export declare const COMPTOKEN_DECIMALS = 2;

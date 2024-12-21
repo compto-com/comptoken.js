@@ -25,7 +25,7 @@ const {
     getDaysSinceLastPayout,
     isVerifiedHuman,
     getValidBlockhashes,
-    getValidBlochashesFromTarnsactionResponse,
+    getValidBlochashesFromTransactionResponse,
     getHistoricDistributions,
     GlobalData,
     GlobalDataAccount,
