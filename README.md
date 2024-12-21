@@ -301,24 +301,20 @@ for (let nonce = 0; nonce < 2 ** 32; nonce++) {
     nonceBuffer.writeUInt32LE(nonce);
 
     let comptoken_proof;
-    try {
-        comptoken_proof = new ComptokenProof(
-            compto_comptoken_account.toBuffer(),
-            resultBytes.slice(0, 32),
-            Buffer.alloc(32, 0), // extraData,
-            nonceBuffer, // 4 bytes
-            Buffer.from([0, 0, 0, 0]), // version, 4 bytes
-            Buffer.from([0, 0, 0, 0]) // timestamp, 4
-        );
-    } catch (e) {
-        if (
-            e instanceof Error &&
-            e.message == "The provided proof does not have enough zeroes"
-        ) {
+    for (let nonce = 0; nonce < 2 ** 32; nonce++) {
+        try {
+            comptoken_proof = new ComptokenProof({
+                pubkey: compto_comptoken_account,
+                recentBlockHash: resultBytes.slice(0, 32),
+                extraData: Uint8Array.from({ length: 32 }, () => 0),
+                nonce,
+                version: 0,
+                timestamp: Date.now() / 1000,
+                target: ComptokenProof.TARGET_BYTES_TEST,
+            }); // throws if hash is less than target
+        } catch (e) {
             continue;
         }
-        console.error(e);
-        throw e;
     }
 
     await submitProof(comptoken_proof, compto_wallet, compto_comptoken_account);

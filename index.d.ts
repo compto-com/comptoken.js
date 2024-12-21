@@ -85,21 +85,29 @@ export declare class ComptokenProof {
     nonce: Buffer;
     version: Buffer;
     timestamp: Buffer;
+
+    header: Buffer;
     hash: Buffer;
 
-    static MIN_NUM_ZEROED_BITS: number;
+    constructor({
+        pubkey,
+        recentBlockHash,
+        extraData,
+        nonce,
+        version,
+        timestamp,
+        target,
+    }: {
+        pubkey: Buffer;
+        recentBlockHash: Buffer;
+        extraData: Buffer;
+        nonce: Buffer;
+        version: Buffer;
+        timestamp: Buffer;
+        target: number[];
+    });
 
-    constructor(
-        pubkey: Buffer,
-        recentBlockHash: Buffer,
-        extraData: Buffer,
-        nonce: Buffer,
-        version: Buffer,
-        timestamp: Buffer
-    );
-
-    generateHash(): Buffer;
-    static leadingZeroes(hash: Buffer): number;
+    static isLowerThanTarget(hash: Buffer, target: number[]?): boolean;
     serializeData(): Buffer;
 }
 
