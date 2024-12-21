@@ -18,6 +18,11 @@ const {
     TokenAccount,
     UserData,
     UserDataAccount,
+    GlobalData,
+    GlobalDataAccount,
+} = require("./lib/accounts.js");
+
+const {
     getComptokenBalance,
     getNominalOwner,
     getDistributionOwed,
@@ -27,9 +32,7 @@ const {
     getValidBlockhashes,
     getValidBlockhashesFromTransactionResponse,
     getHistoricDistributions,
-    GlobalData,
-    GlobalDataAccount,
-} = require("./lib/accounts.js");
+} = require("./lib/helper.js");
 
 const {
     ComptokenProof,
@@ -54,7 +57,9 @@ module.exports = {
     TokenAccount,
     UserData,
     UserDataAccount,
-    getComptokenBalance,
+    GlobalData,
+    GlobalDataAccount,
+    getComptokenBalance, // helper.js
     getNominalOwner,
     getDistributionOwed,
     getLastPayoutDate,
@@ -63,8 +68,6 @@ module.exports = {
     getValidBlockhashes,
     getValidBlockhashesFromTransactionResponse,
     getHistoricDistributions,
-    GlobalData,
-    GlobalDataAccount,
     COMPTOKEN_DECIMALS, // constants.js
     COMPTOKEN_WALLET_SIZE,
     GLOBAL_DATA_SIZE,
