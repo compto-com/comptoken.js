@@ -61,7 +61,7 @@ module.exports = {
     getDaysSinceLastPayout,
     isVerifiedHuman,
     getValidBlockhashes,
-    getValidBlochashesFromTarnsactionResponse,
+    getValidBlochashesFromTransactionResponse,
     getHistoricDistributions,
     GlobalData,
     GlobalDataAccount,

@@ -333,7 +333,7 @@ export declare function getValidBlockhashes(
     commitment?: Commitment
 ): Promise<{ announcedBlockhash: Uint8Array; validBlockhash: Uint8Array }>;
 
-export function getValidBlochashesFromTarnsactionResponse(
+export function getValidBlochashesFromTransactionResponse(
     transactionResponse: TransactionResponse
 ): { announcedBlockhash: Uint8Array; validBlockhash: Uint8Array };
 
