@@ -327,9 +327,14 @@ export declare function getNominalOwner(
 
 export declare function getValidBlockhashes(
     connection: Connection,
+    payer: Keypair,
     compto_public_keys: ComptoPublicKeys,
     commitment?: Commitment
-): Promise<Promise<ValidBlockhashes>>;
+): Promise<{ announcedBlockhash: Uint8Array; validBlockhash: Uint8Array }>;
+
+export function getValidBlochashesFromTarnsactionResponse(
+    transactionResponse: TransactionResponse
+): { announcedBlockhash: Uint8Array; validBlockhash: Uint8Array };
 
 export declare function getHistoricDistributions(
     connection: Connection,
