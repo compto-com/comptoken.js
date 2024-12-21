@@ -79,12 +79,12 @@ export class ComptoPublicKeys {
 }
 
 export declare class ComptokenProof {
-    pubkey: Buffer;
-    recentBlockHash: Buffer;
-    extraData: Buffer;
-    nonce: Buffer;
-    version: Buffer;
-    timestamp: Buffer;
+    pubkey: PublicKey;
+    recentBlockHash: Uint8Array;
+    extraData: Uint8Array;
+    nonce: number;
+    version: number;
+    timestamp: number;
 
     header: Buffer;
     hash: Buffer;
@@ -98,12 +98,12 @@ export declare class ComptokenProof {
         timestamp,
         target,
     }: {
-        pubkey: Buffer;
-        recentBlockHash: Buffer;
-        extraData: Buffer;
-        nonce: Buffer;
-        version: Buffer;
-        timestamp: Buffer;
+        pubkey: PublicKey;
+        recentBlockHash: Uint8Array;
+        extraData: Uint8Array;
+        nonce: number;
+        version: number;
+        timestamp: number;
         target: number[];
     });
 
