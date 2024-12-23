@@ -11,14 +11,11 @@ import {
 
 export declare const COMPTOKEN_DECIMALS = 2;
 export declare const COMPTOKEN_WALLET_SIZE = 171;
-export declare const compto_program_id_pubkey: PublicKey;
-export declare const comptoken_mint_pubkey: PublicKey;
-export declare const global_data_account_pubkey: PublicKey;
-export declare const interest_bank_account_pubkey: PublicKey;
-export declare const verified_human_ubi_bank_account_pubkey: PublicKey;
-export declare const future_ubi_bank_account_pubkey: PublicKey;
-export declare const compto_transfer_hook_id_pubkey: PublicKey;
-export declare const compto_extra_account_metas_account_pubkey: PublicKey;
+export declare const GLOBAL_DATA_SIZE = 1024;
+export declare const SEC_PER_DAY = 86400;
+export declare const DAILY_DISTRIBUTION_HISTORY_SIZE = 365;
+export declare const devnet_compto_public_keys: ComptoPublicKeys;
+export declare const compto_public_keys: ComptoPublicKeys;
 
 type _KeyMapping = {
     filename: string;
