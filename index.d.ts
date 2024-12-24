@@ -102,7 +102,7 @@ export declare class ComptokenProof {
         nonce: number;
         version: number;
         timestamp: number;
-        target: number[];
+        target?: number[];
     });
 
     static isLowerThanTarget(hash: Buffer, target: number[]?): boolean;
