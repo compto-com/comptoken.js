@@ -105,6 +105,9 @@ export declare class ComptokenProof {
         target?: number[];
     });
 
+    TARGET_BYTES: number[];
+    TARGET_BYTES_DEVNET: number[];
+
     static isLowerThanTarget(hash: Buffer, target: number[]?): boolean;
     serializeData(): Buffer;
 }
