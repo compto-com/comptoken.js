@@ -1,7 +1,7 @@
 {
     "type": "commonjs",
     "name": "@compto/comptoken.js",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "helper functions to create instructions for calling the Comptoken RPC calls on Solana",
     "main": "index.js",
     "scripts": {
