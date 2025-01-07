@@ -4,23 +4,25 @@ const {
     GLOBAL_DATA_SIZE,
     SEC_PER_DAY,
     DAILY_DISTRIBUTION_HISTORY_SIZE,
-    compto_program_id_pubkey,
-    comptoken_mint_pubkey,
-    global_data_account_pubkey,
-    interest_bank_account_pubkey,
-    verified_human_ubi_bank_account_pubkey,
-    future_ubi_bank_account_pubkey,
-    compto_transfer_hook_id_pubkey,
-    compto_extra_account_metas_account_pubkey,
-    test_account,
+    devnet_compto_public_keys,
+    compto_public_keys,
+    ComptoPublicKeys,
 } = require("./lib/constants.js");
 
 const {
+    Account,
+    DataType,
+    DataTypeWithExtensions,
     TLV,
     Token,
     TokenAccount,
     UserData,
     UserDataAccount,
+    GlobalData,
+    GlobalDataAccount,
+} = require("./lib/accounts.js");
+
+const {
     getComptokenBalance,
     getNominalOwner,
     getDistributionOwed,
@@ -28,10 +30,9 @@ const {
     getDaysSinceLastPayout,
     isVerifiedHuman,
     getValidBlockhashes,
+    getValidBlockhashesFromTransactionResponse,
     getHistoricDistributions,
-    GlobalData,
-    GlobalDataAccount,
-} = require("./lib/accounts.js");
+} = require("./lib/helper.js");
 
 const {
     ComptokenProof,
@@ -48,35 +49,33 @@ const {
 
 
 module.exports = {
-    TLV, // accounts.js
+    Account, // account.js
+    DataType,
+    DataTypeWithExtensions,
+    TLV,
     Token,
     TokenAccount,
     UserData,
     UserDataAccount,
-    getComptokenBalance,
+    GlobalData,
+    GlobalDataAccount,
+    getComptokenBalance, // helper.js
     getNominalOwner,
     getDistributionOwed,
     getLastPayoutDate,
     getDaysSinceLastPayout,
     isVerifiedHuman,
     getValidBlockhashes,
+    getValidBlockhashesFromTransactionResponse,
     getHistoricDistributions,
-    GlobalData,
-    GlobalDataAccount,
     COMPTOKEN_DECIMALS, // constants.js
     COMPTOKEN_WALLET_SIZE,
     GLOBAL_DATA_SIZE,
     SEC_PER_DAY,
     DAILY_DISTRIBUTION_HISTORY_SIZE,
-    compto_program_id_pubkey,
-    comptoken_mint_pubkey,
-    global_data_account_pubkey,
-    interest_bank_account_pubkey,
-    verified_human_ubi_bank_account_pubkey,
-    future_ubi_bank_account_pubkey,
-    compto_transfer_hook_id_pubkey,
-    compto_extra_account_metas_account_pubkey,
-    test_account,
+    devnet_compto_public_keys,
+    compto_public_keys,
+    ComptoPublicKeys,
     ComptokenProof, // instruction.js
     Instruction,
     createProofSubmissionInstruction,
