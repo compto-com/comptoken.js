@@ -126,7 +126,7 @@ export declare function createProofSubmissionInstruction(
     comptoken_proof: ComptokenProof,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 export declare function createCreateUserDataAccountInstruction(
@@ -135,21 +135,21 @@ export declare function createCreateUserDataAccountInstruction(
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 export declare function createDailyDistributionEventInstruction(
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 export declare function createGetValidBlockhashesInstruction(
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 export declare function createGetOwedComptokensInstruction(
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 export declare function createGrowUserDataAccountInstruction(
@@ -158,14 +158,18 @@ export declare function createGrowUserDataAccountInstruction(
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_wallet_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 /** @beta */
 export declare function createVerifyHumanInstruction(
+    payer_wallet_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys
+    root_hash: Uint8Array,
+    nullifier_hash: Uint8Array,
+    proof: Uint8Array,
+    compto_public_keys: ComptoPublicKeys?
 ): Promise<TransactionInstruction>;
 
 declare class TLV {
