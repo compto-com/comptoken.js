@@ -3,41 +3,115 @@ import {
     AccountInfo,
     Commitment,
     Connection,
+    Keypair,
     PublicKey,
     TransactionInstruction,
+    TransactionResponse,
 } from "@solana/web3.js";
 
 export declare const COMPTOKEN_DECIMALS = 2;
 export declare const COMPTOKEN_WALLET_SIZE = 171;
-export declare const compto_program_id_pubkey: PublicKey;
-export declare const comptoken_mint_pubkey: PublicKey;
-export declare const global_data_account_pubkey: PublicKey;
-export declare const interest_bank_account_pubkey: PublicKey;
-export declare const verified_human_ubi_bank_account_pubkey: PublicKey;
-export declare const future_ubi_bank_account_pubkey: PublicKey;
-export declare const compto_transfer_hook_id_pubkey: PublicKey;
-export declare const compto_extra_account_metas_account_pubkey: PublicKey;
+export declare const GLOBAL_DATA_SIZE = 1024;
+export declare const SEC_PER_DAY = 86400;
+export declare const DAILY_DISTRIBUTION_HISTORY_SIZE = 365;
+export declare const devnet_compto_public_keys: ComptoPublicKeys;
+export declare const compto_public_keys: ComptoPublicKeys;
+
+type _KeyMapping = {
+    filename: string;
+    keyProperty: string | null;
+    type: string;
+};
+
+type KeyMappings = {
+    compto_program_id_pubkey: _KeyMapping;
+    comptoken_mint_pubkey: _KeyMapping;
+    global_data_account_pubkey: _KeyMapping;
+    interest_bank_account_pubkey: _KeyMapping;
+    verified_human_ubi_bank_account_pubkey: _KeyMapping;
+    future_ubi_bank_account_pubkey: _KeyMapping;
+    compto_transfer_hook_id_pubkey: _KeyMapping;
+    compto_extra_account_metas_account_pubkey: _KeyMapping;
+    test_account: _KeyMapping;
+};
+
+export class ComptoPublicKeys {
+    compto_program_id_pubkey: PublicKey;
+    comptoken_mint_pubkey: PublicKey;
+    global_data_account_pubkey: PublicKey;
+    interest_bank_account_pubkey: PublicKey;
+    verified_human_ubi_bank_account_pubkey: PublicKey;
+    future_ubi_bank_account_pubkey: PublicKey;
+    compto_transfer_hook_id_pubkey: PublicKey;
+    compto_extra_account_metas_account_pubkey: PublicKey;
+    test_account: Keypair | undefined;
+
+    constructor({
+        compto_program_id_pubkey,
+        comptoken_mint_pubkey,
+        global_data_account_pubkey,
+        interest_bank_account_pubkey,
+        verified_human_ubi_bank_account_pubkey,
+        future_ubi_bank_account_pubkey,
+        compto_transfer_hook_id_pubkey,
+        compto_extra_account_metas_account_pubkey,
+        test_account,
+    }: {
+        compto_program_id_pubkey: PublicKey;
+        comptoken_mint_pubkey: PublicKey;
+        global_data_account_pubkey?: PublicKey;
+        interest_bank_account_pubkey?: PublicKey;
+        verified_human_ubi_bank_account_pubkey?: PublicKey;
+        future_ubi_bank_account_pubkey?: PublicKey;
+        compto_transfer_hook_id_pubkey: PublicKey;
+        compto_extra_account_metas_account_pubkey?: PublicKey;
+        test_account?: Keypair;
+    });
+
+    static defaultKeymappings: KeyMappings;
+
+    static loadFromCache(
+        cacheDir: string,
+        keyMappings?: KeyMappings
+    ): ComptoPublicKeys;
+}
+
 export declare class ComptokenProof {
-    pubkey: Buffer;
-    recentBlockHash: Buffer;
-    extraData: Buffer;
-    nonce: Buffer;
-    version: Buffer;
-    timestamp: Buffer;
+    pubkey: PublicKey;
+    recentBlockHash: Uint8Array;
+    extraData: Uint8Array;
+    nonce: number;
+    version: number;
+    timestamp: number;
+
+    header: Buffer;
     hash: Buffer;
-    static MIN_NUM_ZEROED_BITS: number;
-    constructor(
-        pubkey: Buffer,
-        recentBlockHash: Buffer,
-        extraData: Buffer,
-        nonce: Buffer,
-        version: Buffer,
-        timestamp: Buffer
-    );
-    generateHash(): Buffer;
-    static leadingZeroes(hash: Buffer): number;
+
+    constructor({
+        pubkey,
+        recentBlockHash,
+        extraData,
+        nonce,
+        version,
+        timestamp,
+        target,
+    }: {
+        pubkey: PublicKey;
+        recentBlockHash: Uint8Array;
+        extraData: Uint8Array;
+        nonce: number;
+        version: number;
+        timestamp: number;
+        target?: number[];
+    });
+
+    TARGET_BYTES: number[];
+    TARGET_BYTES_DEVNET: number[];
+
+    static isLowerThanTarget(hash: Buffer, target?: number[]): boolean;
     serializeData(): Buffer;
 }
+
 export declare enum Instruction {
     PROOF_SUBMISSION = 1,
     CREATE_USER_DATA_ACCOUNT = 3,
@@ -47,37 +121,54 @@ export declare enum Instruction {
     GROW_USER_DATA_ACCOUNT = 7,
     VERIFY_HUMAN = 8,
 }
+
 export declare function createProofSubmissionInstruction(
     comptoken_proof: ComptokenProof,
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
+
 export declare function createCreateUserDataAccountInstruction(
     connection: Connection,
     num_proofs: number,
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
-export declare function createDailyDistributionEventInstruction(): Promise<TransactionInstruction>;
-export declare function createGetValidBlockhashesInstruction(): Promise<TransactionInstruction>;
+
+export declare function createDailyDistributionEventInstruction(
+    compto_public_keys?: ComptoPublicKeys
+): Promise<TransactionInstruction>;
+
+export declare function createGetValidBlockhashesInstruction(
+    compto_public_keys?: ComptoPublicKeys
+): Promise<TransactionInstruction>;
+
 export declare function createGetOwedComptokensInstruction(
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
+
 export declare function createGrowUserDataAccountInstruction(
     connection: Connection,
     new_user_data_size: number,
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
-    user_comptoken_wallet_address: PublicKey
+    user_comptoken_wallet_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
-/**
- * @beta
- */
+
+/** @beta */
 export declare function createVerifyHumanInstruction(
     user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey
+    user_comptoken_token_account_address: PublicKey,
+    root_hash: Uint8Array,
+    nullifier_hash: Uint8Array,
+    proof: Uint8Array,
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 declare class TLV {
@@ -104,11 +195,11 @@ declare class DataType {
 
 declare class DataTypeWithExtensions extends DataType {
     extensions: TLV[];
-    encodeExtensions(buffer);
-    static decodeExtensions(buffer);
-    addExtensions(...extensions);
-    static fromBytes(bytes);
-    toBytes();
+    encodeExtensions(buffer: Buffer);
+    static decodeExtensions(buffer: Buffer): TLV[];
+    addExtensions(...extensions: TLV): void;
+    static fromBytes(bytes: Uint8Array): DataTypeWithExtensions;
+    toBytes(): Uint8Array;
 }
 
 declare class Account<T> {
@@ -117,10 +208,15 @@ declare class Account<T> {
     owner: PublicKey;
     data: T;
 
-    constructor(address, lamports, owner, data);
+    constructor(
+        address: PublicKey,
+        lamports: number,
+        owner: PublicKey,
+        data: T
+    );
 }
 
-export declare class Token {
+export declare class Token extends DataTypeWithExtensions {
     mint: PublicKey; //  PublicKey
     nominalOwner: PublicKey; //  PublicKey
     amount: bigint; //  u64
@@ -157,7 +253,8 @@ export class UserDataAccount extends Account<UserData> {
     ): UserDataAccount;
 
     static addressFromComptokenAccount(
-        comptokenAccountAddress: PublicKey
+        comptokenAccountAddress: PublicKey,
+        compto_public_keys: ComptoPublicKeys | null
     ): PublicKey;
 }
 
@@ -202,18 +299,21 @@ interface DistributionOwed {
 export declare function getDistributionOwed(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
 ): Promise<DistributionOwed>;
 
 export declare function getDaysSinceLastPayout(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
 ): Promise<number>;
 
 export declare function isVerifiedHuman(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
 ): Promise<boolean>;
 
@@ -231,16 +331,24 @@ export declare function getNominalOwner(
 
 export declare function getValidBlockhashes(
     connection: Connection,
+    payer: Keypair,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
-): Promise<Promise<ValidBlockhashes>>;
+): Promise<{ announcedBlockhash: Uint8Array; validBlockhash: Uint8Array }>;
+
+export function getValidBlockhashesFromTransactionResponse(
+    transactionResponse: TransactionResponse
+): { announcedBlockhash: Uint8Array; validBlockhash: Uint8Array };
 
 export declare function getHistoricDistributions(
     connection: Connection,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
 ): Promise<Generator<{ interestRate: number; ubiAmount: bigint }, void, any>>;
 
 export declare function getLastPayoutDate(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
+    compto_public_keys?: ComptoPublicKeys,
     commitment?: Commitment
 ): Promise<Date>;
