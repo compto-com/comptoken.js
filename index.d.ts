@@ -59,20 +59,20 @@ export class ComptoPublicKeys {
     }: {
         compto_program_id_pubkey: PublicKey;
         comptoken_mint_pubkey: PublicKey;
-        global_data_account_pubkey: PublicKey | undefined;
-        interest_bank_account_pubkey: PublicKey | undefined;
-        verified_human_ubi_bank_account_pubkey: PublicKey | undefined;
-        future_ubi_bank_account_pubkey: PublicKey | undefined;
+        global_data_account_pubkey?: PublicKey;
+        interest_bank_account_pubkey?: PublicKey;
+        verified_human_ubi_bank_account_pubkey?: PublicKey;
+        future_ubi_bank_account_pubkey?: PublicKey;
         compto_transfer_hook_id_pubkey: PublicKey;
-        compto_extra_account_metas_account_pubkey: PublicKey | undefined;
-        test_account: Keypair | undefined;
+        compto_extra_account_metas_account_pubkey?: PublicKey;
+        test_account?: Keypair;
     });
 
     static defaultKeymappings: KeyMappings;
 
     static loadFromCache(
         cacheDir: string,
-        keyMappings: KeyMappings | undefined
+        keyMappings?: KeyMappings
     ): ComptoPublicKeys;
 }
 
@@ -102,16 +102,13 @@ export declare class ComptokenProof {
         nonce: number;
         version: number;
         timestamp: number;
-        target: number[] | undefined;
+        target?: number[];
     });
 
     TARGET_BYTES: number[];
     TARGET_BYTES_DEVNET: number[];
 
-    static isLowerThanTarget(
-        hash: Buffer,
-        target: number[] | undefined
-    ): boolean;
+    static isLowerThanTarget(hash: Buffer, target?: number[]): boolean;
     serializeData(): Buffer;
 }
 
@@ -129,7 +126,7 @@ export declare function createProofSubmissionInstruction(
     comptoken_proof: ComptokenProof,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 export declare function createCreateUserDataAccountInstruction(
@@ -138,21 +135,21 @@ export declare function createCreateUserDataAccountInstruction(
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 export declare function createDailyDistributionEventInstruction(
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 export declare function createGetValidBlockhashesInstruction(
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 export declare function createGetOwedComptokensInstruction(
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 export declare function createGrowUserDataAccountInstruction(
@@ -161,7 +158,7 @@ export declare function createGrowUserDataAccountInstruction(
     payer_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_wallet_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 /** @beta */
@@ -171,7 +168,7 @@ export declare function createVerifyHumanInstruction(
     root_hash: Uint8Array,
     nullifier_hash: Uint8Array,
     proof: Uint8Array,
-    compto_public_keys: ComptoPublicKeys | undefined
+    compto_public_keys?: ComptoPublicKeys
 ): Promise<TransactionInstruction>;
 
 declare class TLV {
@@ -302,41 +299,41 @@ interface DistributionOwed {
 export declare function getDistributionOwed(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<DistributionOwed>;
 
 export declare function getDaysSinceLastPayout(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<number>;
 
 export declare function isVerifiedHuman(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<boolean>;
 
 export declare function getComptokenBalance(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    commitment: Commitment | undefined
+    commitment?: Commitment
 ): Promise<number>;
 
 export declare function getNominalOwner(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    commitment: Commitment | undefined
+    commitment?: Commitment
 ): Promise<PublicKey>;
 
 export declare function getValidBlockhashes(
     connection: Connection,
     payer: Keypair,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<{ announcedBlockhash: Uint8Array; validBlockhash: Uint8Array }>;
 
 export function getValidBlockhashesFromTransactionResponse(
@@ -345,13 +342,13 @@ export function getValidBlockhashesFromTransactionResponse(
 
 export declare function getHistoricDistributions(
     connection: Connection,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<Generator<{ interestRate: number; ubiAmount: bigint }, void, any>>;
 
 export declare function getLastPayoutDate(
     connection: Connection,
     user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys,
-    commitment: Commitment | undefined
+    compto_public_keys?: ComptoPublicKeys,
+    commitment?: Commitment
 ): Promise<Date>;
