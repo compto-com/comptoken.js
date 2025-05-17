@@ -43,7 +43,47 @@ const {
     createVerifyHumanInstruction,
 } = require("./lib/instruction.js");
 
+/**
+ * @import {
+ *      Account,
+ *      AccountStatic,
+ *      DataType,
+ *      DataTypeStatic,
+ *      DataTypeWithExtensions,
+ *      DataTypeWithExtensionsStatic,
+ * } from "./lib/accounts.js";
+ */
 
+/**
+ * @template T
+ * @template DataT
+ * @typedef {Account<T,DataT>} Account
+ */
+/**
+ * @template T
+ * @template DataT
+ * @typedef {AccountStatic<T,DataT>} AccountStatic
+ */
+/**
+ * @template T
+ * @template DataT
+ * @typedef {DataType<T,DataT>} DataType
+ */
+/**
+ * @template T
+ * @template DataT
+ * @typedef {DataTypeStatic<T,DataT>} DataTypeStatic
+ */
+/**
+ * @template T
+ * @template DataT
+ * @typedef {DataTypeWithExtensions<T,DataT>} DataTypeWithExtensions
+ */
+/**
+ * @template T
+ * @template DataT
+ * @typedef {DataTypeWithExtensionsStatic<T,DataT>} DataTypeWithExtensionsStatic
+ */
 
 module.exports = {
     TLV, // account.js
