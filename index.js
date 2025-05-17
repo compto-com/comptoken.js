@@ -10,9 +10,6 @@ const {
 } = require("./lib/constants.js");
 
 const {
-    Account,
-    DataType,
-    DataTypeWithExtensions,
     TLV,
     Token,
     TokenAccount,
@@ -49,10 +46,7 @@ const {
 
 
 module.exports = {
-    Account, // account.js
-    DataType,
-    DataTypeWithExtensions,
-    TLV,
+    TLV, // account.js
     Token,
     TokenAccount,
     UserData,
