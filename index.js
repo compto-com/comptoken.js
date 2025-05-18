@@ -10,9 +10,6 @@ const {
 } = require("./lib/constants.js");
 
 const {
-    Account,
-    DataType,
-    DataTypeWithExtensions,
     TLV,
     Token,
     TokenAccount,
@@ -46,13 +43,52 @@ const {
     createVerifyHumanInstruction,
 } = require("./lib/instruction.js");
 
+/**
+ * @import {
+ *      Account,
+ *      AccountStatic,
+ *      DataType,
+ *      DataTypeStatic,
+ *      DataTypeWithExtensions,
+ *      DataTypeWithExtensionsStatic,
+ *      DailyDistributionData,
+ *      Distribution,
+ *      ValidBlockhashes,
+ * } from "./lib/accounts.js";
+ */
 
+/**
+ * @template DataT
+ * @typedef {Account<DataT>} Account
+ */
+/**
+ * @template DataT
+ * @typedef {AccountStatic<DataT>} AccountStatic
+ */
+/**
+ * @template DataT
+ * @typedef {DataType<DataT>} DataType
+ */
+/**
+ * @template DataT
+ * @typedef {DataTypeStatic<DataT>} DataTypeStatic
+ */
+/**
+ * @template DataT
+ * @typedef {DataTypeWithExtensions<DataT>} DataTypeWithExtensions
+ */
+/**
+ * @template DataT
+ * @typedef {DataTypeWithExtensionsStatic<DataT>} DataTypeWithExtensionsStatic
+ */
+/**
+ * @typedef {DailyDistributionData} DailyDistributionData
+ * @typedef {Distribution} Distribution
+ * @typedef {ValidBlockhashes} ValidBlockhashes
+ */
 
 module.exports = {
-    Account, // account.js
-    DataType,
-    DataTypeWithExtensions,
-    TLV,
+    TLV, // account.js
     Token,
     TokenAccount,
     UserData,
