@@ -58,34 +58,28 @@ const {
  */
 
 /**
- * @template T
  * @template DataT
- * @typedef {Account<T,DataT>} Account
+ * @typedef {Account<DataT>} Account
  */
 /**
- * @template T
  * @template DataT
- * @typedef {AccountStatic<T,DataT>} AccountStatic
+ * @typedef {AccountStatic<DataT>} AccountStatic
  */
 /**
- * @template T
  * @template DataT
- * @typedef {DataType<T,DataT>} DataType
+ * @typedef {DataType<DataT>} DataType
  */
 /**
- * @template T
  * @template DataT
- * @typedef {DataTypeStatic<T,DataT>} DataTypeStatic
+ * @typedef {DataTypeStatic<DataT>} DataTypeStatic
  */
 /**
- * @template T
  * @template DataT
- * @typedef {DataTypeWithExtensions<T,DataT>} DataTypeWithExtensions
+ * @typedef {DataTypeWithExtensions<DataT>} DataTypeWithExtensions
  */
 /**
- * @template T
  * @template DataT
- * @typedef {DataTypeWithExtensionsStatic<T,DataT>} DataTypeWithExtensionsStatic
+ * @typedef {DataTypeWithExtensionsStatic<DataT>} DataTypeWithExtensionsStatic
  */
 /**
  * @typedef {DailyDistributionData} DailyDistributionData
