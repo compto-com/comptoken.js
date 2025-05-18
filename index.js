@@ -51,6 +51,9 @@ const {
  *      DataTypeStatic,
  *      DataTypeWithExtensions,
  *      DataTypeWithExtensionsStatic,
+ *      DailyDistributionData,
+ *      Distribution,
+ *      ValidBlockhashes,
  * } from "./lib/accounts.js";
  */
 
@@ -83,6 +86,11 @@ const {
  * @template T
  * @template DataT
  * @typedef {DataTypeWithExtensionsStatic<T,DataT>} DataTypeWithExtensionsStatic
+ */
+/**
+ * @typedef {DailyDistributionData} DailyDistributionData
+ * @typedef {Distribution} Distribution
+ * @typedef {ValidBlockhashes} ValidBlockhashes
  */
 
 module.exports = {
