@@ -44,6 +44,10 @@ const {
     createGetOwedComptokensInstruction,
     createGrowUserDataAccountInstruction,
     createVerifyHumanInstruction,
+    createFlagStaleAccountInstruction,
+    createReverifyHumanInstruction,
+    createUnverifyHumanInstruction,
+    createUnverifyHuman2Instruction,
 } = require("./lib/instruction.js");
 
 
@@ -85,4 +89,8 @@ module.exports = {
     createGetOwedComptokensInstruction,
     createGrowUserDataAccountInstruction,
     createVerifyHumanInstruction,
+    createFlagStaleAccountInstruction,
+    createReverifyHumanInstruction,
+    createUnverifyHumanInstruction,
+    createUnverifyHuman2Instruction,
 };
