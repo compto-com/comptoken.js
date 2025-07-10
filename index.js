@@ -120,7 +120,7 @@ module.exports = {
     Instruction,
     createSubmitProofInstruction,
     createCreateUserDataAccountInstruction,
-    createDailyDistributionEventInstruction: createDailyDistributionInstruction,
+    createDailyDistributionInstruction,
     createGetValidBlockhashesInstruction,
     createCollectInstruction,
     createResizeUserDataAccountInstruction,
