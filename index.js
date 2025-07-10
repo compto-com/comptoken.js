@@ -34,13 +34,17 @@ const {
 const {
     ComptokenProof,
     Instruction,
-    createProofSubmissionInstruction,
+    createSubmitProofInstruction,
     createCreateUserDataAccountInstruction,
-    createDailyDistributionEventInstruction,
+    createDailyDistributionInstruction,
     createGetValidBlockhashesInstruction,
-    createGetOwedComptokensInstruction,
-    createGrowUserDataAccountInstruction,
+    createCollectInstruction,
+    createResizeUserDataAccountInstruction,
     createVerifyHumanInstruction,
+    createFlagInactiveAccountInstruction,
+    createReverifyHumanInstruction,
+    createUnverifyHumanInstruction,
+    createUnverifyHuman2Instruction,
 } = require("./lib/instruction.js");
 
 /**
@@ -114,11 +118,15 @@ module.exports = {
     ComptoPublicKeys,
     ComptokenProof, // instruction.js
     Instruction,
-    createProofSubmissionInstruction,
+    createSubmitProofInstruction,
     createCreateUserDataAccountInstruction,
-    createDailyDistributionEventInstruction,
+    createDailyDistributionInstruction,
     createGetValidBlockhashesInstruction,
-    createGetOwedComptokensInstruction,
-    createGrowUserDataAccountInstruction,
+    createCollectInstruction,
+    createResizeUserDataAccountInstruction,
     createVerifyHumanInstruction,
+    createFlagInactiveAccountInstruction,
+    createReverifyHumanInstruction,
+    createUnverifyHumanInstruction,
+    createUnverifyHuman2Instruction,
 };
