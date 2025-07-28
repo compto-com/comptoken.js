@@ -204,8 +204,12 @@ the verify_human instruction is not stable in the compto program, so the api her
 
 ```ts
 function createVerifyHumanInstruction(
+    payer_wallet_address: PublicKey,
     user_wallet_address: PublicKey,
     user_comptoken_token_account_address: PublicKey,
+    root_hash: Uint8Array,
+    nullifier_hash: Uint8Array,
+    proof: Uint8Array,
     compto_public_keys: ComptoPublicKeys | null
 ): Promise<TransactionInstruction>;
 ```
