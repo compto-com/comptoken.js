@@ -29,6 +29,9 @@ const SEC_PER_DAY = 86400;
 export function normalizeTimestamp(timestamp) {
     return timestamp - (timestamp % SEC_PER_DAY);
 }
+export function daysSinceEpoch(timestamp) {
+    return Math.floor(timestamp / SEC_PER_DAY);
+}
 export function* ringBufferGetLastN(ring, capacity, n) {
     assert(n <= capacity, "n must be less than or equal to capacity");
     const start = (ring.position - n + capacity) % capacity;

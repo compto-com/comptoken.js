@@ -41,6 +41,10 @@ export function normalizeTimestamp(timestamp: number): number {
     return timestamp - (timestamp % SEC_PER_DAY);
 }
 
+export function daysSinceEpoch(timestamp: number): number {
+    return Math.floor(timestamp / SEC_PER_DAY);
+}
+
 export function* ringBufferGetLastN<T>(
     ring: { buffer: T[]; position: number },
     capacity: number,

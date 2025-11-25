@@ -18,6 +18,14 @@ export declare function getDaysSinceLastClaim({ program, userData, }: {
     program: ComptokenProgram;
     userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): number;
+export declare function getDaysSinceLastVerified({ program, user, }: {
+    program: ComptokenProgram;
+    user: PublicKey;
+}): Promise<number>;
+export declare function getDaysSinceLastVerified({ program, userData, }: {
+    program: ComptokenProgram;
+    userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+}): number;
 export declare function isVerifiedHuman({ program, user, }: {
     program: ComptokenProgram;
     user: PublicKey;

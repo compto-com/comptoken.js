@@ -5,4 +5,4 @@ export * from "./factory.js";
 export * from "./programWithConstants.js";
 export * from "./transactions.js";
 export type * from "./types.js";
-export * from "./utils.js";
+export { decodeValidBlockhashesReturn, getReturnLog, getValidBlockhashesRPC, normalizeTimestamp } from "./utils.js";

@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import * as addresses from "./addresses.js";
 import type { ComptokenProgram } from "./types.js";
-import { normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
+import { daysSinceEpoch, normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
 
 export type HistoricDistribution = {
     yieldRate: number;
@@ -88,8 +88,7 @@ export function getDaysSinceLastClaim({
     userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): number | Promise<number> {
     const compute = function (lastClaimedTimestamp: number) {
-        const daysSinceLastClaimUncapped =
-            normalizeTimestamp(Date.now() / 1000) - normalizeTimestamp(lastClaimedTimestamp);
+        const daysSinceLastClaimUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastClaimedTimestamp);
 
         return daysSinceLastClaimUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
     };
@@ -104,6 +103,50 @@ export function getDaysSinceLastClaim({
     }
 
     return compute(userData.lastClaimedTimestamp.toNumber());
+}
+
+// overloads
+export function getDaysSinceLastVerified({
+    program,
+    user,
+}: {
+    program: ComptokenProgram;
+    user: PublicKey;
+}): Promise<number>;
+export function getDaysSinceLastVerified({
+    program,
+    userData,
+}: {
+    program: ComptokenProgram;
+    userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+}): number;
+
+// implementation
+export function getDaysSinceLastVerified({
+    program,
+    user,
+    userData,
+}: {
+    program: ComptokenProgram;
+    user?: PublicKey;
+    userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+}): number | Promise<number> {
+    const compute = function (lastVerifiedTimestamp: number) {
+        const daysSinceLastVerifiedUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastVerifiedTimestamp);
+
+        return daysSinceLastVerifiedUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
+    };
+
+    if (userData === undefined) {
+        if (user === undefined) throw new Error("Either user or userData must be provided");
+        const userDataAddress = addresses.getUserDataAddress(program, user);
+
+        return program.account.userData
+            .fetch(userDataAddress)
+            .then((ud) => compute(ud.lastVerifiedTimestamp.toNumber()));
+    }
+
+    return compute(userData.lastVerifiedTimestamp.toNumber());
 }
 
 // overloads
@@ -134,15 +177,17 @@ export function isVerifiedHuman({
 }): boolean | Promise<boolean> {
     const isStillVerified = function (lastVerifiedTimestamp: number) {
         return (
-            lastVerifiedTimestamp + program.constants.verificationDuration.toNumber() <
+            lastVerifiedTimestamp + program.constants.verificationDuration.toNumber() >
             normalizeTimestamp(Date.now() / 1000)
         );
     };
 
     if (user === undefined) {
-        if (userData === undefined) throw new Error("Either user or userData must be provided");
-        return isStillVerified(getDaysSinceLastClaim({ program, userData }) as number);
+        if (userData === undefined) {
+            throw new Error("Either user or userData must be provided");
+        }
+        return isStillVerified(getDaysSinceLastVerified({ program, userData }));
     }
 
-    return (getDaysSinceLastClaim({ program, user }) as Promise<number>).then(isStillVerified as any);
+    return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
 }

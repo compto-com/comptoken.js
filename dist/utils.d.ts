@@ -12,6 +12,7 @@ export declare function decodeValidBlockhashesReturn(program: ComptokenProgram, 
     valid: number[];
 };
 export declare function normalizeTimestamp(timestamp: number): number;
+export declare function daysSinceEpoch(timestamp: number): number;
 export declare function ringBufferGetLastN<T>(ring: {
     buffer: T[];
     position: number;

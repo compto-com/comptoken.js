@@ -1,7 +1,7 @@
 import { BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as addresses from "./addresses.js";
-import { normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
+import { daysSinceEpoch, normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
 export async function getDistributionOwed({ program, user, }) {
     const userStakedTokenAccount = addresses.getUserStakedTokensAddress(program, user);
     const userDataAddress = addresses.getUserDataAddress(program, user);
@@ -31,7 +31,7 @@ export async function getDistributionOwed({ program, user, }) {
 // implementation
 export function getDaysSinceLastClaim({ program, user, userData, }) {
     const compute = function (lastClaimedTimestamp) {
-        const daysSinceLastClaimUncapped = normalizeTimestamp(Date.now() / 1000) - normalizeTimestamp(lastClaimedTimestamp);
+        const daysSinceLastClaimUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastClaimedTimestamp);
         return daysSinceLastClaimUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
     };
     if (userData === undefined) {
@@ -45,16 +45,33 @@ export function getDaysSinceLastClaim({ program, user, userData, }) {
     return compute(userData.lastClaimedTimestamp.toNumber());
 }
 // implementation
+export function getDaysSinceLastVerified({ program, user, userData, }) {
+    const compute = function (lastVerifiedTimestamp) {
+        const daysSinceLastVerifiedUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastVerifiedTimestamp);
+        return daysSinceLastVerifiedUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
+    };
+    if (userData === undefined) {
+        if (user === undefined)
+            throw new Error("Either user or userData must be provided");
+        const userDataAddress = addresses.getUserDataAddress(program, user);
+        return program.account.userData
+            .fetch(userDataAddress)
+            .then((ud) => compute(ud.lastVerifiedTimestamp.toNumber()));
+    }
+    return compute(userData.lastVerifiedTimestamp.toNumber());
+}
+// implementation
 export function isVerifiedHuman({ program, user, userData, }) {
     const isStillVerified = function (lastVerifiedTimestamp) {
-        return (lastVerifiedTimestamp + program.constants.verificationDuration.toNumber() <
+        return (lastVerifiedTimestamp + program.constants.verificationDuration.toNumber() >
             normalizeTimestamp(Date.now() / 1000));
     };
     if (user === undefined) {
-        if (userData === undefined)
+        if (userData === undefined) {
             throw new Error("Either user or userData must be provided");
-        return isStillVerified(getDaysSinceLastClaim({ program, userData }));
+        }
+        return isStillVerified(getDaysSinceLastVerified({ program, userData }));
     }
-    return getDaysSinceLastClaim({ program, user }).then(isStillVerified);
+    return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
 }
 //# sourceMappingURL=distribution.js.map
