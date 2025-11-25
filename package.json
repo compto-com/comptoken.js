@@ -1,8 +1,8 @@
 {
-    "type": "commonjs",
+    "type": "module",
     "name": "@compto/comptoken.js",
-    "version": "0.2.1",
-    "description": "helper functions to create instructions for calling the Comptoken RPC calls on Solana",
+    "version": "0.3.0",
+    "description": "helper functions for calling the Comptoken RPC calls on Solana",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,12 +22,12 @@
     },
     "homepage": "https://github.com/compto-com/comptoken.js#readme",
     "dependencies": {
-        "@solana/buffer-layout": "4.0.1",
-        "@solana/buffer-layout-utils": "0.2.0",
+        "@coral-xyz/anchor": "^0.32.1",
         "@solana/spl-token": "^0.4.8",
-        "@solana/web3.js": "^1.95.0",
-        "bs58": "^4.0.1",
-        "base64-js": "^1.5.1"
+        "@solana/web3.js": "^1.95.0"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@types/bn.js": "^5.2.0",
+        "typescript": "^5.9.3"
+    }
 }
