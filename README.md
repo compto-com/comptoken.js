@@ -114,14 +114,8 @@ To get a local copy up and running follow these simple example steps.
     ```
 
 2. add to package.json
-    ```json
-    {
-        ... other fields
-        "dependencies": {
-            "@compto/comptoken.js": "git+https://github.com/compto-com/comptoken.js.git#master",
-            ... other dependencies
-        },
-    }
+    ```sh
+    npm install github:compto-com/comptoken.js#master
     ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -130,268 +124,110 @@ To get a local copy up and running follow these simple example steps.
 
 ## Usage
 
-This package exports several constants, the most important being
+The library exposes a small set of helpers to interact with the Comptoken Anchor program:
 
--   COMPTOKEN_DECIMALS - the comptoken decimals
--   compto_public_keys - an object containing several publickKeys associated with the compto program including:
-    -   compto_program_id_pubkey - the publickey id of the compto program
-    -   comptoken_mint_pubkey - the publickey of the comptoken mint
+-   `getDefaultComptokenIdl()` / `getDefaultSolanaWorldIdIdl()` - load bundled IDLs.
+-   `getComptokenIdl(idlPath)` / `getSolanaWroldIdIdl(idlPath)` - load a custom IDL from the fs.
+-   `createComptokenProgram(idl, provider)` / `createSolanaWorldIdProgram(idl, provider)` - create a `ProgramWithConstants` wrapper around an Anchor `Program` (gives access to IDL constants).
+-   `ComptokenProof` - helper class that serializes/verifies mining proofs (includes a `mine()` convenience method for tests).
+-   Transaction helpers: `createUserDataAccount`, `submitMiningProof`, `stake`, `unstake`, `collect`, `getValidBlockhashes`, `resizeUserDataAccount`, `verify`, `reverify`, `unverify`, `unverify2`, and `getComptokenBalance`.
+-   Address helpers: `getUserStakedTokensAddress`, `getUserUnstakedAssociatedTokenAddress`, `getGlobalDataAddress`, etc.
+-   Utility helpers: `decodeValidBlockhashesReturn`, `getReturnLog`, `normalizeTimestamp`, `daysSinceEpoch`.
 
-There are classes for the different types of accounts the compto program uses, as well as their corresponding data fields
+Typical workflow
 
--   TokenAccount with data Token
--   UserDataAccount with data UserData
--   GlobalDataAccount with data GlobalData
+1. Create an Anchor `Provider` and program instance using the bundled IDL.
+2. Use address helpers to compute PDAs and token account addresses.
+3. Use transaction helpers to build and send RPC calls.
 
-Accounts can be constructed like
-
-```js
-let accountInfo = await connection.getAccountInfo(address);
-let tokenAccount = TokenAccount.fromAccountInfoBytes(address, accountInfo);
-
-let token = tokenAccount.data;
-```
-
-There are also a number of convenience functions for accessing specific fields of different accounts, the most useful being
-
--   getDistributionOwed
--   getHistoricDistributions
-
-Finally there are functions for creating every instruction the compto program recognizes
-
-```ts
-function createProofSubmissionInstruction(
-    comptoken_proof: ComptokenProof,
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-
-function createCreateUserDataAccountInstruction(
-    connection: Connection,
-    num_proofs: number,
-    payer_address: PublicKey,
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-
-function createDailyDistributionEventInstruction(
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-
-function createGetValidBlockhashesInstruction(
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-
-function createGetOwedComptokensInstruction(
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-
-function createGrowUserDataAccountInstruction(
-    connection: Connection,
-    new_user_data_size: number,
-    payer_address: PublicKey,
-    user_wallet_address: PublicKey,
-    user_comptoken_wallet_address: PublicKey,
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-```
-
-the verify_human instruction is not stable in the compto program, so the api here may also need to change
-
-```ts
-function createVerifyHumanInstruction(
-    payer_wallet_address: PublicKey,
-    user_wallet_address: PublicKey,
-    user_comptoken_token_account_address: PublicKey,
-    root_hash: Uint8Array,
-    nullifier_hash: Uint8Array,
-    proof: Uint8Array,
-    compto_public_keys: ComptoPublicKeys | null
-): Promise<TransactionInstruction>;
-```
-
-### Example
-
-note: this example includes mining for comptokens in javascript. This is a terrible
-idea, and we recommend using a dedicated bitcoin miner through our [stratum server](https://compto.com/info/mining). It only works because the devnet has a greatly reduced mining difficulty.
+Example (basic):
 
 ```js
+import { AnchorProvider } from "@coral-xyz/anchor";
 import {
-    devnet_compto_public_keys, // devnet version of compto_public_keys
+    getDefaultComptokenIdl,
+    createComptokenProgram,
     ComptokenProof,
-    createCreateUserDataAccountInstruction,
-    createGetValidBlockhashesInstruction,
-    createProofSubmissionInstruction,
-    UserDataAccount,
+    createUserDataAccount,
+    submitMiningProof,
+    getValidBlockhashes,
+    getComptokenBalance,
+    collect,
+    stake,
+    unstake,
+    getUserUnstakedAssociatedTokenAddress,
+    getUnstakedMintAddress,
 } from "@compto/comptoken.js";
-import {
-    createAssociatedTokenAccount,
-    getAccount,
-    getAssociatedTokenAddressSync,
-    TOKEN_2022_PROGRAM_ID,
-    TokenAccountNotFoundError,
-} from "@solana/spl-token";
-import {
-    Connection,
-    Keypair,
-    PublicKey,
-    sendAndConfirmTransaction,
-    Transaction,
-} from "@solana/web3.js";
-import base64 from "base64-js";
-import * as bs58_ from "bs58";
-const bs58 = bs58_.default;
 
-const connection = new Connection("https://api.devnet.solana.com");
+// 1) Create provider & program
+const provider = AnchorProvider.local(); // or configure a custom Anchor Provider
+const idl = getDefaultComptokenIdl();
+const program = createComptokenProgram(idl, provider);
 
-const compto_wallet = Keypair.generate();
-const compto_comptoken_account = await createAssociatedTokenAccount(
-    connection,
-    compto_wallet,
-    comptoken_mint_pubkey,
-    compto_wallet.publicKey,
-    undefined,
-    TOKEN_2022_PROGRAM_ID
+// 2) Create a user's data account
+const user = provider.wallet.publicKey;
+// capacity 10 means a user can submit 10 proofs/day without resizing
+await createUserDataAccount({ program, capacity: 10, accounts: { userWallet: user } });
+
+// 3) Collect yields
+// must have collected today to submit proofs, stake, or unstake
+await collect({ program, accounts: { userWallet: user } });
+
+// 4) Get valid blockhashes (program returns this via logs)
+const { sig, result } = await getValidBlockhashes({ program });
+console.log("valid blockhashes signature:", sig);
+console.log("valid blockhash:", result.valid); // used to mine for a proof
+console.log("announced blockhash:", result.announced); // announced up to 5 min before switchover to allow zero downtime mining
+
+// 5) Build a proof
+const proof = new ComptokenProof({
+    pubkey: getUserUnstakedAssociatedTokenAddress(program, user),
+    recentBlockHash: result.valid,
+    extraData: new Uint8Array(32),
+    nonce: 0,
+    version: 0,
+    timestamp: Math.floor(Date.now() / 1000),
+    target: ComptokenProof.TARGET_BYTES_DEVNET, // can be skipped for mainnet
+});
+
+// 6) Submit the proof
+await submitMiningProof({ program, proof, accounts: { userWallet: user } });
+
+// 7) Query combined staked + unstaked balance
+const total = await getComptokenBalance({ program, user });
+console.log("total comptoken balance:", total);
+
+// 8) Stake newly minted Comptokens
+await stake({
+    program,
+    amount: program.constants.miningRewardAmount,
+    accounts: { userWallet: user },
+});
+
+// 9) transfer
+await unstake({ program, amount: 10 accounts: { userWallet: user }});
+
+import { transferChecked } from "@solana/spl-token";
+await transferChecked(
+    program.provider.connection,
+    user, // payer
+    getUserUnstakedAssociatedTokenAddress(program, user),
+    getUnstakedMintAddress(program),
+    destination,
+    user, // owner
+    10, // amount
+    program.constants.MINT_DECIMALS,
+    undefined, // multisigners
+    undefined, // confirm options
+    SPL_TOKEN_2022
 );
 
-console.log("Compto Wallet: ", compto_wallet.publicKey.toBase58());
-console.log("Compto Comptoken Account: ", compto_comptoken_account.toBase58());
-
-// token accounts are effectively frozen until a data account is created
-let tx0 = new Transaction();
-tx0.add(
-    await createCreateUserDataAccountInstruction(
-        connection,
-        300, // number of proofs the data account can store. min is 1
-        compto_wallet.publicKey, // payer
-        compto_wallet.publicKey, // owner
-        compto_comptoken_account, // comptoken token account
-        devnet_compto_public_keys // sets the program to devnet
-    )
-);
-let result0 = await sendAndConfirmTransaction(connection, tx0, [compto_wallet]);
-
-let tx1 = new Transaction();
-tx1.add(await createGetValidBlockhashesInstruction(devnet_compto_public_keys));
-
-let getValidBlockhashesTransactionSignature = await sendAndConfirmTransaction(
-    connection,
-    tx1,
-    [compto_wallet]
-);
-
-let result = await waitForTransactionConfirmation(
-    getValidBlockhashesTransactionSignature
-);
-
-let resultData = result.meta.returnData.data[0];
-let resultBytes = base64.toByteArray(resultData);
-let currentBlockB58 = bs58.encode(resultBytes.slice(0, 32));
-let announcedBlockB58 = bs58.encode(resultBytes.slice(32, 64));
-let validBlockHashes = {
-    current_block: currentBlockB58,
-    announced_block: announcedBlockB58,
-};
-console.log("Valid Block Hashes: ", validBlockHashes);
-
-for (let nonce = 0; nonce < 2 ** 32; nonce++) {
-    let delay = new Promise((resolve) => setTimeout(resolve, 1000)); // to prevent ratelimiting issues
-
-    let nonceBuffer = Buffer.alloc(4);
-    nonceBuffer.writeUInt32LE(nonce);
-
-    let comptoken_proof;
-    for (let nonce = 0; nonce < 2 ** 32; nonce++) {
-        try {
-            comptoken_proof = new ComptokenProof({
-                pubkey: compto_comptoken_account,
-                recentBlockHash: resultBytes.slice(0, 32),
-                extraData: Uint8Array.from({ length: 32 }, () => 0),
-                nonce,
-                version: 0,
-                timestamp: Date.now() / 1000,
-                target: ComptokenProof.TARGET_BYTES_TEST,
-            }); // throws if hash is less than target
-        } catch (e) {
-            continue;
-        }
-    }
-
-    await submitProof(comptoken_proof, compto_wallet, compto_comptoken_account);
-    successes++;
-    console.log("Successes: ", successes);
-    if (successes >= 100) {
-        break;
-    }
-    await delay;
-}
-
-async function submitProof(
-    comptoken_proof,
-    compto_wallet,
-    compto_comptoken_account
-) {
-    console.log("nonce: ", bytesToBigInt(comptoken_proof.nonce));
-
-    let tx2 = new Transaction();
-    tx2.add(
-        await createProofSubmissionInstruction(
-            comptoken_proof,
-            compto_wallet.publicKey,
-            compto_comptoken_account,
-            devnet_compto_public_keys
-        )
-    );
-
-    let proofSubmissionTransactionSignature = await sendAndConfirmTransaction(
-        connection,
-        tx2,
-        [compto_wallet]
-    );
-
-    let result2 = await waitForTransactionConfirmation(
-        proofSubmissionTransactionSignature
-    );
-
-    console.log(
-        "Proof Submission Transaction Signature: ",
-        proofSubmissionTransactionSignature
-    );
-    console.log("Proof Submission Result: ", result2);
-}
-
-async function waitForTransactionConfirmation(
-    signature,
-    { max_attempts = 10 } = {}
-) {
-    let attempts = 0;
-    while (attempts++ < max_attempts) {
-        let result = await connection.getTransaction(signature, {
-            commitment: "confirmed",
-            maxSupportedTransactionVersion: 0,
-        });
-        if (result !== null) {
-            return result;
-        }
-    }
-    throw new Error(
-        "Transaction not confirmed after " + max_attempts + " attempts"
-    );
-}
-
-function bytesToBigInt(arr) {
-    let int = 0n;
-    for (let i = arr.length - 1; i >= 0; --i) {
-        int <<= 8n;
-        int |= BigInt(arr[i]);
-    }
-    return int;
-}
 ```
+
+Notes
+
+-   Mining proofs in JavaScript is extremely slow and only suitable for local/devnet testing.
+-   The `ProgramWithConstants` wrapper exposes IDL constants as `program.constants` (useful for seeds and mint addresses).
 
 <!--_For more examples, please refer to the [Documentation](https://example.com)_-->
 
