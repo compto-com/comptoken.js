@@ -24,6 +24,7 @@ export async function collect({
     return await program.methods
         .collect()
         .accounts({
+            userWallet,
             userStakedTokenAccount: addresses.getUserStakedTokensAddress(program, userWallet),
             userUnstakedTokenAccount,
         })

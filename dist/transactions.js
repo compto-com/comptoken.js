@@ -9,6 +9,7 @@ export async function collect({ program, accounts: { userWallet, userUnstakedTok
     return await program.methods
         .collect()
         .accounts({
+        userWallet,
         userStakedTokenAccount: addresses.getUserStakedTokensAddress(program, userWallet),
         userUnstakedTokenAccount,
     })
