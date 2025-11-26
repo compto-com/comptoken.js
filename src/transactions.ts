@@ -220,7 +220,7 @@ export async function unverify({
     nullifierHash,
     proof,
     accounts: {
-        userWallet, //
+        user, //
     },
 }: {
     program: ComptokenProgram;
@@ -229,7 +229,7 @@ export async function unverify({
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: Signer;
+        user: PublicKey;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
@@ -239,13 +239,12 @@ export async function unverify({
             proof: [...proof],
         })
         .accountsPartial({
-            userWallet: userWallet.publicKey,
+            userWallet: user,
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
             worldIdConfig: addresses.getWorldIdConfigAddress(solanaWorldIdProgram),
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         })
-        .signers([userWallet])
         .rpc();
 }
 

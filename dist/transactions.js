@@ -106,7 +106,7 @@ export async function unstake({ program, amount, accounts: { userWallet, userUns
         .signers([userWallet])
         .rpc();
 }
-export async function unverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { userWallet, //
+export async function unverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { user, //
  }, }) {
     return await program.methods
         .unverify({
@@ -115,13 +115,12 @@ export async function unverify({ program, solanaWorldIdProgram, rootHash, nullif
         proof: [...proof],
     })
         .accountsPartial({
-        userWallet: userWallet.publicKey,
+        userWallet: user,
         worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
         worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
         worldIdConfig: addresses.getWorldIdConfigAddress(solanaWorldIdProgram),
         worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
     })
-        .signers([userWallet])
         .rpc();
 }
 export async function unverify2({ program, nullifierHash, accounts: { userWallet, //

@@ -67,14 +67,14 @@ export declare function unstake({ program, amount, accounts: { userWallet, userU
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature>;
-export declare function unverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { userWallet, }, }: {
+export declare function unverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { user, }, }: {
     program: ComptokenProgram;
     solanaWorldIdProgram: SolanaWorldIdProgram;
     rootHash: Buffer;
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: Signer;
+        user: PublicKey;
     };
 }): Promise<TransactionSignature>;
 export declare function unverify2({ program, nullifierHash, accounts: { userWallet, }, }: {
