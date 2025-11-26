@@ -1,10 +1,10 @@
-import { PublicKey, type TransactionSignature } from "@solana/web3.js";
+import { PublicKey, type Signer, type TransactionSignature } from "@solana/web3.js";
 import { ComptokenProof } from "./comptokenProof.js";
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 export declare function collect({ program, accounts: { userWallet, userUnstakedTokenAccount, }, }: {
     program: ComptokenProgram;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature>;
@@ -12,8 +12,8 @@ export declare function createUserDataAccount({ program, capacity, accounts: { u
     program: ComptokenProgram;
     capacity?: number;
     accounts: {
-        userWallet: PublicKey;
-        payer?: PublicKey;
+        userWallet: Signer;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature>;
 export declare function dailyDistribution({ program, }: {
@@ -32,8 +32,8 @@ export declare function resizeUserDataAccount({ program, newCapacity, accounts: 
     program: ComptokenProgram;
     newCapacity: number;
     accounts: {
-        userWallet: PublicKey;
-        payer?: PublicKey;
+        userWallet: Signer;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature>;
 export declare function reverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, }: {
@@ -47,7 +47,7 @@ export declare function stake({ program, amount, accounts: { userWallet, userUns
     program: ComptokenProgram;
     amount: number;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature>;
@@ -55,7 +55,7 @@ export declare function submitMiningProof({ program, proof, accounts: { userWall
     program: ComptokenProgram;
     proof: ComptokenProof;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature>;
@@ -63,7 +63,7 @@ export declare function unstake({ program, amount, accounts: { userWallet, userU
     program: ComptokenProgram;
     amount: number;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature>;
@@ -74,14 +74,14 @@ export declare function unverify({ program, solanaWorldIdProgram, rootHash, null
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
     };
 }): Promise<TransactionSignature>;
 export declare function unverify2({ program, nullifierHash, accounts: { userWallet, }, }: {
     program: ComptokenProgram;
     nullifierHash: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
     };
 }): Promise<TransactionSignature>;
 export declare function verify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { userWallet, userUnstakedTokenAccount, payer, }, }: {
@@ -91,9 +91,9 @@ export declare function verify({ program, solanaWorldIdProgram, rootHash, nullif
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
-        payer?: PublicKey;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature>;
 export declare function getComptokenBalance({ program, user, userUnstakedTokenAccount, }: {

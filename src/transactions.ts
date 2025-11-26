@@ -1,5 +1,5 @@
 import * as anchor from "@coral-xyz/anchor";
-import { PublicKey, type TransactionSignature } from "@solana/web3.js";
+import { PublicKey, type Signer, type TransactionSignature } from "@solana/web3.js";
 
 import * as addresses from "./addresses.js";
 import { ComptokenProof } from "./comptokenProof.js";
@@ -12,22 +12,23 @@ export async function collect({
     program,
     accounts: {
         userWallet,
-        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet), //
+        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey), //
     },
 }: {
     program: ComptokenProgram;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
         .collect()
         .accounts({
-            userWallet,
-            userStakedTokenAccount: addresses.getUserStakedTokensAddress(program, userWallet),
+            userWallet: userWallet.publicKey,
+            userStakedTokenAccount: addresses.getUserStakedTokensAddress(program, userWallet.publicKey),
             userUnstakedTokenAccount,
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -42,8 +43,8 @@ export async function createUserDataAccount({
     program: ComptokenProgram;
     capacity?: number;
     accounts: {
-        userWallet: PublicKey;
-        payer?: PublicKey;
+        userWallet: Signer;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
@@ -51,9 +52,10 @@ export async function createUserDataAccount({
             capacity: new BN(capacity),
         })
         .accounts({
-            userWallet,
-            payer,
+            userWallet: userWallet.publicKey,
+            payer: payer.publicKey,
         })
+        .signers([userWallet, payer])
         .rpc();
 }
 
@@ -92,16 +94,17 @@ export async function resizeUserDataAccount({
     program: ComptokenProgram;
     newCapacity: number;
     accounts: {
-        userWallet: PublicKey;
-        payer?: PublicKey;
+        userWallet: Signer;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
         .resizeUserDataAccount({ newCapacity: new BN(newCapacity) })
         .accounts({
-            userWallet,
-            payer,
+            userWallet: userWallet.publicKey,
+            payer: payer.publicKey,
         })
+        .signers([userWallet, payer])
         .rpc();
 }
 
@@ -136,13 +139,13 @@ export async function stake({
     amount,
     accounts: {
         userWallet,
-        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet), //
+        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey), //
     },
 }: {
     program: ComptokenProgram;
     amount: number;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
@@ -151,9 +154,10 @@ export async function stake({
             amount: new BN(amount),
         })
         .accounts({
-            userWallet: userWallet,
+            userWallet: userWallet.publicKey,
             userUnstakedTokenAccount,
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -162,22 +166,23 @@ export async function submitMiningProof({
     proof,
     accounts: {
         userWallet,
-        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet), //
+        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey), //
     },
 }: {
     program: ComptokenProgram;
     proof: ComptokenProof;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
         .submitMiningProof({ rawData: [...proof.serializeData()] })
         .accounts({
-            userWallet,
+            userWallet: userWallet.publicKey,
             userUnstakedTokenAccount,
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -186,13 +191,13 @@ export async function unstake({
     amount,
     accounts: {
         userWallet,
-        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet), //
+        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey), //
     },
 }: {
     program: ComptokenProgram;
     amount: number;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
@@ -201,9 +206,10 @@ export async function unstake({
             amount: new BN(amount),
         })
         .accounts({
-            userWallet,
+            userWallet: userWallet.publicKey,
             userUnstakedTokenAccount,
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -223,7 +229,7 @@ export async function unverify({
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
@@ -233,12 +239,13 @@ export async function unverify({
             proof: [...proof],
         })
         .accountsPartial({
-            userWallet: userWallet,
+            userWallet: userWallet.publicKey,
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
             worldIdConfig: addresses.getWorldIdConfigAddress(solanaWorldIdProgram),
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -252,7 +259,7 @@ export async function unverify2({
     program: ComptokenProgram;
     nullifierHash: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
@@ -260,9 +267,10 @@ export async function unverify2({
             nullifierHash: { 0: [...nullifierHash] },
         })
         .accountsPartial({
-            userWallet,
+            userWallet: userWallet.publicKey,
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         })
+        .signers([userWallet])
         .rpc();
 }
 
@@ -274,7 +282,7 @@ export async function verify({
     proof,
     accounts: {
         userWallet,
-        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet),
+        userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey),
         payer = userWallet,
     },
 }: {
@@ -284,9 +292,9 @@ export async function verify({
     nullifierHash: Buffer;
     proof: Buffer;
     accounts: {
-        userWallet: PublicKey;
+        userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
-        payer?: PublicKey;
+        payer?: Signer;
     };
 }): Promise<TransactionSignature> {
     return await program.methods
@@ -296,13 +304,14 @@ export async function verify({
             proof: [...proof],
         })
         .accountsPartial({
-            userWallet,
+            userWallet: userWallet.publicKey,
             userUnstakedTokenAccount,
-            payer,
+            payer: payer.publicKey,
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         })
+        .signers([userWallet, payer])
         .rpc();
 }
 
