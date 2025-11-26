@@ -55,17 +55,21 @@ export async function resizeUserDataAccount({ program, newCapacity, accounts: { 
         .signers([userWallet, payer])
         .rpc();
 }
-export async function reverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, }) {
+export async function reverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { userWallet, //
+ }, }) {
     return await program.methods
         .reverify({
         rootHash: { 0: [...rootHash] },
         nullifierHash: { 0: [...nullifierHash] },
         proof: [...proof],
     })
-        .accounts({
+        .accountsPartial({
+        userWallet: userWallet.publicKey,
         worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
         worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
+        worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
     })
+        .signers([userWallet])
         .rpc();
 }
 export async function stake({ program, amount, accounts: { userWallet, userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet.publicKey), //

@@ -112,12 +112,18 @@ export async function reverify({
     rootHash,
     nullifierHash,
     proof,
+    accounts: {
+        userWallet, //
+    },
 }: {
     program: ComptokenProgram;
     solanaWorldIdProgram: SolanaWorldIdProgram;
     rootHash: Buffer;
     nullifierHash: Buffer;
     proof: Buffer;
+    accounts: {
+        userWallet: Signer;
+    };
 }): Promise<TransactionSignature> {
     return await program.methods
         .reverify({
@@ -125,10 +131,13 @@ export async function reverify({
             nullifierHash: { 0: [...nullifierHash] },
             proof: [...proof],
         })
-        .accounts({
+        .accountsPartial({
+            userWallet: userWallet.publicKey,
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
+            worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         })
+        .signers([userWallet])
         .rpc();
 }
 

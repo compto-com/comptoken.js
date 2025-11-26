@@ -36,12 +36,15 @@ export declare function resizeUserDataAccount({ program, newCapacity, accounts: 
         payer?: Signer;
     };
 }): Promise<TransactionSignature>;
-export declare function reverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, }: {
+export declare function reverify({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { userWallet, }, }: {
     program: ComptokenProgram;
     solanaWorldIdProgram: SolanaWorldIdProgram;
     rootHash: Buffer;
     nullifierHash: Buffer;
     proof: Buffer;
+    accounts: {
+        userWallet: Signer;
+    };
 }): Promise<TransactionSignature>;
 export declare function stake({ program, amount, accounts: { userWallet, userUnstakedTokenAccount, }, }: {
     program: ComptokenProgram;
