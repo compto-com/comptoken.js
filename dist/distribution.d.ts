@@ -1,5 +1,5 @@
-import type { BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
+import type BN from "bn.js";
 import type { ComptokenProgram } from "./types.js";
 export type HistoricDistribution = {
     yieldRate: number;
@@ -7,8 +7,8 @@ export type HistoricDistribution = {
 };
 export declare function getDistributionOwed({ program, user, }: {
     program: ComptokenProgram;
-    user: any;
-    userUnstakedTokenAccount?: any;
+    user: PublicKey;
+    userUnstakedTokenAccount?: PublicKey;
 }): Promise<number>;
 export declare function getDaysSinceLastClaim({ program, user, }: {
     program: ComptokenProgram;

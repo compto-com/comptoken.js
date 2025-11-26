@@ -1,6 +1,6 @@
 import { default as anchor, Program } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
-const { BN } = anchor;
+import BN from "bn.js";
 const { bs58 } = anchor.utils.bytes;
 export class ProgramWithConstants extends Program {
     constructor(idl, provider, coder, getCustomResolver) {

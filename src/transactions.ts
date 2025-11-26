@@ -1,12 +1,10 @@
-import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, type Signer, type TransactionSignature } from "@solana/web3.js";
+import BN from "bn.js";
 
 import * as addresses from "./addresses.js";
 import { ComptokenProof } from "./comptokenProof.js";
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 import * as utils from "./utils.js";
-
-const { BN } = anchor;
 
 export async function collect({
     program,

@@ -1,5 +1,5 @@
-import type { BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
+import type BN from "bn.js";
 
 import * as addresses from "./addresses.js";
 import type { ComptokenProgram } from "./types.js";
@@ -15,8 +15,8 @@ export async function getDistributionOwed({
     user,
 }: {
     program: ComptokenProgram;
-    user: any;
-    userUnstakedTokenAccount?: any;
+    user: PublicKey;
+    userUnstakedTokenAccount?: PublicKey;
 }): Promise<number> {
     const userStakedTokenAccount = addresses.getUserStakedTokensAddress(program, user);
     const userDataAddress = addresses.getUserDataAddress(program, user);

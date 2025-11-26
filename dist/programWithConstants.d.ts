@@ -1,7 +1,7 @@
 import { default as anchor, Program, type Provider } from "@coral-xyz/anchor";
 import type { IdlConst, IdlInstruction } from "@coral-xyz/anchor/dist/cjs/idl.ts";
 import { PublicKey } from "@solana/web3.js";
-type BNType = anchor.BN;
+import BN from "bn.js";
 export declare class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
     constants: Constants<Idl["constants"]>;
     constructor(idl: Idl, provider?: Provider, coder?: anchor.Coder, getCustomResolver?: (instruction: IdlInstruction) => anchor.CustomAccountResolver<Idl> | undefined);
@@ -15,7 +15,7 @@ type IdlPublicKeyType = "pubkey";
 type Constants<ConstantsType extends anchor.Idl["constants"]> = ConstantsType extends IdlConst[] ? {
     [key in ConstantsType[number] as key["name"]]: key extends {
         type: IdlBNTypes;
-    } ? BNType : key extends {
+    } ? BN : key extends {
         type: IdlStringType;
     } ? string : key extends {
         type: IdlBytesType;
