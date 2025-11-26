@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import type { BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 
 import * as addresses from "./addresses.js";

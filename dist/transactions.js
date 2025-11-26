@@ -1,8 +1,9 @@
-import { BN } from "@coral-xyz/anchor";
+import * as anchor from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as addresses from "./addresses.js";
 import { ComptokenProof } from "./comptokenProof.js";
 import * as utils from "./utils.js";
+const { BN } = anchor;
 export async function collect({ program, accounts: { userWallet, userUnstakedTokenAccount = addresses.getUserUnstakedAssociatedTokenAddress(program, userWallet), //
  }, }) {
     return await program.methods
