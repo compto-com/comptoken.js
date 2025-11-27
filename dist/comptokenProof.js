@@ -18,7 +18,7 @@ export class ComptokenProof {
         this.header = this.constructHeader();
         this.hash = this.generateHash();
         if (!_a.isLowerThanTarget(this.hash, this.target)) {
-            throw new Error("The provided proof does not have enough zeroes");
+            throw new Error(`The provided proof does not have enough zeroes: ${Buffer.from(this.hash).toString("hex")}`);
         }
     }
     /**
@@ -71,7 +71,7 @@ export class ComptokenProof {
     constructHeader() {
         const version = Buffer.allocUnsafe(4);
         version.writeUInt32LE(this.version);
-        const prevHashLE = reverseAndSwapEndianness(this.recentBlockHash);
+        const prevHashLE = Uint8Array.from(this.recentBlockHash).reverse();
         const merkleRoot = _a.doubleSHA256(Uint8Array.from(Buffer.concat([this.extraData, this.pubkey.toBytes()])));
         const timestamp = Buffer.allocUnsafe(4);
         timestamp.writeUInt32LE(this.timestamp);
@@ -121,10 +121,6 @@ function numAsU32ToLEBytes(num) {
     const buf = Buffer.allocUnsafe(4);
     buf.writeUInt32LE(num);
     return Uint8Array.from(buf);
-}
-function reverseAndSwapEndianness(data) {
-    const reversedBuffer = Buffer.from(data).reverse();
-    return Uint8Array.from(reversedBuffer.swap32());
 }
 function* zip(...iterables) {
     let iterators = iterables.map((it) => it[Symbol.iterator]());
