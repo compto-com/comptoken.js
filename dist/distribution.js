@@ -25,7 +25,7 @@ export async function getDistributionOwed({ program, user, }) {
         return acc;
     }, { overallRate: 0, totalUbiYield: 0 });
     const isVerified = userData.lastVerifiedTimestamp.toNumber() + program.constants.verificationDuration.toNumber() > today;
-    return stakedAmount * overallRate + (isVerified ? totalUbiYield : 0);
+    return { interest: stakedAmount * overallRate, ubi: isVerified ? totalUbiYield : 0 };
 }
 // implementation
 export function getDaysSinceLastClaim({ program, user, userData, }) {

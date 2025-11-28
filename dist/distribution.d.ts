@@ -9,7 +9,10 @@ export declare function getDistributionOwed({ program, user, }: {
     program: ComptokenProgram;
     user: PublicKey;
     userUnstakedTokenAccount?: PublicKey;
-}): Promise<number>;
+}): Promise<{
+    interest: number;
+    ubi: number;
+}>;
 export declare function getDaysSinceLastClaim({ program, user, }: {
     program: ComptokenProgram;
     user: PublicKey;

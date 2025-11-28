@@ -17,7 +17,7 @@ export async function getDistributionOwed({
     program: ComptokenProgram;
     user: PublicKey;
     userUnstakedTokenAccount?: PublicKey;
-}): Promise<number> {
+}): Promise<{ interest: number; ubi: number }> {
     const userStakedTokenAccount = addresses.getUserStakedTokensAddress(program, user);
     const userDataAddress = addresses.getUserDataAddress(program, user);
 
@@ -58,7 +58,7 @@ export async function getDistributionOwed({
     const isVerified =
         userData.lastVerifiedTimestamp.toNumber() + program.constants.verificationDuration.toNumber() > today;
 
-    return stakedAmount * overallRate + (isVerified ? totalUbiYield : 0);
+    return { interest: stakedAmount * overallRate, ubi: isVerified ? totalUbiYield : 0 };
 }
 
 // overloads
