@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 import type { Provider } from "@coral-xyz/anchor";
 
@@ -16,12 +17,12 @@ export function getSolanaWorldIdIdl(idlPath: string): SolanaWorldIdIDL {
 }
 
 export function getDefaultComptokenIdl(): ComptokenIdl {
-    const idl: ComptokenIdl = JSON.parse(fs.readFileSync(require.resolve("../idls/comptoken.json"), "utf8"));
+    const idl: ComptokenIdl = JSON.parse(fs.readFileSync(path.resolve("../idls/comptoken.json"), "utf8"));
     return idl;
 }
 
 export function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIDL {
-    const idl: SolanaWorldIdIDL = JSON.parse(fs.readFileSync(require.resolve("../idls/solana_world_id.json"), "utf8"));
+    const idl: SolanaWorldIdIDL = JSON.parse(fs.readFileSync(path.resolve("../idls/solana_world_id.json"), "utf8"));
     return idl;
 }
 
