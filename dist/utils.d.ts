@@ -1,15 +1,22 @@
+import BN from "bn.js";
+import type { TransactionSignature } from "@solana/web3.js";
 import type { ComptokenProgram } from "./types.js";
 export declare function getReturnLog(logs: string[]): {
     key: string;
     data: string;
     buffer: Buffer;
 };
-export declare function getValidBlockhashesRPC({ program }: {
+export declare function getValidBlockhashesReturn({ program, sig, }: {
     program: ComptokenProgram;
-}): Promise<string>;
+    sig: TransactionSignature;
+}): Promise<{
+    announced: Buffer;
+    valid: Buffer;
+}>;
+export declare function normalizeToBN(input: number | BN | BigInt): BN;
 export declare function decodeValidBlockhashesReturn(program: ComptokenProgram, buffer: Buffer): {
-    announced: number[];
-    valid: number[];
+    announced: Buffer;
+    valid: Buffer;
 };
 export declare function normalizeTimestamp(timestamp: number): number;
 export declare function daysSinceEpoch(timestamp: number): number;

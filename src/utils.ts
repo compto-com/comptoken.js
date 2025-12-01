@@ -1,8 +1,9 @@
 import assert from "assert";
 
 import type { IdlTypes } from "@coral-xyz/anchor";
-import { SYSVAR_SLOT_HASHES_PUBKEY } from "@solana/web3.js";
+import BN from "bn.js";
 
+import type { TransactionSignature } from "@solana/web3.js";
 import type { ComptokenIdl, ComptokenProgram } from "./types.js";
 
 export function getReturnLog(logs: string[]) {
@@ -16,13 +17,31 @@ export function getReturnLog(logs: string[]) {
     return { key, data, buffer };
 }
 
-export async function getValidBlockhashesRPC({ program }: { program: ComptokenProgram }): Promise<string> {
-    return await program.methods
-        .getValidBlockhashes()
-        .accounts({
-            slotHashes: SYSVAR_SLOT_HASHES_PUBKEY,
-        })
-        .rpc();
+export async function getValidBlockhashesReturn({
+    program,
+    sig,
+}: {
+    program: ComptokenProgram;
+    sig: TransactionSignature;
+}): Promise<{ announced: Buffer; valid: Buffer }> {
+    const tx = await program.provider.connection.getTransaction(sig, {
+        maxSupportedTransactionVersion: 0,
+    });
+    if (tx?.meta?.logMessages === undefined || tx?.meta?.logMessages === null) {
+        throw new Error("Failed to get transaction logs for valid blockhashes");
+    }
+    const { buffer } = getReturnLog(tx.meta.logMessages);
+    return decodeValidBlockhashesReturn(program, buffer);
+}
+
+export function normalizeToBN(input: number | BN | BigInt): BN {
+    if (typeof input === "bigint") {
+        return new BN(input.toString());
+    } else if (typeof input === "number") {
+        return new BN(input);
+    }
+    assert(input instanceof BN);
+    return input;
 }
 
 export function decodeValidBlockhashesReturn(program: ComptokenProgram, buffer: Buffer) {
@@ -31,8 +50,8 @@ export function decodeValidBlockhashesReturn(program: ComptokenProgram, buffer: 
         buffer,
     ) as IdlTypes<ComptokenIdl>["comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"];
     return {
-        announced: decoded.announced[0],
-        valid: decoded.valid[0],
+        announced: Buffer.from(decoded.announced[0]),
+        valid: Buffer.from(decoded.valid[0]),
     };
 }
 

@@ -1,9 +1,12 @@
-export * from "./addresses.js";
+export * as addresses from "./addresses.js";
 export * from "./comptokenProof.js";
 export * from "./distribution.js";
 export * from "./factory.js";
 export * from "./programWithConstants.js";
-export * from "./transactions.js";
+export * as transactions from "./transactions.js";
 export type * from "./types.js";
-export { decodeValidBlockhashesReturn, getReturnLog, getValidBlockhashesRPC, normalizeTimestamp } from "./utils.js";
+import * as util from "./utils.js";
+export declare namespace utils {
+    const decodeValidBlockhashesReturn: typeof util.decodeValidBlockhashesReturn, getReturnLog: typeof util.getReturnLog, getValidBlockhashesReturn: typeof util.getValidBlockhashesReturn, normalizeTimestamp: typeof util.normalizeTimestamp;
+}
 //# sourceMappingURL=lib.d.ts.map

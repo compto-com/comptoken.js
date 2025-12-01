@@ -1,10 +1,12 @@
 import { PublicKey, type Signer, type TransactionSignature } from "@solana/web3.js";
-import BN from "bn.js";
 
 import * as addresses from "./addresses.js";
 import { ComptokenProof } from "./comptokenProof.js";
+import * as methodBuilders from "./methodBuilders.js";
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 import * as utils from "./utils.js";
+
+export { methodBuilders };
 
 export async function collect({
     program,
@@ -19,15 +21,7 @@ export async function collect({
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .collect()
-        .accounts({
-            userWallet: userWallet.publicKey,
-            userStakedTokenAccount: addresses.getUserStakedTokensAddress(program, userWallet.publicKey),
-            userUnstakedTokenAccount,
-        })
-        .signers([userWallet])
-        .rpc();
+    return methodBuilders.collectBuilder({ program, accounts: { userWallet, userUnstakedTokenAccount } }).rpc();
 }
 
 export async function createUserDataAccount({
@@ -45,16 +39,7 @@ export async function createUserDataAccount({
         payer?: Signer;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .createUserDataAccount({
-            capacity: new BN(capacity),
-        })
-        .accounts({
-            userWallet: userWallet.publicKey,
-            payer: payer.publicKey,
-        })
-        .signers([userWallet, payer])
-        .rpc();
+    return methodBuilders.createUserDataAccountBuilder({ program, capacity, accounts: { userWallet, payer } }).rpc();
 }
 
 export async function dailyDistribution({
@@ -62,23 +47,31 @@ export async function dailyDistribution({
 }: {
     program: ComptokenProgram;
 }): Promise<TransactionSignature> {
-    return await program.methods.dailyDistribution().accounts({}).rpc();
+    return methodBuilders.dailyDistributionBuilder({ program }).rpc();
 }
 
+function getValidBlockhashesRPC({
+    program, //
+}: {
+    program: ComptokenProgram;
+}): Promise<TransactionSignature> {
+    return methodBuilders.getValidBlockhashesBuilder({ program }).rpc();
+}
+
+/**
+ * Helper to get valid blockhashes by calling the getValidBlockhashes instruction and parsing the return data.
+ * Unlike other instructions, this does not just submit a transaction; it also retrieves and decodes the return data.
+ *
+ * to manually retrieve valid blockhashes, use {@link utils.getValidBlockhashesReturn|getValidBlockhashesReturn} on the returned signature.
+ */
 export async function getValidBlockhashes({
     program, //
 }: {
     program: ComptokenProgram;
-}) {
-    const sig = await utils.getValidBlockhashesRPC({ program });
-    const tx = await program.provider.connection.getTransaction(sig, {
-        maxSupportedTransactionVersion: 0,
-    });
-    if (tx?.meta?.logMessages === undefined || tx?.meta?.logMessages === null) {
-        throw new Error("Failed to get transaction logs for valid blockhashes");
-    }
-    const { buffer } = utils.getReturnLog(tx.meta.logMessages);
-    return { sig, result: utils.decodeValidBlockhashesReturn(program, buffer) };
+}): Promise<{ sig: TransactionSignature; result: { announced: Buffer; valid: Buffer } }> {
+    const sig = await getValidBlockhashesRPC({ program });
+    const result = await utils.getValidBlockhashesReturn({ program, sig });
+    return { sig, result };
 }
 
 export async function resizeUserDataAccount({
@@ -96,14 +89,7 @@ export async function resizeUserDataAccount({
         payer?: Signer;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .resizeUserDataAccount({ newCapacity: new BN(newCapacity) })
-        .accounts({
-            userWallet: userWallet.publicKey,
-            payer: payer.publicKey,
-        })
-        .signers([userWallet, payer])
-        .rpc();
+    return methodBuilders.resizeUserDataAccountBuilder({ program, newCapacity, accounts: { userWallet, payer } }).rpc();
 }
 
 export async function reverify({
@@ -125,19 +111,15 @@ export async function reverify({
         userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .reverify({
-            rootHash: { 0: [...rootHash] },
-            nullifierHash: { 0: [...nullifierHash] },
-            proof: [...proof],
+    return methodBuilders
+        .reverifyBuilder({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { userWallet },
         })
-        .accountsPartial({
-            userWallet: userWallet.publicKey,
-            worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
-            worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
-            worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
-        })
-        .signers([userWallet])
         .rpc();
 }
 
@@ -156,16 +138,7 @@ export async function stake({
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .stake({
-            amount: new BN(amount),
-        })
-        .accounts({
-            userWallet: userWallet.publicKey,
-            userUnstakedTokenAccount,
-        })
-        .signers([userWallet])
-        .rpc();
+    return methodBuilders.stakeBuilder({ program, amount, accounts: { userWallet, userUnstakedTokenAccount } }).rpc();
 }
 
 export async function submitMiningProof({
@@ -183,13 +156,12 @@ export async function submitMiningProof({
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .submitMiningProof({ rawData: [...proof.serializeData()] })
-        .accounts({
-            userWallet: userWallet.publicKey,
-            userUnstakedTokenAccount,
+    return methodBuilders
+        .submitMiningProofBuilder({
+            program,
+            proof,
+            accounts: { userWallet, userUnstakedTokenAccount },
         })
-        .signers([userWallet])
         .rpc();
 }
 
@@ -208,16 +180,7 @@ export async function unstake({
         userUnstakedTokenAccount?: PublicKey;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .unstake({
-            amount: new BN(amount),
-        })
-        .accounts({
-            userWallet: userWallet.publicKey,
-            userUnstakedTokenAccount,
-        })
-        .signers([userWallet])
-        .rpc();
+    return methodBuilders.unstakeBuilder({ program, amount, accounts: { userWallet, userUnstakedTokenAccount } }).rpc();
 }
 
 export async function unverify({
@@ -239,19 +202,8 @@ export async function unverify({
         user: PublicKey;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .unverify({
-            rootHash: { 0: [...rootHash] },
-            nullifierHash: { 0: [...nullifierHash] },
-            proof: [...proof],
-        })
-        .accountsPartial({
-            userWallet: user,
-            worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
-            worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
-            worldIdConfig: addresses.getWorldIdConfigAddress(solanaWorldIdProgram),
-            worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
-        })
+    return methodBuilders
+        .unverifyBuilder({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { user } })
         .rpc();
 }
 
@@ -268,16 +220,7 @@ export async function unverify2({
         userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .unverify2({
-            nullifierHash: { 0: [...nullifierHash] },
-        })
-        .accountsPartial({
-            userWallet: userWallet.publicKey,
-            worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
-        })
-        .signers([userWallet])
-        .rpc();
+    return methodBuilders.unverify2Builder({ program, nullifierHash, accounts: { userWallet } }).rpc();
 }
 
 export async function verify({
@@ -303,21 +246,15 @@ export async function verify({
         payer?: Signer;
     };
 }): Promise<TransactionSignature> {
-    return await program.methods
-        .verify({
-            rootHash: { 0: [...rootHash] },
-            nullifierHash: { 0: [...nullifierHash] },
-            proof: [...proof],
+    return methodBuilders
+        .verifyBuilder({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { userWallet, userUnstakedTokenAccount, payer },
         })
-        .accountsPartial({
-            userWallet: userWallet.publicKey,
-            userUnstakedTokenAccount,
-            payer: payer.publicKey,
-            worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
-            worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
-            worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
-        })
-        .signers([userWallet, payer])
         .rpc();
 }
 
@@ -339,8 +276,8 @@ export async function getComptokenBalance({
         program.provider.connection.getTokenAccountBalance(userUnstakedTokenAccount),
     ]);
 
-    const stakedAmount = stakedAccountInfo.value.uiAmount;
-    const unstakedAmount = unstakedAccountInfo.value.uiAmount;
+    const stakedAmount = Number(stakedAccountInfo.value.uiAmountString);
+    const unstakedAmount = Number(unstakedAccountInfo.value.uiAmountString);
 
     return stakedAmount! + unstakedAmount!;
 }

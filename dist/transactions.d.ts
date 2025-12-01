@@ -1,6 +1,8 @@
 import { PublicKey, type Signer, type TransactionSignature } from "@solana/web3.js";
 import { ComptokenProof } from "./comptokenProof.js";
+import * as methodBuilders from "./methodBuilders.js";
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
+export { methodBuilders };
 export declare function collect({ program, accounts: { userWallet, userUnstakedTokenAccount, }, }: {
     program: ComptokenProgram;
     accounts: {
@@ -19,13 +21,19 @@ export declare function createUserDataAccount({ program, capacity, accounts: { u
 export declare function dailyDistribution({ program, }: {
     program: ComptokenProgram;
 }): Promise<TransactionSignature>;
+/**
+ * Helper to get valid blockhashes by calling the getValidBlockhashes instruction and parsing the return data.
+ * Unlike other instructions, this does not just submit a transaction; it also retrieves and decodes the return data.
+ *
+ * to manually retrieve valid blockhashes, use {@link utils.getValidBlockhashesReturn|getValidBlockhashesReturn} on the returned signature.
+ */
 export declare function getValidBlockhashes({ program, }: {
     program: ComptokenProgram;
 }): Promise<{
-    sig: string;
+    sig: TransactionSignature;
     result: {
-        announced: number[];
-        valid: number[];
+        announced: Buffer;
+        valid: Buffer;
     };
 }>;
 export declare function resizeUserDataAccount({ program, newCapacity, accounts: { userWallet, payer, }, }: {

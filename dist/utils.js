@@ -1,5 +1,5 @@
 import assert from "assert";
-import { SYSVAR_SLOT_HASHES_PUBKEY } from "@solana/web3.js";
+import BN from "bn.js";
 export function getReturnLog(logs) {
     const prefix = "Program return: ";
     let retLog = logs.find((msg) => msg.startsWith(prefix))?.slice(prefix.length);
@@ -10,19 +10,31 @@ export function getReturnLog(logs) {
     const buffer = Buffer.from(data, "base64");
     return { key, data, buffer };
 }
-export async function getValidBlockhashesRPC({ program }) {
-    return await program.methods
-        .getValidBlockhashes()
-        .accounts({
-        slotHashes: SYSVAR_SLOT_HASHES_PUBKEY,
-    })
-        .rpc();
+export async function getValidBlockhashesReturn({ program, sig, }) {
+    const tx = await program.provider.connection.getTransaction(sig, {
+        maxSupportedTransactionVersion: 0,
+    });
+    if (tx?.meta?.logMessages === undefined || tx?.meta?.logMessages === null) {
+        throw new Error("Failed to get transaction logs for valid blockhashes");
+    }
+    const { buffer } = getReturnLog(tx.meta.logMessages);
+    return decodeValidBlockhashesReturn(program, buffer);
+}
+export function normalizeToBN(input) {
+    if (typeof input === "bigint") {
+        return new BN(input.toString());
+    }
+    else if (typeof input === "number") {
+        return new BN(input);
+    }
+    assert(input instanceof BN);
+    return input;
 }
 export function decodeValidBlockhashesReturn(program, buffer) {
     const decoded = program.coder.types.decode("comptoken::instructions::getValidBlockhashes::validBlockhashes", buffer);
     return {
-        announced: decoded.announced[0],
-        valid: decoded.valid[0],
+        announced: Buffer.from(decoded.announced[0]),
+        valid: Buffer.from(decoded.valid[0]),
     };
 }
 const SEC_PER_DAY = 86400;

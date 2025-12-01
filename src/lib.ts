@@ -1,8 +1,12 @@
-export * from "./addresses.js";
+export * as addresses from "./addresses.js";
 export * from "./comptokenProof.js";
 export * from "./distribution.js";
 export * from "./factory.js";
 export * from "./programWithConstants.js";
-export * from "./transactions.js";
+export * as transactions from "./transactions.js";
 export type * from "./types.js";
-export { decodeValidBlockhashesReturn, getReturnLog, getValidBlockhashesRPC, normalizeTimestamp } from "./utils.js";
+
+import * as util from "./utils.js";
+export namespace utils {
+    export const { decodeValidBlockhashesReturn, getReturnLog, getValidBlockhashesReturn, normalizeTimestamp } = util;
+}
