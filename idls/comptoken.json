@@ -1,0 +1,2434 @@
+{
+  "address": "F9SW7dcgDHV6QGYcFHyqKtykAdsHvL4BJYA2YP4YkEJX",
+  "metadata": {
+    "name": "comptoken",
+    "version": "0.2.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "collect",
+      "discriminator": [
+        208,
+        47,
+        194,
+        155,
+        17,
+        98,
+        82,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_staked_token_account"
+        },
+        {
+          "name": "user_unstaked_token_account",
+          "writable": true
+        },
+        {
+          "name": "staked_mint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "unstaked_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_user_data_account",
+      "discriminator": [
+        201,
+        121,
+        155,
+        23,
+        220,
+        31,
+        43,
+        162
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "CreateUserDataAccountArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "daily_distribution",
+      "discriminator": [
+        115,
+        202,
+        47,
+        246,
+        23,
+        104,
+        84,
+        16
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "staked_mint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "unstaked_mint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get_valid_blockhashes",
+      "discriminator": [
+        19,
+        134,
+        134,
+        42,
+        30,
+        157,
+        237,
+        235
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "slot_hashes"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"
+        }
+      }
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint_staked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_unstaked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "slot_hashes"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resize_user_data_account",
+      "discriminator": [
+        252,
+        102,
+        157,
+        155,
+        16,
+        77,
+        128,
+        58
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "ResizeUserDataAccountArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "reverify",
+      "discriminator": [
+        166,
+        139,
+        219,
+        229,
+        21,
+        184,
+        110,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "user_wallet",
+          "signer": true,
+          "relations": [
+            "world_id_nullifier"
+          ]
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "world_id_program",
+          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+        },
+        {
+          "name": "world_id_root"
+        },
+        {
+          "name": "world_id_latest_root"
+        },
+        {
+          "name": "world_id_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  67,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
+        },
+        {
+          "name": "world_id_nullifier",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.nullifier_hash"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "WorldIdVerificationData"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "stake",
+      "discriminator": [
+        206,
+        176,
+        202,
+        18,
+        200,
+        209,
+        179,
+        108
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_staked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_unstaked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_staked_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint_staked"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "user_unstaked_token_account",
+          "writable": true
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "StakeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "submit_mining_proof",
+      "discriminator": [
+        1,
+        124,
+        211,
+        150,
+        10,
+        152,
+        208,
+        55
+      ],
+      "accounts": [
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_unstaked_token_account",
+          "writable": true
+        },
+        {
+          "name": "unstaked_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "SubmitMiningProofArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unstake",
+      "discriminator": [
+        90,
+        95,
+        107,
+        42,
+        205,
+        124,
+        50,
+        225
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_staked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint_unstaked",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_staked_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint_staked"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "user_unstaked_token_account",
+          "writable": true
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "UnstakeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unverify",
+      "discriminator": [
+        55,
+        1,
+        25,
+        88,
+        115,
+        67,
+        20,
+        24
+      ],
+      "accounts": [
+        {
+          "name": "user_wallet",
+          "docs": [
+            "and user data accounts."
+          ],
+          "relations": [
+            "world_id_nullifier"
+          ]
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "world_id_program",
+          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+        },
+        {
+          "name": "world_id_root"
+        },
+        {
+          "name": "world_id_latest_root"
+        },
+        {
+          "name": "world_id_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  67,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
+        },
+        {
+          "name": "world_id_nullifier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.nullifier_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "WorldIdVerificationData"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unverify2",
+      "discriminator": [
+        245,
+        253,
+        215,
+        46,
+        19,
+        130,
+        22,
+        32
+      ],
+      "accounts": [
+        {
+          "name": "user_wallet",
+          "signer": true,
+          "relations": [
+            "world_id_nullifier"
+          ]
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "world_id_nullifier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.nullifier_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "Unverify2Args"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "verify",
+      "discriminator": [
+        133,
+        161,
+        141,
+        48,
+        120,
+        198,
+        88,
+        150
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_wallet",
+          "signer": true
+        },
+        {
+          "name": "user_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_unstaked_token_account",
+          "writable": true
+        },
+        {
+          "name": "world_id_program",
+          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+        },
+        {
+          "name": "world_id_root"
+        },
+        {
+          "name": "world_id_latest_root"
+        },
+        {
+          "name": "world_id_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  67,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
+        },
+        {
+          "name": "world_id_nullifier",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.nullifier_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "unstaked_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "WorldIdVerificationData"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "GlobalData",
+      "discriminator": [
+        48,
+        194,
+        194,
+        186,
+        46,
+        71,
+        131,
+        61
+      ]
+    },
+    {
+      "name": "LatestRoot",
+      "discriminator": [
+        12,
+        245,
+        231,
+        246,
+        191,
+        63,
+        169,
+        95
+      ]
+    },
+    {
+      "name": "Nullifier",
+      "discriminator": [
+        18,
+        56,
+        142,
+        165,
+        181,
+        158,
+        187,
+        133
+      ]
+    },
+    {
+      "name": "Root",
+      "discriminator": [
+        46,
+        159,
+        131,
+        37,
+        245,
+        84,
+        5,
+        9
+      ]
+    },
+    {
+      "name": "UserData",
+      "discriminator": [
+        139,
+        248,
+        167,
+        203,
+        253,
+        220,
+        210,
+        221
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NullifierAlreadyUsed",
+      "msg": "Nullifier has already been used"
+    },
+    {
+      "code": 6001,
+      "name": "UserDataNotCurrent",
+      "msg": "User data account is not current"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidMiningProof",
+      "msg": "Invalid mining proof submitted"
+    },
+    {
+      "code": 6003,
+      "name": "DuplicateMiningProof",
+      "msg": "Duplicate mining proof submitted"
+    },
+    {
+      "code": 6004,
+      "name": "UserDataProofsCapacityExceeded",
+      "msg": "User data proofs capacity exceeded, consider increasing capacity"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidNullifierOwner",
+      "msg": "Invalid nullifier owner"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidNullifierHash",
+      "msg": "Invalid nullifier hash for user data"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidCapacity",
+      "msg": "Invalid capacity for resizing user data account"
+    },
+    {
+      "code": 6008,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds in token account"
+    },
+    {
+      "code": 6009,
+      "name": "AccountAlreadyInitialized",
+      "msg": "Account has already been initialized"
+    },
+    {
+      "code": 6010,
+      "name": "StaleValidBlockhash",
+      "msg": "Stale valid blockhash"
+    }
+  ],
+  "types": [
+    {
+      "name": "Config",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "owner",
+            "docs": [
+              "Owner of the program."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_owner",
+            "docs": [
+              "Pending next owner (before claiming ownership)."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "root_expiry",
+            "docs": [
+              "Time (in seconds) after which a root should be considered expired."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "allowed_update_staleness",
+            "docs": [
+              "Time (in seconds) after which an attempted update should be rejected."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateUserDataAccountArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "capacity",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DailyDistributionData",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "total_mined_today",
+            "type": "u64"
+          },
+          {
+            "name": "high_water_mark",
+            "type": "u64"
+          },
+          {
+            "name": "last_update_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "per_capita_early_adopter_ubi_amount",
+            "type": "u64"
+          },
+          {
+            "name": "verified_accounts_count",
+            "type": "u32"
+          },
+          {
+            "name": "remaining_early_adopter_count",
+            "type": "u32"
+          },
+          {
+            "name": "historic_distributions",
+            "type": {
+              "defined": {
+                "name": "RingBuffer",
+                "generics": [
+                  {
+                    "kind": "type",
+                    "type": {
+                      "defined": {
+                        "name": "HistoricDistribution"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "const",
+                    "value": "365"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GlobalData",
+      "serialization": "bytemuck",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "daily_distribution",
+            "type": {
+              "defined": {
+                "name": "DailyDistributionData"
+              }
+            }
+          },
+          {
+            "name": "valid_blockhashes",
+            "type": {
+              "defined": {
+                "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Hash",
+      "repr": {
+        "kind": "transparent"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "HistoricDistribution",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "yield_rate",
+            "type": "f64"
+          },
+          {
+            "name": "ubi_yield",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LatestRoot",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "read_block_number",
+            "docs": [
+              "Block number from which the root was read."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "read_block_hash",
+            "docs": [
+              "Block hash from which the root was read."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "read_block_time",
+            "docs": [
+              "Block time (in microseconds) from which the root was read."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "root",
+            "docs": [
+              "Root hash of the last posted root account."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "verification_type",
+            "docs": [
+              "SEED: Verification type."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Nullifier",
+      "serialization": "bytemuck",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user_wallet",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResizeUserDataAccountArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "new_capacity",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RingBuffer",
+      "repr": {
+        "kind": "c"
+      },
+      "generics": [
+        {
+          "kind": "type",
+          "name": "T"
+        },
+        {
+          "kind": "const",
+          "name": "N",
+          "type": "usize"
+        }
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "position",
+            "type": "u64"
+          },
+          {
+            "name": "buffer",
+            "type": {
+              "array": [
+                {
+                  "generic": "T"
+                },
+                {
+                  "generic": "N"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Root",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "read_block_number",
+            "docs": [
+              "Block number from which the root was read."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "read_block_hash",
+            "docs": [
+              "Block hash from which the root was read."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "read_block_time",
+            "docs": [
+              "Block time (in microseconds) from which the root was read."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "refund_recipient",
+            "docs": [
+              "Payer of this root account, used for reimbursements upon cleanup."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "root",
+            "docs": [
+              "SEED: Root hash."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "verification_type",
+            "docs": [
+              "SEED: Verification type."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "StakeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SubmitMiningProofArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "raw_data",
+            "type": {
+              "array": [
+                "u8",
+                76
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TestMintStakedUncheckedArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TestMintUnstakedUncheckedArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnstakeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Unverify2Args",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "last_claimed_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "last_verified_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "recent_blockhash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "proofs",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "Hash"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "WorldIdVerificationData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "proof",
+            "type": {
+              "array": [
+                "u8",
+                256
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "announced",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "announced_blockhash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "announced_blockhash_time",
+            "type": "i64"
+          },
+          {
+            "name": "valid_blockhash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "valid_blockhash_time",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "ADJUST_FACTOR",
+      "type": "f64",
+      "value": "0.3"
+    },
+    {
+      "name": "ANNOUNCEMENT_INTERVAL",
+      "type": "i64",
+      "value": "300"
+    },
+    {
+      "name": "COMPTOKEN_DISTRIBUTION_MULTIPLIER",
+      "type": "u64",
+      "value": "146000"
+    },
+    {
+      "name": "COMPTOKEN_MINING_PROOF_TARGET",
+      "type": {
+        "defined": {
+          "name": "Hash"
+        }
+      },
+      "value": "Hash(111112z4ztA9iySwNGQrNAcfusiGHxskGMbRamTedu)"
+    },
+    {
+      "name": "COMPTOKEN_MINING_PROOF_TARGET_DEVNET",
+      "type": {
+        "defined": {
+          "name": "Hash"
+        }
+      },
+      "value": "Hash(zJTTCFkUQoNtgFdHbR17NeG3MaWmeHZZWH3x4W4QYoH)"
+    },
+    {
+      "name": "DAILY_DISTRIBUTION_DATA_HISTORY_LENGTH",
+      "type": "u64",
+      "value": "365"
+    },
+    {
+      "name": "EARLY_ADOPTER_COUNT",
+      "type": "u32",
+      "value": "1000000000"
+    },
+    {
+      "name": "END_GOAL_PERCENT_INCREASE",
+      "type": "f64",
+      "value": "0.00061"
+    },
+    {
+      "name": "GLOBAL_DATA_SEED",
+      "type": "bytes",
+      "value": "[103, 108, 111, 98, 97, 108, 95, 100, 97, 116, 97]"
+    },
+    {
+      "name": "MINING_REWARD_AMOUNT",
+      "type": "u64",
+      "value": "100"
+    },
+    {
+      "name": "MINT_DECIMALS",
+      "type": "u8",
+      "value": "2"
+    },
+    {
+      "name": "MIN_SUPPLY_LIMIT_AMT",
+      "type": "u64",
+      "value": "1000000"
+    },
+    {
+      "name": "NULLIFIER_SEED",
+      "type": "bytes",
+      "value": "[110, 117, 108, 108, 105, 102, 105, 101, 114]"
+    },
+    {
+      "name": "STAKED_MINT_SEED",
+      "type": "bytes",
+      "value": "[115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
+    },
+    {
+      "name": "UNSTAKED_MINT_SEED",
+      "type": "bytes",
+      "value": "[117, 110, 115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
+    },
+    {
+      "name": "USER_DATA_SEED",
+      "type": "bytes",
+      "value": "[117, 115, 101, 114, 95, 100, 97, 116, 97]"
+    },
+    {
+      "name": "USER_DATA_SIZE_WITHOUT_PROOFS",
+      "type": "u64",
+      "value": "92"
+    },
+    {
+      "name": "VERIFICATION_DURATION",
+      "type": "i64",
+      "value": "2678400"
+    },
+    {
+      "name": "WORLD_ACTION",
+      "type": "bytes",
+      "value": "[67, 79, 77, 80, 84, 79, 45, 118, 101, 114, 105, 102, 121, 72, 117, 109, 97, 110]"
+    },
+    {
+      "name": "WORLD_APP_ID",
+      "type": "bytes",
+      "value": "[115, 101, 108, 102, 95, 104, 111, 115, 116, 101, 100]"
+    },
+    {
+      "name": "WORLD_ID_PROOF_LENGTH",
+      "type": "u64",
+      "value": "256"
+    }
+  ]
+}

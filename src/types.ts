@@ -1,4 +1,6 @@
+// @ts-ignore idls aren't in the root directory (src)
 import type { Comptoken as ComptokenIdl } from "./idls/comptoken.js";
+// @ts-ignore idls aren't in the root directory (src)
 import type { SolanaWorldIdProgram as SolanaWorldIdIdl } from "./idls/solana_world_id_program.js";
 import type { ProgramWithConstants } from "./programWithConstants.js";
 
