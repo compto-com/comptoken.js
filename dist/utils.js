@@ -31,7 +31,7 @@ export function normalizeToBN(input) {
     return input;
 }
 export function decodeValidBlockhashesReturn(program, buffer) {
-    const decoded = program.coder.types.decode("comptoken::instructions::getValidBlockhashes::validBlockhashes", buffer);
+    const decoded = program.coder.types.decode("comptoken::instructions::get_valid_blockhashes::ValidBlockhashes", buffer);
     return {
         announced: Buffer.from(decoded.announced[0]),
         valid: Buffer.from(decoded.valid[0]),

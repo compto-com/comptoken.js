@@ -1,4 +1,4 @@
-import { default as anchor, Program, type Provider } from "@coral-xyz/anchor";
+import { default as anchor, Program, type Coder, type CustomAccountResolver, type Provider } from "@coral-xyz/anchor";
 import type { IdlConst, IdlInstruction, IdlType, IdlTypeDefined } from "@coral-xyz/anchor/dist/cjs/idl.ts";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
@@ -11,8 +11,8 @@ export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
     constructor(
         idl: Idl,
         provider?: Provider,
-        coder?: anchor.Coder,
-        getCustomResolver?: (instruction: IdlInstruction) => anchor.CustomAccountResolver<Idl> | undefined,
+        coder?: Coder,
+        getCustomResolver?: (instruction: IdlInstruction) => CustomAccountResolver<Idl> | undefined,
     ) {
         super(idl, provider, coder, getCustomResolver);
 

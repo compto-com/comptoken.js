@@ -1,10 +1,10 @@
-import type { Provider } from "@coral-xyz/anchor";
-import { ProgramWithConstants } from "./programWithConstants.js";
-import type { ComptokenIdl, SolanaWorldIdIDL } from "./types.js";
+import { type Provider } from "@coral-xyz/anchor";
+import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
 export declare function getComptokenIdl(idlPath: string): ComptokenIdl;
-export declare function getSolanaWorldIdIdl(idlPath: string): SolanaWorldIdIDL;
+export declare function getSolanaWorldIdIdl(idlPath: string): SolanaWorldIdIdl;
 export declare function getDefaultComptokenIdl(): ComptokenIdl;
-export declare function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIDL;
-export declare function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ProgramWithConstants<ComptokenIdl>;
-export declare function createSolanaWorldIdProgram(solanaWorldIdIdl: SolanaWorldIdIDL, provider: Provider): ProgramWithConstants<SolanaWorldIdIDL>;
+export declare function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIdl;
+export declare function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ComptokenProgram;
+export declare function createSolanaWorldIdProgram(solanaWorldIdIdl: SolanaWorldIdIdl, provider: Provider): SolanaWorldIdProgram;
+export declare function createDummyProvider(): Provider;
 //# sourceMappingURL=factory.d.ts.map
