@@ -46,9 +46,9 @@ export function normalizeToBN(input: number | BN | BigInt): BN {
 
 export function decodeValidBlockhashesReturn(program: ComptokenProgram, buffer: Buffer) {
     const decoded = program.coder.types.decode(
-        "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes",
+        "comptoken::instructions::getValidBlockhashes::validBlockhashes",
         buffer,
-    ) as IdlTypes<ComptokenIdl>["comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"];
+    );
     return {
         announced: Buffer.from(decoded.announced[0]),
         valid: Buffer.from(decoded.valid[0]),

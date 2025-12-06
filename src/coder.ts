@@ -2,17 +2,36 @@ import type { default as anchor, BorshAccountsCoder, BorshCoder, IdlAccounts, Id
 import type { BorshTypesCoder } from "@coral-xyz/anchor/dist/cjs/coder/borsh/types.js";
 import type { IdlAccount, IdlTypeDef } from "@coral-xyz/anchor/dist/cjs/idl.js";
 
+type SnakeToPascalCase<S extends string> = S extends `${infer First}_${infer Rest}`
+    ? `${Capitalize<First>}${SnakeToPascalCase<Capitalize<Rest>>}`
+    : Capitalize<S>;
+
+type SnakeToCamelCase<S extends string> = S extends `${infer First}_${infer Rest}`
+    ? `${Uncapitalize<First>}${SnakeToPascalCase<Capitalize<Rest>>}`
+    : Uncapitalize<S>;
+
+type CamelToSnakeCase<S extends string> = S extends `${infer First}${infer Rest}`
+    ? `${First extends Capitalize<First> ? "_" : ""}${Lowercase<First>}${CamelToSnakeCase<Rest>}`
+    : Lowercase<S>;
+
+type RustToTypeScript<S extends string> = S extends `${infer First}::${infer Rest}`
+    ? `${SnakeToCamelCase<First>}::${RustToTypeScript<Rest>}`
+    : SnakeToCamelCase<S>;
+
+type TypeScriptToRust<S extends string> = S extends `${infer First}::${infer Rest}`
+    ? `${CamelToSnakeCase<First>}::${TypeScriptToRust<Rest>}`
+    : Capitalize<S>;
+
 type AccountNames<Idl extends anchor.Idl> = Extract<
     Idl["accounts"] extends IdlAccount[] ? Idl["accounts"][number]["name"] : never,
     string
 >;
-type TypeNames<Idl extends anchor.Idl> = Extract<
-    Idl["types"] extends IdlTypeDef[] ? Idl["types"][number]["name"] : never,
-    string
+type TypeNames<Idl extends anchor.Idl> = RustToTypeScript<
+    Extract<Idl["types"] extends IdlTypeDef[] ? Idl["types"][number]["name"] : never, string>
 >;
 
 type AccountType<Idl extends anchor.Idl, A extends AccountNames<Idl>> = IdlAccounts<Idl>[A];
-type TypeType<Idl extends anchor.Idl, T extends TypeNames<Idl>> = IdlTypes<Idl>[T];
+type TypeType<Idl extends anchor.Idl, T extends TypeNames<Idl>> = IdlTypes<Idl>[TypeScriptToRust<T>];
 
 type BetterAccountsCoder<Idl extends anchor.Idl> = Omit<
     BorshAccountsCoder<AccountNames<Idl>>,

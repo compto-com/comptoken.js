@@ -33,7 +33,7 @@ function getConstants<Idl extends anchor.Idl>(program: Program<Idl>): Constants<
     return constants;
 }
 
-function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst["type"]> {
+function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
     switch (constant.type) {
         // potentially too big for number
         case "u64":
@@ -95,7 +95,7 @@ type IdlNumberType = "f64" | "f32" | "u8" | "i8" | "u16" | "i16" | "u32" | "i32"
 type IdlBooleanType = "bool";
 type IdlPublicKeyType = "pubkey";
 
-type IdlTypeToJSType<T extends IdlType> = T extends { type: IdlBNTypes }
+type IdlTypeToJSType<T extends { type: IdlType }> = T extends { type: IdlBNTypes }
     ? BN
     : T extends { type: IdlStringType }
     ? string
@@ -107,22 +107,14 @@ type IdlTypeToJSType<T extends IdlType> = T extends { type: IdlBNTypes }
     ? boolean
     : T extends { type: IdlPublicKeyType }
     ? PublicKey
+    : T extends { type: IdlTypeDefined }
+    ? IdlTypeDefinedToJSType<T>
+    : unknown;
+
+type IdlTypeDefinedToJSType<T extends { type: IdlTypeDefined }> = T extends { type: { defined: { name: "hash" } } }
+    ? Uint8Array
     : unknown;
 
 type Constants<ConstantsType extends anchor.Idl["constants"]> = ConstantsType extends IdlConst[]
-    ? {
-          [key in ConstantsType[number] as key["name"]]: key extends { type: IdlBNTypes }
-              ? BN
-              : key extends { type: IdlStringType }
-              ? string
-              : key extends { type: IdlBytesType }
-              ? Uint8Array
-              : key extends { type: IdlNumberType }
-              ? number
-              : key extends { type: IdlBooleanType }
-              ? boolean
-              : key extends { type: IdlPublicKeyType }
-              ? PublicKey
-              : unknown;
-      }
+    ? { [key in ConstantsType[number] as key["name"]]: IdlTypeToJSType<key> }
     : {};
