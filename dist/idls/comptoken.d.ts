@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/comptoken.json`.
  */
 export type Comptoken = {
-    "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh";
+    "address": 'DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR';
     "metadata": {
         "name": "comptoken";
         "version": "0.2.0";
@@ -583,7 +583,7 @@ export type Comptoken = {
                 },
                 {
                     "name": "worldIdProgram";
-                    "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh";
+                    "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G";
                 },
                 {
                     "name": "worldIdRoot";
@@ -1214,7 +1214,7 @@ export type Comptoken = {
                 },
                 {
                     "name": "worldIdProgram";
-                    "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh";
+                    "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G";
                 },
                 {
                     "name": "worldIdRoot";
@@ -1468,7 +1468,7 @@ export type Comptoken = {
                 },
                 {
                     "name": "worldIdProgram";
-                    "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh";
+                    "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G";
                 },
                 {
                     "name": "worldIdRoot";
@@ -1678,8 +1678,58 @@ export type Comptoken = {
     "errors": [
         {
             "code": 6000;
-            "name": "customError";
-            "msg": "Custom error message";
+            "name": "nullifierAlreadyUsed";
+            "msg": "Nullifier has already been used";
+        },
+        {
+            "code": 6001;
+            "name": "userDataNotCurrent";
+            "msg": "User data account is not current";
+        },
+        {
+            "code": 6002;
+            "name": "invalidMiningProof";
+            "msg": "Invalid mining proof submitted";
+        },
+        {
+            "code": 6003;
+            "name": "duplicateMiningProof";
+            "msg": "Duplicate mining proof submitted";
+        },
+        {
+            "code": 6004;
+            "name": "userDataProofsCapacityExceeded";
+            "msg": "User data proofs capacity exceeded, consider increasing capacity";
+        },
+        {
+            "code": 6005;
+            "name": "invalidNullifierOwner";
+            "msg": "Invalid nullifier owner";
+        },
+        {
+            "code": 6006;
+            "name": "invalidNullifierHash";
+            "msg": "Invalid nullifier hash for user data";
+        },
+        {
+            "code": 6007;
+            "name": "invalidCapacity";
+            "msg": "Invalid capacity for resizing user data account";
+        },
+        {
+            "code": 6008;
+            "name": "insufficientFunds";
+            "msg": "Insufficient funds in token account";
+        },
+        {
+            "code": 6009;
+            "name": "accountAlreadyInitialized";
+            "msg": "Account has already been initialized";
+        },
+        {
+            "code": 6010;
+            "name": "staleValidBlockhash";
+            "msg": "Stale valid blockhash";
         }
     ];
     "types": [

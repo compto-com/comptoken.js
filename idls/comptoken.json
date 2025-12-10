@@ -1,5 +1,5 @@
 {
-  "address": "F9SW7dcgDHV6QGYcFHyqKtykAdsHvL4BJYA2YP4YkEJX",
+  "address": "DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR",
   "metadata": {
     "name": "comptoken",
     "version": "0.2.0",
@@ -577,7 +577,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
         },
         {
           "name": "world_id_root"
@@ -1208,7 +1208,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
         },
         {
           "name": "world_id_root"
@@ -1462,7 +1462,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "9TMVfMJs6qyu8jnc7TJfAWhn81Ju2uSRj4uYqLHyKXnh"
+          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
         },
         {
           "name": "world_id_root"
