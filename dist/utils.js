@@ -10,10 +10,23 @@ export function getReturnLog(logs) {
     const buffer = Buffer.from(data, "base64");
     return { key, data, buffer };
 }
+async function getTransaction(connection, sig, attempts = 5, initialDelayMs = 500) {
+    let delayMs = initialDelayMs;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+        const tx = await connection.getTransaction(sig, {
+            commitment: "confirmed",
+            maxSupportedTransactionVersion: 0,
+        });
+        if (tx !== null) {
+            return tx;
+        }
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        delayMs *= 2; // Exponential backoff
+    }
+    throw new Error("Failed to fetch transaction after multiple attempts");
+}
 export async function getValidBlockhashesReturn({ program, sig, }) {
-    const tx = await program.provider.connection.getTransaction(sig, {
-        maxSupportedTransactionVersion: 0,
-    });
+    const tx = await getTransaction(program.provider.connection, sig);
     if (tx?.meta?.logMessages === undefined || tx?.meta?.logMessages === null) {
         throw new Error("Failed to get transaction logs for valid blockhashes");
     }

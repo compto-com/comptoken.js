@@ -1,10 +1,9 @@
 import assert from "assert";
 
-import type { IdlTypes } from "@coral-xyz/anchor";
 import BN from "bn.js";
 
-import type { TransactionSignature } from "@solana/web3.js";
-import type { ComptokenIdl, ComptokenProgram } from "./types.js";
+import type { Connection, TransactionSignature } from "@solana/web3.js";
+import type { ComptokenProgram } from "./types.js";
 
 export function getReturnLog(logs: string[]) {
     const prefix = "Program return: ";
@@ -17,6 +16,22 @@ export function getReturnLog(logs: string[]) {
     return { key, data, buffer };
 }
 
+async function getTransaction(connection: Connection, sig: TransactionSignature, attempts = 5, initialDelayMs = 500) {
+    let delayMs = initialDelayMs;
+    for (let attempt = 0; attempt < attempts; attempt++) {
+        const tx = await connection.getTransaction(sig, {
+            commitment: "confirmed",
+            maxSupportedTransactionVersion: 0,
+        });
+        if (tx !== null) {
+            return tx;
+        }
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        delayMs *= 2; // Exponential backoff
+    }
+    throw new Error("Failed to fetch transaction after multiple attempts");
+}
+
 export async function getValidBlockhashesReturn({
     program,
     sig,
@@ -24,9 +39,7 @@ export async function getValidBlockhashesReturn({
     program: ComptokenProgram;
     sig: TransactionSignature;
 }): Promise<{ announced: Buffer; valid: Buffer }> {
-    const tx = await program.provider.connection.getTransaction(sig, {
-        maxSupportedTransactionVersion: 0,
-    });
+    const tx = await getTransaction(program.provider.connection, sig);
     if (tx?.meta?.logMessages === undefined || tx?.meta?.logMessages === null) {
         throw new Error("Failed to get transaction logs for valid blockhashes");
     }
