@@ -363,33 +363,145 @@
           }
         },
         {
-          "name": "latest_root",
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "InitializeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_verification_type",
+      "discriminator": [
+        184,
+        119,
+        35,
+        119,
+        182,
+        43,
+        241,
+        118
+      ],
+      "accounts": [
+        {
+          "name": "payer",
           "writable": true,
+          "signer": true
+        },
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "program_data",
           "pda": {
             "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  76,
-                  97,
-                  116,
-                  101,
-                  115,
-                  116,
-                  82,
-                  111,
-                  111,
-                  116
+                  14,
+                  43,
+                  195,
+                  218,
+                  205,
+                  159,
+                  92,
+                  53,
+                  121,
+                  7,
+                  185,
+                  178,
+                  10,
+                  242,
+                  221,
+                  174,
+                  239,
+                  162,
+                  121,
+                  156,
+                  166,
+                  252,
+                  71,
+                  151,
+                  117,
+                  167,
+                  118,
+                  6,
+                  213,
+                  249,
+                  89,
+                  191
                 ]
-              },
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                2,
+                168,
+                246,
+                145,
+                78,
+                136,
+                161,
+                176,
+                226,
+                16,
+                21,
+                62,
+                247,
+                99,
+                174,
+                43,
+                0,
+                194,
+                185,
+                61,
+                22,
+                193,
+                36,
+                210,
+                192,
+                83,
+                122,
+                16,
+                4,
+                128,
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  0
+                  67,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
                 ]
               }
             ]
           }
+        },
+        {
+          "name": "latest_root",
+          "writable": true
         },
         {
           "name": "system_program",
@@ -401,7 +513,7 @@
           "name": "args",
           "type": {
             "defined": {
-              "name": "InitializeArgs"
+              "name": "InitializeVerificationTypeArgs"
             }
           }
         }
@@ -735,59 +847,11 @@
         },
         {
           "name": "root",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "root_hash"
-              },
-              {
-                "kind": "const",
-                "value": [
-                  0
-                ]
-              }
-            ]
-          }
+          "writable": true
         },
         {
           "name": "latest_root",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  76,
-                  97,
-                  116,
-                  101,
-                  115,
-                  116,
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "const",
-                "value": [
-                  0
-                ]
-              }
-            ]
-          }
+          "writable": true
         },
         {
           "name": "config",
@@ -934,10 +998,9 @@
         {
           "name": "verification_type",
           "type": {
-            "array": [
-              "u8",
-              1
-            ]
+            "defined": {
+              "name": "VerificationType"
+            }
           }
         },
         {
@@ -1294,6 +1357,22 @@
       }
     },
     {
+      "name": "InitializeVerificationTypeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "verification_type",
+            "type": {
+              "defined": {
+                "name": "VerificationType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "LatestRoot",
       "type": {
         "kind": "struct",
@@ -1346,10 +1425,9 @@
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "VerificationType"
+              }
             }
           }
         ]
@@ -1415,11 +1493,27 @@
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "VerificationType"
+              }
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationType",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Query"
+          },
+          {
+            "name": "Orb"
           }
         ]
       }

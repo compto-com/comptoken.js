@@ -369,33 +369,145 @@ export type SolanaWorldIdProgram = {
           }
         },
         {
-          "name": "latestRoot",
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "initializeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initializeVerificationType",
+      "discriminator": [
+        184,
+        119,
+        35,
+        119,
+        182,
+        43,
+        241,
+        118
+      ],
+      "accounts": [
+        {
+          "name": "payer",
           "writable": true,
+          "signer": true
+        },
+        {
+          "name": "owner",
+          "signer": true
+        },
+        {
+          "name": "programData",
           "pda": {
             "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  76,
-                  97,
-                  116,
-                  101,
-                  115,
-                  116,
-                  82,
-                  111,
-                  111,
-                  116
+                  14,
+                  43,
+                  195,
+                  218,
+                  205,
+                  159,
+                  92,
+                  53,
+                  121,
+                  7,
+                  185,
+                  178,
+                  10,
+                  242,
+                  221,
+                  174,
+                  239,
+                  162,
+                  121,
+                  156,
+                  166,
+                  252,
+                  71,
+                  151,
+                  117,
+                  167,
+                  118,
+                  6,
+                  213,
+                  249,
+                  89,
+                  191
                 ]
-              },
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                2,
+                168,
+                246,
+                145,
+                78,
+                136,
+                161,
+                176,
+                226,
+                16,
+                21,
+                62,
+                247,
+                99,
+                174,
+                43,
+                0,
+                194,
+                185,
+                61,
+                22,
+                193,
+                36,
+                210,
+                192,
+                83,
+                122,
+                16,
+                4,
+                128,
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
               {
                 "kind": "const",
                 "value": [
-                  0
+                  67,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
                 ]
               }
             ]
           }
+        },
+        {
+          "name": "latestRoot",
+          "writable": true
         },
         {
           "name": "systemProgram",
@@ -407,7 +519,7 @@ export type SolanaWorldIdProgram = {
           "name": "args",
           "type": {
             "defined": {
-              "name": "initializeArgs"
+              "name": "initializeVerificationTypeArgs"
             }
           }
         }
@@ -741,59 +853,11 @@ export type SolanaWorldIdProgram = {
         },
         {
           "name": "root",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "rootHash"
-              },
-              {
-                "kind": "const",
-                "value": [
-                  0
-                ]
-              }
-            ]
-          }
+          "writable": true
         },
         {
           "name": "latestRoot",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  76,
-                  97,
-                  116,
-                  101,
-                  115,
-                  116,
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "const",
-                "value": [
-                  0
-                ]
-              }
-            ]
-          }
+          "writable": true
         },
         {
           "name": "config",
@@ -940,10 +1004,9 @@ export type SolanaWorldIdProgram = {
         {
           "name": "verificationType",
           "type": {
-            "array": [
-              "u8",
-              1
-            ]
+            "defined": {
+              "name": "verificationType"
+            }
           }
         },
         {
@@ -1300,6 +1363,22 @@ export type SolanaWorldIdProgram = {
       }
     },
     {
+      "name": "initializeVerificationTypeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "verificationType",
+            "type": {
+              "defined": {
+                "name": "verificationType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "latestRoot",
       "type": {
         "kind": "struct",
@@ -1352,10 +1431,9 @@ export type SolanaWorldIdProgram = {
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "verificationType"
+              }
             }
           }
         ]
@@ -1421,11 +1499,27 @@ export type SolanaWorldIdProgram = {
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "verificationType"
+              }
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "verificationType",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "query"
+          },
+          {
+            "name": "orb"
           }
         ]
       }
