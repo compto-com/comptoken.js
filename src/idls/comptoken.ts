@@ -1961,10 +1961,9 @@ export type Comptoken = {
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "verificationType"
+              }
             }
           }
         ]
@@ -2097,10 +2096,9 @@ export type Comptoken = {
               "SEED: Verification type."
             ],
             "type": {
-              "array": [
-                "u8",
-                1
-              ]
+              "defined": {
+                "name": "verificationType"
+              }
             }
           }
         ]
@@ -2225,6 +2223,23 @@ export type Comptoken = {
                 }
               }
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "verificationType",
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "query"
+          },
+          {
+            "name": "orb"
           }
         ]
       }
@@ -2424,12 +2439,12 @@ export type Comptoken = {
     {
       "name": "worldAction",
       "type": "bytes",
-      "value": "[67, 79, 77, 80, 84, 79, 45, 118, 101, 114, 105, 102, 121, 72, 117, 109, 97, 110]"
+      "value": "[118, 101, 114, 105, 102, 121, 72, 117, 109, 97, 110]"
     },
     {
       "name": "worldAppId",
       "type": "bytes",
-      "value": "[115, 101, 108, 102, 95, 104, 111, 115, 116, 101, 100]"
+      "value": "[97, 112, 112, 95, 115, 116, 97, 103, 105, 110, 103, 95, 54, 53, 49, 102, 53, 56, 99, 99, 101, 54, 48, 98, 51, 101, 56, 50, 52, 97, 52, 50, 48, 54, 99, 100, 99, 102, 51, 100, 52, 48, 50, 53]"
     },
     {
       "name": "worldIdProofLength",
