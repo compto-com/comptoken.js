@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/comptoken.json`.
  */
 export type Comptoken = {
-    "address": 'DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR';
+    "address": "DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR";
     "metadata": {
         "name": "comptoken";
         "version": "0.2.0";
@@ -1759,14 +1759,14 @@ export type Comptoken = {
                         };
                     },
                     {
-                        "name": "rootExpiry";
+                        "name": "rootExpirySec";
                         "docs": [
                             "Time (in seconds) after which a root should be considered expired."
                         ];
                         "type": "u64";
                     },
                     {
-                        "name": "allowedUpdateStaleness";
+                        "name": "allowedUpdateStalenessSec";
                         "docs": [
                             "Time (in seconds) after which an attempted update should be rejected."
                         ];
@@ -1937,7 +1937,7 @@ export type Comptoken = {
                         };
                     },
                     {
-                        "name": "readBlockTime";
+                        "name": "readBlockTimeUs";
                         "docs": [
                             "Block time (in microseconds) from which the root was read."
                         ];
@@ -1960,11 +1960,7 @@ export type Comptoken = {
                         "docs": [
                             "SEED: Verification type."
                         ];
-                        "type": {
-                            "defined": {
-                                "name": "verificationType";
-                            };
-                        };
+                        "type": "u8";
                     }
                 ];
             };
@@ -2065,7 +2061,7 @@ export type Comptoken = {
                         };
                     },
                     {
-                        "name": "readBlockTime";
+                        "name": "readBlockTimeUs";
                         "docs": [
                             "Block time (in microseconds) from which the root was read."
                         ];
@@ -2095,11 +2091,7 @@ export type Comptoken = {
                         "docs": [
                             "SEED: Verification type."
                         ];
-                        "type": {
-                            "defined": {
-                                "name": "verificationType";
-                            };
-                        };
+                        "type": "u8";
                     }
                 ];
             };
@@ -2223,23 +2215,6 @@ export type Comptoken = {
                                 };
                             };
                         };
-                    }
-                ];
-            };
-        },
-        {
-            "name": "verificationType";
-            "repr": {
-                "kind": "rust";
-            };
-            "type": {
-                "kind": "enum";
-                "variants": [
-                    {
-                        "name": "query";
-                    },
-                    {
-                        "name": "orb";
                     }
                 ];
             };
@@ -2444,7 +2419,7 @@ export type Comptoken = {
         {
             "name": "worldAppId";
             "type": "bytes";
-            "value": "[97, 112, 112, 95, 115, 116, 97, 103, 105, 110, 103, 95, 54, 53, 49, 102, 53, 56, 99, 99, 101, 54, 48, 98, 51, 101, 56, 50, 52, 97, 52, 50, 48, 54, 99, 100, 99, 102, 51, 100, 52, 48, 50, 53]";
+            "value": "[]";
         },
         {
             "name": "worldIdProofLength";

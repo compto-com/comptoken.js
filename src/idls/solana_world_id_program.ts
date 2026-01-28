@@ -369,143 +369,6 @@ export type SolanaWorldIdProgram = {
           }
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": [
-        {
-          "name": "args",
-          "type": {
-            "defined": {
-              "name": "initializeArgs"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "initializeVerificationType",
-      "discriminator": [
-        184,
-        119,
-        35,
-        119,
-        182,
-        43,
-        241,
-        118
-      ],
-      "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "owner",
-          "signer": true
-        },
-        {
-          "name": "programData",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  14,
-                  43,
-                  195,
-                  218,
-                  205,
-                  159,
-                  92,
-                  53,
-                  121,
-                  7,
-                  185,
-                  178,
-                  10,
-                  242,
-                  221,
-                  174,
-                  239,
-                  162,
-                  121,
-                  156,
-                  166,
-                  252,
-                  71,
-                  151,
-                  117,
-                  167,
-                  118,
-                  6,
-                  213,
-                  249,
-                  89,
-                  191
-                ]
-              }
-            ],
-            "program": {
-              "kind": "const",
-              "value": [
-                2,
-                168,
-                246,
-                145,
-                78,
-                136,
-                161,
-                176,
-                226,
-                16,
-                21,
-                62,
-                247,
-                99,
-                174,
-                43,
-                0,
-                194,
-                185,
-                61,
-                22,
-                193,
-                36,
-                210,
-                192,
-                83,
-                122,
-                16,
-                4,
-                128,
-                0,
-                0
-              ]
-            }
-          }
-        },
-        {
-          "name": "config",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  67,
-                  111,
-                  110,
-                  102,
-                  105,
-                  103
-                ]
-              }
-            ]
-          }
-        },
-        {
           "name": "latestRoot",
           "writable": true
         },
@@ -519,7 +382,7 @@ export type SolanaWorldIdProgram = {
           "name": "args",
           "type": {
             "defined": {
-              "name": "initializeVerificationTypeArgs"
+              "name": "initializeArgs"
             }
           }
         }
@@ -613,7 +476,7 @@ export type SolanaWorldIdProgram = {
       ],
       "args": [
         {
-          "name": "allowedUpdateStaleness",
+          "name": "allowedUpdateStalenessSec",
           "type": "u64"
         }
       ]
@@ -660,7 +523,7 @@ export type SolanaWorldIdProgram = {
       ],
       "args": [
         {
-          "name": "rootExpiry",
+          "name": "rootExpirySec",
           "type": "u64"
         }
       ]
@@ -923,54 +786,10 @@ export type SolanaWorldIdProgram = {
       ],
       "accounts": [
         {
-          "name": "root",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "rootHash"
-              },
-              {
-                "kind": "arg",
-                "path": "verificationType"
-              }
-            ]
-          }
+          "name": "root"
         },
         {
-          "name": "latestRoot",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  76,
-                  97,
-                  116,
-                  101,
-                  115,
-                  116,
-                  82,
-                  111,
-                  111,
-                  116
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "verificationType"
-              }
-            ]
-          }
+          "name": "latestRoot"
         },
         {
           "name": "config",
@@ -1003,11 +822,7 @@ export type SolanaWorldIdProgram = {
         },
         {
           "name": "verificationType",
-          "type": {
-            "defined": {
-              "name": "verificationType"
-            }
-          }
+          "type": "u8"
         },
         {
           "name": "signalHash",
@@ -1299,14 +1114,14 @@ export type SolanaWorldIdProgram = {
             }
           },
           {
-            "name": "rootExpiry",
+            "name": "rootExpirySec",
             "docs": [
               "Time (in seconds) after which a root should be considered expired."
             ],
             "type": "u64"
           },
           {
-            "name": "allowedUpdateStaleness",
+            "name": "allowedUpdateStalenessSec",
             "docs": [
               "Time (in seconds) after which an attempted update should be rejected."
             ],
@@ -1352,28 +1167,12 @@ export type SolanaWorldIdProgram = {
         "kind": "struct",
         "fields": [
           {
-            "name": "rootExpiry",
+            "name": "rootExpirySec",
             "type": "u64"
           },
           {
-            "name": "allowedUpdateStaleness",
+            "name": "allowedUpdateStalenessSec",
             "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "initializeVerificationTypeArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "verificationType",
-            "type": {
-              "defined": {
-                "name": "verificationType"
-              }
-            }
           }
         ]
       }
@@ -1407,7 +1206,7 @@ export type SolanaWorldIdProgram = {
             }
           },
           {
-            "name": "readBlockTime",
+            "name": "readBlockTimeUs",
             "docs": [
               "Block time (in microseconds) from which the root was read."
             ],
@@ -1430,11 +1229,7 @@ export type SolanaWorldIdProgram = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": {
-              "defined": {
-                "name": "verificationType"
-              }
-            }
+            "type": "u8"
           }
         ]
       }
@@ -1468,7 +1263,7 @@ export type SolanaWorldIdProgram = {
             }
           },
           {
-            "name": "readBlockTime",
+            "name": "readBlockTimeUs",
             "docs": [
               "Block time (in microseconds) from which the root was read."
             ],
@@ -1498,28 +1293,7 @@ export type SolanaWorldIdProgram = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": {
-              "defined": {
-                "name": "verificationType"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "verificationType",
-      "repr": {
-        "kind": "rust"
-      },
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "query"
-          },
-          {
-            "name": "orb"
+            "type": "u8"
           }
         ]
       }
