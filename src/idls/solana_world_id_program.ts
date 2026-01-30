@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/solana_world_id_program.json`.
  */
 export type SolanaWorldIdProgram = {
-  "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G",
+  "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L",
   "metadata": {
     "name": "solanaWorldIdProgram",
     "version": "0.1.0",
@@ -81,38 +81,38 @@ export type SolanaWorldIdProgram = {
               {
                 "kind": "const",
                 "value": [
-                  14,
-                  43,
-                  195,
+                  67,
+                  229,
+                  98,
+                  177,
+                  207,
+                  170,
+                  35,
+                  86,
+                  100,
+                  147,
+                  163,
+                  140,
+                  234,
+                  95,
+                  196,
+                  255,
+                  105,
+                  227,
+                  4,
+                  123,
+                  193,
+                  164,
+                  114,
+                  254,
+                  215,
+                  88,
                   218,
-                  205,
-                  159,
-                  92,
-                  53,
-                  121,
-                  7,
-                  185,
-                  178,
-                  10,
-                  242,
-                  221,
-                  174,
-                  239,
-                  162,
-                  121,
-                  156,
-                  166,
-                  252,
-                  71,
-                  151,
-                  117,
-                  167,
-                  118,
-                  6,
-                  213,
-                  249,
-                  89,
-                  191
+                  190,
+                  232,
+                  184,
+                  241,
+                  209
                 ]
               }
             ],
@@ -275,38 +275,38 @@ export type SolanaWorldIdProgram = {
               {
                 "kind": "const",
                 "value": [
-                  14,
-                  43,
-                  195,
+                  67,
+                  229,
+                  98,
+                  177,
+                  207,
+                  170,
+                  35,
+                  86,
+                  100,
+                  147,
+                  163,
+                  140,
+                  234,
+                  95,
+                  196,
+                  255,
+                  105,
+                  227,
+                  4,
+                  123,
+                  193,
+                  164,
+                  114,
+                  254,
+                  215,
+                  88,
                   218,
-                  205,
-                  159,
-                  92,
-                  53,
-                  121,
-                  7,
-                  185,
-                  178,
-                  10,
-                  242,
-                  221,
-                  174,
-                  239,
-                  162,
-                  121,
-                  156,
-                  166,
-                  252,
-                  71,
-                  151,
-                  117,
-                  167,
-                  118,
-                  6,
-                  213,
-                  249,
-                  89,
-                  191
+                  190,
+                  232,
+                  184,
+                  241,
+                  209
                 ]
               }
             ],
@@ -370,7 +370,32 @@ export type SolanaWorldIdProgram = {
         },
         {
           "name": "latestRoot",
-          "writable": true
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "systemProgram",
@@ -602,38 +627,38 @@ export type SolanaWorldIdProgram = {
               {
                 "kind": "const",
                 "value": [
-                  14,
-                  43,
-                  195,
+                  67,
+                  229,
+                  98,
+                  177,
+                  207,
+                  170,
+                  35,
+                  86,
+                  100,
+                  147,
+                  163,
+                  140,
+                  234,
+                  95,
+                  196,
+                  255,
+                  105,
+                  227,
+                  4,
+                  123,
+                  193,
+                  164,
+                  114,
+                  254,
+                  215,
+                  88,
                   218,
-                  205,
-                  159,
-                  92,
-                  53,
-                  121,
-                  7,
-                  185,
-                  178,
-                  10,
-                  242,
-                  221,
-                  174,
-                  239,
-                  162,
-                  121,
-                  156,
-                  166,
-                  252,
-                  71,
-                  151,
-                  117,
-                  167,
-                  118,
-                  6,
-                  213,
-                  249,
-                  89,
-                  191
+                  190,
+                  232,
+                  184,
+                  241,
+                  209
                 ]
               }
             ],
@@ -716,11 +741,59 @@ export type SolanaWorldIdProgram = {
         },
         {
           "name": "root",
-          "writable": true
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "rootHash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "latestRoot",
-          "writable": true
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "config",
@@ -786,10 +859,54 @@ export type SolanaWorldIdProgram = {
       ],
       "accounts": [
         {
-          "name": "root"
+          "name": "root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "rootHash"
+              },
+              {
+                "kind": "arg",
+                "path": "verificationType"
+              }
+            ]
+          }
         },
         {
-          "name": "latestRoot"
+          "name": "latestRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "verificationType"
+              }
+            ]
+          }
         },
         {
           "name": "config",
@@ -822,7 +939,12 @@ export type SolanaWorldIdProgram = {
         },
         {
           "name": "verificationType",
-          "type": "u8"
+          "type": {
+            "array": [
+              "u8",
+              1
+            ]
+          }
         },
         {
           "name": "signalHash",
@@ -1229,7 +1351,12 @@ export type SolanaWorldIdProgram = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }
@@ -1293,7 +1420,12 @@ export type SolanaWorldIdProgram = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }

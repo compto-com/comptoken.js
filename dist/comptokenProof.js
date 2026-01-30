@@ -17,9 +17,6 @@ export class ComptokenProof {
         this.target = target;
         this.header = this.constructHeader();
         this.hash = this.generateHash();
-        if (!_a.isLowerThanTarget(this.hash, this.target)) {
-            throw new Error(`The provided proof does not have enough zeroes: ${Buffer.from(this.hash).toString("hex")}`);
-        }
     }
     /**
      * @deprecated for testing only
@@ -29,28 +26,26 @@ export class ComptokenProof {
      * @param {Uint8Array} params.extraData
      * @param {number}     params.version
      * @param {number}     params.timestamp
+     * @param {number}     [params.startNonce=0]
      * @returns {ComptokenProof}
      */
-    static mine({ pubkey, recentBlockHash, extraData, version, timestamp, }) {
-        recentBlockHash = Uint8Array.from(Buffer.from(recentBlockHash).swap32());
-        for (let nonce = 0; nonce < 2 ** 32; nonce++) {
-            try {
-                // there is no reason to *ever* mine a real proof in JS
-                return new _a({
-                    pubkey,
-                    recentBlockHash,
-                    extraData,
-                    nonce,
-                    version,
-                    timestamp,
-                    target: _a.TARGET_BYTES_DEVNET,
-                });
-            }
-            catch (e) {
-                continue;
+    static mine({ pubkey, recentBlockHash, extraData, version, timestamp, startNonce = 0, }) {
+        for (let nonce = startNonce; nonce < 2 ** 32; nonce++) {
+            // there is no reason to *ever* mine a real proof in JS
+            const proof = new _a({
+                pubkey,
+                recentBlockHash,
+                extraData,
+                nonce,
+                version,
+                timestamp,
+                target: _a.TARGET_BYTES_DEVNET,
+            });
+            if (_a.isLowerThanTarget(proof.hash, proof.target)) {
+                return proof;
             }
         }
-        throw new Error("Failed to mine a valid proof after 2^32 attempts");
+        throw new Error(`Failed to mine a valid proof under 2^32 starting from nonce ${startNonce}`);
     }
     static doubleSHA256(data) {
         const firstHash = createHash("sha256").update(Uint8Array.from(data)).digest();
@@ -71,25 +66,28 @@ export class ComptokenProof {
     constructHeader() {
         const version = Buffer.allocUnsafe(4);
         version.writeUInt32LE(this.version);
-        const prevHashLE = Uint8Array.from(this.recentBlockHash).reverse();
+        const prevHashLE = Buffer.from(this.recentBlockHash).reverse();
         const merkleRoot = _a.doubleSHA256(Uint8Array.from(Buffer.concat([this.extraData, this.pubkey.toBytes()])));
         const timestamp = Buffer.allocUnsafe(4);
         timestamp.writeUInt32LE(this.timestamp);
-        const nbits = Buffer.from([0xd8, 0xad, 0x0e, 0x18]);
+        const n = 0x180eadd8;
+        const nbits = Buffer.allocUnsafe(4);
+        nbits.writeUInt32LE(n);
         const nonce = Buffer.allocUnsafe(4);
         nonce.writeUInt32LE(this.nonce);
-        return Uint8Array.from(Buffer.concat([
-            Uint8Array.from(version), // Version (4 bytes)
-            Uint8Array.from(prevHashLE), // Previous Block Hash (32 bytes)
-            Uint8Array.from(merkleRoot), // Merkle Root Hash (32 bytes)
-            Uint8Array.from(timestamp), // Timestamp (4 bytes)
-            Uint8Array.from(nbits), // Difficulty Target (4 bytes)
-            Uint8Array.from(nonce), // Nonce (4 bytes)
+        const header = Uint8Array.from(Buffer.concat([
+            version, // Version (4 bytes)
+            prevHashLE, // Previous Block Hash (32 bytes)
+            merkleRoot, // Merkle Root Hash (32 bytes)
+            timestamp, // Timestamp (4 bytes)
+            nbits, // Difficulty Target (4 bytes)
+            nonce, // Nonce (4 bytes)
         ]));
+        return header;
     }
     generateHash() {
         let hashed = _a.doubleSHA256(this.header);
-        return Uint8Array.from(hashed).reverse();
+        return hashed.reverse();
     }
     serializeData() {
         let buffer = Buffer.concat([

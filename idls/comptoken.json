@@ -1,5 +1,5 @@
 {
-  "address": "DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR",
+  "address": "7j8p5AoS4z1LCPaDujSae6CXLRLKNThFbK5qqniGw9Nf",
   "metadata": {
     "name": "comptoken",
     "version": "0.2.0",
@@ -577,13 +577,69 @@
         },
         {
           "name": "world_id_program",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "world_id_root"
+          "name": "world_id_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
-          "name": "world_id_latest_root"
+          "name": "world_id_latest_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
           "name": "world_id_config",
@@ -1208,13 +1264,69 @@
         },
         {
           "name": "world_id_program",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "world_id_root"
+          "name": "world_id_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
-          "name": "world_id_latest_root"
+          "name": "world_id_latest_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
           "name": "world_id_config",
@@ -1462,13 +1574,69 @@
         },
         {
           "name": "world_id_program",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "world_id_root"
+          "name": "world_id_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
-          "name": "world_id_latest_root"
+          "name": "world_id_latest_root",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "world_id_program"
+            }
+          }
         },
         {
           "name": "world_id_config",
@@ -1954,7 +2122,12 @@
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }
@@ -2085,7 +2258,12 @@
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }

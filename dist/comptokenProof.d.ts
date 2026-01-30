@@ -29,19 +29,21 @@ export declare class ComptokenProof {
      * @param {Uint8Array} params.extraData
      * @param {number}     params.version
      * @param {number}     params.timestamp
+     * @param {number}     [params.startNonce=0]
      * @returns {ComptokenProof}
      */
-    static mine({ pubkey, recentBlockHash, extraData, version, timestamp, }: {
+    static mine({ pubkey, recentBlockHash, extraData, version, timestamp, startNonce, }: {
         pubkey: PublicKey;
         recentBlockHash: Uint8Array;
         extraData: Uint8Array;
         version: number;
         timestamp: number;
+        startNonce?: number;
     }): ComptokenProof;
     static doubleSHA256(data: Uint8Array): Uint8Array;
     static isLowerThanTarget(hash: Uint8Array, target?: number[]): boolean;
     constructHeader(): Uint8Array<ArrayBuffer>;
-    generateHash(): Uint8Array<ArrayBuffer>;
+    generateHash(): Uint8Array<ArrayBufferLike>;
     serializeData(): Buffer;
 }
 //# sourceMappingURL=comptokenProof.d.ts.map

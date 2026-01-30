@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/comptoken.json`.
  */
 export type Comptoken = {
-  "address": "DECEXSu551ynxGEkEc3VNSdc1jQ3XDK6dJx7G2G1M1PR",
+  "address": "7j8p5AoS4z1LCPaDujSae6CXLRLKNThFbK5qqniGw9Nf",
   "metadata": {
     "name": "comptoken",
     "version": "0.2.0",
@@ -583,13 +583,69 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "worldIdRoot"
+          "name": "worldIdRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
-          "name": "worldIdLatestRoot"
+          "name": "worldIdLatestRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
           "name": "worldIdConfig",
@@ -1214,13 +1270,69 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "worldIdRoot"
+          "name": "worldIdRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
-          "name": "worldIdLatestRoot"
+          "name": "worldIdLatestRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
           "name": "worldIdConfig",
@@ -1468,13 +1580,69 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "xKR13mh99ahnVnA7JRzmWv3eAi1ZYRyDva7VSRFca3G"
+          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
         },
         {
-          "name": "worldIdRoot"
+          "name": "worldIdRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.root_hash"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
-          "name": "worldIdLatestRoot"
+          "name": "worldIdLatestRoot",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  97,
+                  116,
+                  101,
+                  115,
+                  116,
+                  82,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "worldIdProgram"
+            }
+          }
         },
         {
           "name": "worldIdConfig",
@@ -1960,7 +2128,12 @@ export type Comptoken = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }
@@ -2091,7 +2264,12 @@ export type Comptoken = {
             "docs": [
               "SEED: Verification type."
             ],
-            "type": "u8"
+            "type": {
+              "array": [
+                "u8",
+                1
+              ]
+            }
           }
         ]
       }
