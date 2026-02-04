@@ -1,4 +1,8 @@
-import { createAssociatedTokenAccount, getAssociatedTokenAddressSync, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
+import {
+    createAssociatedTokenAccountIdempotent,
+    getAssociatedTokenAddressSync,
+    TOKEN_2022_PROGRAM_ID,
+} from "@solana/spl-token";
 import { PublicKey, type Signer } from "@solana/web3.js";
 
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
@@ -62,7 +66,7 @@ export async function createUserStakedTokenAccount(
     user: PublicKey,
     payer: Signer,
 ): Promise<PublicKey> {
-    return createAssociatedTokenAccount(
+    return createAssociatedTokenAccountIdempotent(
         program.provider.connection,
         payer,
         getStakedMintAddress(program),
@@ -77,7 +81,7 @@ export async function createUserUnstakedTokenAccount(
     user: PublicKey,
     payer: Signer,
 ): Promise<PublicKey> {
-    return createAssociatedTokenAccount(
+    return createAssociatedTokenAccountIdempotent(
         program.provider.connection,
         payer,
         getUnstakedMintAddress(program),
