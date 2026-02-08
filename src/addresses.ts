@@ -7,7 +7,7 @@ import { PublicKey, type Signer } from "@solana/web3.js";
 
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 
-const WorldVerificationType = 1;
+const WorldVerificationType = 0;
 
 export function getGlobalDataAddress(program: ComptokenProgram): PublicKey {
     return PublicKey.findProgramAddressSync([program.constants.globalDataSeed], program.programId)[0];

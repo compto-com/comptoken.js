@@ -1,6 +1,6 @@
-import { createAssociatedTokenAccount, getAssociatedTokenAddressSync, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
+import { createAssociatedTokenAccountIdempotent, getAssociatedTokenAddressSync, TOKEN_2022_PROGRAM_ID, } from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
-const WorldVerificationType = 1;
+const WorldVerificationType = 0;
 export function getGlobalDataAddress(program) {
     return PublicKey.findProgramAddressSync([program.constants.globalDataSeed], program.programId)[0];
 }
@@ -38,9 +38,9 @@ export function getUserUnstakedAssociatedTokenAddress(program, user) {
     return getAssociatedTokenAddressSync(getUnstakedMintAddress(program), user, false, TOKEN_2022_PROGRAM_ID);
 }
 export async function createUserStakedTokenAccount(program, user, payer) {
-    return createAssociatedTokenAccount(program.provider.connection, payer, getStakedMintAddress(program), user, undefined, TOKEN_2022_PROGRAM_ID);
+    return createAssociatedTokenAccountIdempotent(program.provider.connection, payer, getStakedMintAddress(program), user, undefined, TOKEN_2022_PROGRAM_ID);
 }
 export async function createUserUnstakedTokenAccount(program, user, payer) {
-    return createAssociatedTokenAccount(program.provider.connection, payer, getUnstakedMintAddress(program), user, undefined, TOKEN_2022_PROGRAM_ID);
+    return createAssociatedTokenAccountIdempotent(program.provider.connection, payer, getUnstakedMintAddress(program), user, undefined, TOKEN_2022_PROGRAM_ID);
 }
 //# sourceMappingURL=addresses.js.map
