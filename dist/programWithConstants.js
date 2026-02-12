@@ -5,11 +5,11 @@ const { bs58 } = anchor.utils.bytes;
 export class ProgramWithConstants extends Program {
     constructor(idl, provider, coder, getCustomResolver) {
         super(idl, provider, coder, getCustomResolver);
-        this.constants = getConstants(this);
+        this.constants = getConstants(this.idl);
     }
 }
-function getConstants(program) {
-    const rawConstants = program.idl.constants;
+export function getConstants(idl) {
+    const rawConstants = idl.constants;
     if (!rawConstants) {
         return {};
     }
@@ -49,8 +49,34 @@ function constantToValue(constant) {
         case "bool":
             return constant.value === "true";
         default:
-            if (typeof constant.type === "object" && "defined" in constant.type) {
-                return constantDefinedToValue({ ...constant, type: constant.type });
+            if (typeof constant.type === "object") {
+                if ("defined" in constant.type) {
+                    return constantDefinedToValue({ ...constant, type: constant.type });
+                }
+                else if ("array" in constant.type) {
+                    const type = constant.type.array[0];
+                    const arr = JSON.parse(constant.value);
+                    return arr.map((item) => constantToValue({ name: constant.name, type, value: JSON.stringify(item) }));
+                }
+                else if ("vec" in constant.type) {
+                    const type = constant.type.vec;
+                    const arr = JSON.parse(constant.value);
+                    return arr.map((item) => constantToValue({ name: constant.name, type, value: JSON.stringify(item) }));
+                }
+                else if ("option" in constant.type) {
+                    if (constant.value === "null") {
+                        return null;
+                    }
+                    const type = constant.type.option;
+                    return constantToValue({ name: constant.name, type, value: constant.value });
+                }
+                else if ("coption" in constant.type) {
+                    if (constant.value === "null") {
+                        return null;
+                    }
+                    const type = constant.type.coption;
+                    return constantToValue({ name: constant.name, type, value: constant.value });
+                }
             }
             throw new Error(`Unknown constant type: ${JSON.stringify(constant.type)}`);
     }

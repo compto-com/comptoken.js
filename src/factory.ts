@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 
 import { AnchorProvider, Wallet, web3, type Provider } from "@coral-xyz/anchor";
 
-import { ProgramWithConstants } from "./programWithConstants.js";
+import { getConstants, ProgramWithConstants } from "./programWithConstants.js";
 import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
 
 const dirPath = path.dirname(fileURLToPath(import.meta.url));
@@ -55,4 +55,8 @@ export function createDummyProvider(): Provider {
     const connection = new Connection(clusterApiUrl("devnet"));
     const dummyWallet = new Wallet(Keypair.generate());
     return new AnchorProvider(connection, dummyWallet);
+}
+
+export function getComptokenConstants() {
+    return getConstants(getDefaultComptokenIdl());
 }

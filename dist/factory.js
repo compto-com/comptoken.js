@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { AnchorProvider, Wallet, web3 } from "@coral-xyz/anchor";
-import { ProgramWithConstants } from "./programWithConstants.js";
+import { getConstants, ProgramWithConstants } from "./programWithConstants.js";
 const dirPath = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(dirPath, "..");
 export function getComptokenIdl(idlPath) {
@@ -39,5 +39,8 @@ export function createDummyProvider() {
     const connection = new Connection(clusterApiUrl("devnet"));
     const dummyWallet = new Wallet(Keypair.generate());
     return new AnchorProvider(connection, dummyWallet);
+}
+export function getComptokenConstants() {
+    return getConstants(getDefaultComptokenIdl());
 }
 //# sourceMappingURL=factory.js.map

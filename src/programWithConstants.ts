@@ -1,5 +1,14 @@
 import { default as anchor, Program, type Coder, type CustomAccountResolver, type Provider } from "@coral-xyz/anchor";
-import type { IdlConst, IdlInstruction, IdlType, IdlTypeDefined } from "@coral-xyz/anchor/dist/cjs/idl.ts";
+import type {
+    IdlConst,
+    IdlInstruction,
+    IdlType,
+    IdlTypeArray,
+    IdlTypeCOption,
+    IdlTypeDefined,
+    IdlTypeOption,
+    IdlTypeVec,
+} from "@coral-xyz/anchor/dist/cjs/idl.ts";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
@@ -16,12 +25,12 @@ export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
     ) {
         super(idl, provider, coder, getCustomResolver);
 
-        this.constants = getConstants(this);
+        this.constants = getConstants(this.idl);
     }
 }
 
-function getConstants<Idl extends anchor.Idl>(program: Program<Idl>): Constants<Idl["constants"]> {
-    const rawConstants = program.idl.constants;
+export function getConstants<Idl extends anchor.Idl>(idl: Idl): Constants<Idl["constants"]> {
+    const rawConstants = idl.constants;
     if (!rawConstants) {
         return {} as Constants<Idl["constants"]>;
     }
@@ -69,8 +78,34 @@ function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
             return constant.value === "true";
 
         default:
-            if (typeof constant.type === "object" && "defined" in constant.type) {
-                return constantDefinedToValue({ ...constant, type: constant.type });
+            if (typeof constant.type === "object") {
+                if ("defined" in constant.type) {
+                    return constantDefinedToValue({ ...constant, type: constant.type });
+                } else if ("array" in constant.type) {
+                    const type = constant.type.array[0];
+                    const arr = JSON.parse(constant.value) as any[];
+                    return arr.map((item) =>
+                        constantToValue({ name: constant.name, type, value: JSON.stringify(item) }),
+                    );
+                } else if ("vec" in constant.type) {
+                    const type = constant.type.vec;
+                    const arr = JSON.parse(constant.value) as any[];
+                    return arr.map((item) =>
+                        constantToValue({ name: constant.name, type, value: JSON.stringify(item) }),
+                    );
+                } else if ("option" in constant.type) {
+                    if (constant.value === "null") {
+                        return null;
+                    }
+                    const type = constant.type.option;
+                    return constantToValue({ name: constant.name, type, value: constant.value });
+                } else if ("coption" in constant.type) {
+                    if (constant.value === "null") {
+                        return null;
+                    }
+                    const type = constant.type.coption;
+                    return constantToValue({ name: constant.name, type, value: constant.value });
+                }
             }
             throw new Error(`Unknown constant type: ${JSON.stringify(constant.type)}`);
     }
@@ -98,18 +133,26 @@ type IdlPublicKeyType = "pubkey";
 type IdlTypeToJSType<T extends { type: IdlType }> = T extends { type: IdlBNTypes }
     ? BN
     : T extends { type: IdlStringType }
-    ? string
-    : T extends { type: IdlBytesType }
-    ? Uint8Array
-    : T extends { type: IdlNumberType }
-    ? number
-    : T extends { type: IdlBooleanType }
-    ? boolean
-    : T extends { type: IdlPublicKeyType }
-    ? PublicKey
-    : T extends { type: IdlTypeDefined }
-    ? IdlTypeDefinedToJSType<T>
-    : unknown;
+      ? string
+      : T extends { type: IdlBytesType }
+        ? Uint8Array
+        : T extends { type: IdlNumberType }
+          ? number
+          : T extends { type: IdlBooleanType }
+            ? boolean
+            : T extends { type: IdlPublicKeyType }
+              ? PublicKey
+              : T extends { type: IdlTypeDefined }
+                ? IdlTypeDefinedToJSType<T>
+                : T extends { type: IdlTypeArray }
+                  ? IdlTypeToJSType<{ type: T["type"]["array"][0] }>[]
+                  : T extends { type: IdlTypeVec }
+                    ? IdlTypeToJSType<{ type: T["type"]["vec"] }>[]
+                    : T extends { type: IdlTypeOption }
+                      ? IdlTypeToJSType<{ type: T["type"]["option"] }> | null
+                      : T extends { type: IdlTypeCOption }
+                        ? IdlTypeToJSType<{ type: T["type"]["coption"] }> | null
+                        : unknown;
 
 type IdlTypeDefinedToJSType<T extends { type: IdlTypeDefined }> = T extends { type: { defined: { name: "hash" } } }
     ? Uint8Array

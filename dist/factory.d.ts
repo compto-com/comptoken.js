@@ -7,4 +7,28 @@ export declare function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIdl;
 export declare function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ComptokenProgram;
 export declare function createSolanaWorldIdProgram(solanaWorldIdIdl: SolanaWorldIdIdl, provider: Provider): SolanaWorldIdProgram;
 export declare function createDummyProvider(): Provider;
+export declare function getComptokenConstants(): {
+    adjustFactor: number;
+    announcementInterval: import("bn.js");
+    comptokenDistributionMultiplier: import("bn.js");
+    comptokenMiningProofTarget: Uint8Array<ArrayBufferLike>;
+    comptokenMiningProofTargetDevnet: Uint8Array<ArrayBufferLike>;
+    dailyDistributionDataHistoryLength: import("bn.js");
+    earlyAdopterCount: number;
+    endGoalPercentIncrease: number;
+    globalDataSeed: Uint8Array<ArrayBufferLike>;
+    miningRewardAmount: import("bn.js");
+    mintDecimals: number;
+    minSupplyLimitAmt: import("bn.js");
+    nullifierSeed: Uint8Array<ArrayBufferLike>;
+    stakedMintSeed: Uint8Array<ArrayBufferLike>;
+    unstakedMintSeed: Uint8Array<ArrayBufferLike>;
+    userDataSeed: Uint8Array<ArrayBufferLike>;
+    userDataSizeWithoutProofs: import("bn.js");
+    verificationDuration: import("bn.js");
+    verificationType: number[];
+    worldAction: Uint8Array<ArrayBufferLike>;
+    worldAppId: Uint8Array<ArrayBufferLike>;
+    worldIdProofLength: import("bn.js");
+};
 //# sourceMappingURL=factory.d.ts.map
