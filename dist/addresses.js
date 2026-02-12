@@ -1,6 +1,7 @@
 import { createAssociatedTokenAccountIdempotent, getAssociatedTokenAddressSync, TOKEN_2022_PROGRAM_ID, } from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
-const WorldVerificationType = 0;
+import { getComptokenConstants } from "./factory.js";
+const WorldVerificationType = getComptokenConstants().verificationType;
 export function getGlobalDataAddress(program) {
     return PublicKey.findProgramAddressSync([program.constants.globalDataSeed], program.programId)[0];
 }
@@ -11,10 +12,10 @@ export function getWorldIdNullifierAddress(program, nullifier) {
     return PublicKey.findProgramAddressSync([program.constants.nullifierSeed, nullifier], program.programId)[0];
 }
 export function getWorldIdRootAddress(program, root) {
-    return PublicKey.findProgramAddressSync([Buffer.from("Root"), root, Buffer.from([WorldVerificationType])], program.programId)[0];
+    return PublicKey.findProgramAddressSync([Buffer.from("Root"), root, Buffer.from(WorldVerificationType)], program.programId)[0];
 }
 export function getWorldIdLatestRootAddress(program) {
-    return PublicKey.findProgramAddressSync([Buffer.from("LatestRoot"), Buffer.from([WorldVerificationType])], program.programId)[0];
+    return PublicKey.findProgramAddressSync([Buffer.from("LatestRoot"), Buffer.from(WorldVerificationType)], program.programId)[0];
 }
 export function getWorldIdConfigAddress(program) {
     return PublicKey.findProgramAddressSync([Buffer.from("Config")], program.programId)[0];

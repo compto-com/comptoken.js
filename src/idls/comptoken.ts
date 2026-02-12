@@ -605,7 +605,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -637,7 +637,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -1292,7 +1292,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -1324,7 +1324,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -1602,7 +1602,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -1634,7 +1634,7 @@ export type Comptoken = {
               {
                 "kind": "const",
                 "value": [
-                  0
+                  1
                 ]
               }
             ],
@@ -2590,9 +2590,19 @@ export type Comptoken = {
       "value": "2678400"
     },
     {
+      "name": "verificationType",
+      "type": {
+        "array": [
+          "u8",
+          1
+        ]
+      },
+      "value": "[1]"
+    },
+    {
       "name": "worldAction",
       "type": "bytes",
-      "value": "[118, 101, 114, 105, 102, 121, 72, 117, 109, 97, 110]"
+      "value": "[118, 101, 114, 105, 102, 121, 104, 117, 109, 97, 110]"
     },
     {
       "name": "worldAppId",

@@ -5,9 +5,10 @@ import {
 } from "@solana/spl-token";
 import { PublicKey, type Signer } from "@solana/web3.js";
 
+import { getComptokenConstants } from "./factory.js";
 import type { ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 
-const WorldVerificationType = 0;
+const WorldVerificationType = getComptokenConstants().verificationType;
 
 export function getGlobalDataAddress(program: ComptokenProgram): PublicKey {
     return PublicKey.findProgramAddressSync([program.constants.globalDataSeed], program.programId)[0];
@@ -23,14 +24,14 @@ export function getWorldIdNullifierAddress(program: ComptokenProgram, nullifier:
 
 export function getWorldIdRootAddress(program: SolanaWorldIdProgram, root: Buffer): PublicKey {
     return PublicKey.findProgramAddressSync(
-        [Buffer.from("Root"), root, Buffer.from([WorldVerificationType])],
+        [Buffer.from("Root"), root, Buffer.from(WorldVerificationType)],
         program.programId,
     )[0];
 }
 
 export function getWorldIdLatestRootAddress(program: SolanaWorldIdProgram): PublicKey {
     return PublicKey.findProgramAddressSync(
-        [Buffer.from("LatestRoot"), Buffer.from([WorldVerificationType])],
+        [Buffer.from("LatestRoot"), Buffer.from(WorldVerificationType)],
         program.programId,
     )[0];
 }
