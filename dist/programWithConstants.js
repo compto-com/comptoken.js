@@ -83,6 +83,7 @@ function constantToValue(constant) {
 }
 function constantDefinedToValue(constant) {
     switch (constant.type.defined.name) {
+        case "Hash":
         case "hash": {
             // Hash(<hash in base64?>)
             const buf = bs58.decode(constant.value.slice(5, -1));
