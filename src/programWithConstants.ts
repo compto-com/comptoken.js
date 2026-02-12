@@ -1,4 +1,5 @@
 import { default as anchor, Program, type Coder, type CustomAccountResolver, type Provider } from "@coral-xyz/anchor";
+import { convertIdlToCamelCase } from "@coral-xyz/anchor/dist/cjs/idl.js";
 import type {
     IdlConst,
     IdlInstruction,
@@ -30,7 +31,7 @@ export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
 }
 
 export function getConstants<Idl extends anchor.Idl>(idl: Idl): Constants<Idl["constants"]> {
-    const rawConstants = idl.constants;
+    const rawConstants = convertIdlToCamelCase(idl).constants;
     if (!rawConstants) {
         return {} as Constants<Idl["constants"]>;
     }
