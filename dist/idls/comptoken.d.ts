@@ -605,7 +605,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -637,7 +637,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -1292,7 +1292,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -1324,7 +1324,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -1602,7 +1602,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -1634,7 +1634,7 @@ export type Comptoken = {
                             {
                                 "kind": "const";
                                 "value": [
-                                    1
+                                    0
                                 ];
                             }
                         ];
@@ -2597,7 +2597,7 @@ export type Comptoken = {
                     1
                 ];
             };
-            "value": "[1]";
+            "value": "[0]";
         },
         {
             "name": "worldAction";

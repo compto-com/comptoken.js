@@ -1,4 +1,5 @@
 import { default as anchor, Program } from "@coral-xyz/anchor";
+import { convertIdlToCamelCase } from "@coral-xyz/anchor/dist/cjs/idl.js";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 const { bs58 } = anchor.utils.bytes;
@@ -9,7 +10,7 @@ export class ProgramWithConstants extends Program {
     }
 }
 export function getConstants(idl) {
-    const rawConstants = idl.constants;
+    const rawConstants = convertIdlToCamelCase(idl).constants;
     if (!rawConstants) {
         return {};
     }
