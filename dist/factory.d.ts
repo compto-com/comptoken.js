@@ -11,8 +11,6 @@ export declare function getComptokenConstants(): {
     adjustFactor: number;
     announcementInterval: import("bn.js");
     comptokenDistributionMultiplier: import("bn.js");
-    comptokenMiningProofTarget: Uint8Array<ArrayBufferLike>;
-    comptokenMiningProofTargetDevnet: Uint8Array<ArrayBufferLike>;
     dailyDistributionDataHistoryLength: import("bn.js");
     earlyAdopterCount: number;
     endGoalPercentIncrease: number;
@@ -21,6 +19,8 @@ export declare function getComptokenConstants(): {
     mintDecimals: number;
     minSupplyLimitAmt: import("bn.js");
     nullifierSeed: Uint8Array<ArrayBufferLike>;
+    proofDifficultyNbits: number;
+    proofDifficultyNbitsDevnet: number;
     stakedMintSeed: Uint8Array<ArrayBufferLike>;
     unstakedMintSeed: Uint8Array<ArrayBufferLike>;
     userDataSeed: Uint8Array<ArrayBufferLike>;

@@ -6,6 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _a, _ComptokenProof_TARGET_DIFFICULTY_DEVNET, _ComptokenProof_TARGET_DIFFICULTY_MAINNET, _ComptokenProof_makeTargetBytes;
 import { createHash } from "crypto";
 import { PublicKey } from "@solana/web3.js";
+import { getComptokenConstants } from "./factory.js";
 export class ComptokenProof {
     constructor({ pubkey, recentBlockHash, extraData, nonce, version, timestamp, target = _a.TARGET_BYTES, }) {
         this.pubkey = pubkey;
@@ -103,16 +104,17 @@ export class ComptokenProof {
         return buffer;
     }
 }
-_a = ComptokenProof, _ComptokenProof_makeTargetBytes = function _ComptokenProof_makeTargetBytes(difficulty) {
+_a = ComptokenProof, _ComptokenProof_makeTargetBytes = function _ComptokenProof_makeTargetBytes(nbits) {
+    const difficulty = (nbits >> 24) & 0xff;
     let target_bytes = Array.from({ length: 32 }, () => 0);
-    target_bytes[32 - (difficulty + 3)] = 0x0e;
-    target_bytes[32 - (difficulty + 2)] = 0xad;
-    target_bytes[32 - (difficulty + 1)] = 0xd8;
+    target_bytes[32 - (difficulty + 3)] = (nbits >> 16) & 0xff;
+    target_bytes[32 - (difficulty + 2)] = (nbits >> 8) & 0xff;
+    target_bytes[32 - (difficulty + 1)] = nbits & 0xff;
     return target_bytes;
 };
 // larger difficulty means fewer leading zeroes, so the target is easier
-_ComptokenProof_TARGET_DIFFICULTY_DEVNET = { value: 29 };
-_ComptokenProof_TARGET_DIFFICULTY_MAINNET = { value: 24 };
+_ComptokenProof_TARGET_DIFFICULTY_DEVNET = { value: getComptokenConstants().proofDifficultyNbitsDevnet };
+_ComptokenProof_TARGET_DIFFICULTY_MAINNET = { value: getComptokenConstants().proofDifficultyNbits };
 ComptokenProof.TARGET_BYTES = __classPrivateFieldGet(_a, _a, "m", _ComptokenProof_makeTargetBytes).call(_a, __classPrivateFieldGet(_a, _a, "f", _ComptokenProof_TARGET_DIFFICULTY_MAINNET));
 ComptokenProof.TARGET_BYTES_DEVNET = __classPrivateFieldGet(_a, _a, "m", _ComptokenProof_makeTargetBytes).call(_a, __classPrivateFieldGet(_a, _a, "f", _ComptokenProof_TARGET_DIFFICULTY_DEVNET));
 function numAsU32ToLEBytes(num) {

@@ -2507,24 +2507,6 @@ export type Comptoken = {
       "value": "146000"
     },
     {
-      "name": "comptokenMiningProofTarget",
-      "type": {
-        "defined": {
-          "name": "hash"
-        }
-      },
-      "value": "Hash(111112z4ztA9iySwNGQrNAcfusiGHxskGMbRamTedu)"
-    },
-    {
-      "name": "comptokenMiningProofTargetDevnet",
-      "type": {
-        "defined": {
-          "name": "hash"
-        }
-      },
-      "value": "Hash(zJTTCFkUQoNtgFdHbR17NeG3MaWmeHZZWH3x4W4QYoH)"
-    },
-    {
       "name": "dailyDistributionDataHistoryLength",
       "type": "u64",
       "value": "365"
@@ -2532,7 +2514,7 @@ export type Comptoken = {
     {
       "name": "earlyAdopterCount",
       "type": "u32",
-      "value": "1000000000"
+      "value": "1000000"
     },
     {
       "name": "endGoalPercentIncrease",
@@ -2563,6 +2545,16 @@ export type Comptoken = {
       "name": "nullifierSeed",
       "type": "bytes",
       "value": "[110, 117, 108, 108, 105, 102, 105, 101, 114]"
+    },
+    {
+      "name": "proofDifficultyNbits",
+      "type": "u32",
+      "value": "403615192"
+    },
+    {
+      "name": "proofDifficultyNbitsDevnet",
+      "type": "u32",
+      "value": "487501272"
     },
     {
       "name": "stakedMintSeed",

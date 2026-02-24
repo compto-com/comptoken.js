@@ -2501,24 +2501,6 @@
       "value": "146000"
     },
     {
-      "name": "COMPTOKEN_MINING_PROOF_TARGET",
-      "type": {
-        "defined": {
-          "name": "Hash"
-        }
-      },
-      "value": "Hash(111112z4ztA9iySwNGQrNAcfusiGHxskGMbRamTedu)"
-    },
-    {
-      "name": "COMPTOKEN_MINING_PROOF_TARGET_DEVNET",
-      "type": {
-        "defined": {
-          "name": "Hash"
-        }
-      },
-      "value": "Hash(zJTTCFkUQoNtgFdHbR17NeG3MaWmeHZZWH3x4W4QYoH)"
-    },
-    {
       "name": "DAILY_DISTRIBUTION_DATA_HISTORY_LENGTH",
       "type": "u64",
       "value": "365"
@@ -2526,7 +2508,7 @@
     {
       "name": "EARLY_ADOPTER_COUNT",
       "type": "u32",
-      "value": "1000000000"
+      "value": "1000000"
     },
     {
       "name": "END_GOAL_PERCENT_INCREASE",
@@ -2557,6 +2539,16 @@
       "name": "NULLIFIER_SEED",
       "type": "bytes",
       "value": "[110, 117, 108, 108, 105, 102, 105, 101, 114]"
+    },
+    {
+      "name": "PROOF_DIFFICULTY_NBITS",
+      "type": "u32",
+      "value": "403615192"
+    },
+    {
+      "name": "PROOF_DIFFICULTY_NBITS_DEVNET",
+      "type": "u32",
+      "value": "487501272"
     },
     {
       "name": "STAKED_MINT_SEED",
