@@ -37,4 +37,8 @@ export declare function isVerifiedHuman({ program, userData, }: {
     program: ComptokenProgram;
     userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): boolean | Promise<boolean>;
+export declare function getHistoricDistributions({ program, days, }: {
+    program: ComptokenProgram;
+    days?: number;
+}): Promise<HistoricDistribution[]>;
 //# sourceMappingURL=distribution.d.ts.map

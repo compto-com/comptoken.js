@@ -191,3 +191,30 @@ export function isVerifiedHuman({
 
     return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
 }
+
+export async function getHistoricDistributions({
+    program,
+    days = program.constants.dailyDistributionDataHistoryLength.toNumber(),
+}: {
+    program: ComptokenProgram;
+    days?: number;
+}): Promise<HistoricDistribution[]> {
+    const globalDataAddress = addresses.getGlobalDataAddress(program);
+
+    const globalData = await program.account.globalData.fetch(globalDataAddress);
+
+    const { buffer: historicDistributionsBuffer, position } = globalData.dailyDistribution.historicDistributions as {
+        buffer: HistoricDistribution[];
+        position: BN;
+    };
+
+    const historicDistributions = { buffer: historicDistributionsBuffer, position: position.toNumber() };
+
+    return [
+        ...ringBufferGetLastN(
+            historicDistributions,
+            program.constants.dailyDistributionDataHistoryLength.toNumber(),
+            days,
+        ),
+    ];
+}

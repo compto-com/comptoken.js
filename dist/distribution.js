@@ -73,4 +73,13 @@ export function isVerifiedHuman({ program, user, userData, }) {
     }
     return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
 }
+export async function getHistoricDistributions({ program, days = program.constants.dailyDistributionDataHistoryLength.toNumber(), }) {
+    const globalDataAddress = addresses.getGlobalDataAddress(program);
+    const globalData = await program.account.globalData.fetch(globalDataAddress);
+    const { buffer: historicDistributionsBuffer, position } = globalData.dailyDistribution.historicDistributions;
+    const historicDistributions = { buffer: historicDistributionsBuffer, position: position.toNumber() };
+    return [
+        ...ringBufferGetLastN(historicDistributions, program.constants.dailyDistributionDataHistoryLength.toNumber(), days),
+    ];
+}
 //# sourceMappingURL=distribution.js.map
