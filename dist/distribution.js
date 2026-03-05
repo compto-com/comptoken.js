@@ -73,13 +73,28 @@ export function isVerifiedHuman({ program, user, userData, }) {
     }
     return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
 }
-export async function getHistoricDistributions({ program, days = program.constants.dailyDistributionDataHistoryLength.toNumber(), }) {
+export async function getHistoricDistributionsWithStatus({ program, days = program.constants.dailyDistributionDataHistoryLength.toNumber(), }) {
     const globalDataAddress = addresses.getGlobalDataAddress(program);
     const globalData = await program.account.globalData.fetch(globalDataAddress);
+    const lastUpdateTimestamp = globalData.dailyDistribution.lastUpdateTimestamp.toNumber();
+    const expectedTimestamp = normalizeTimestamp(Math.floor(Date.now() / 1000));
     const { buffer: historicDistributionsBuffer, position } = globalData.dailyDistribution.historicDistributions;
     const historicDistributions = { buffer: historicDistributionsBuffer, position: position.toNumber() };
-    return [
+    const distributions = [
         ...ringBufferGetLastN(historicDistributions, program.constants.dailyDistributionDataHistoryLength.toNumber(), days),
     ];
+    return {
+        distributions,
+        isUpToDate: lastUpdateTimestamp === expectedTimestamp,
+        lastUpdateTimestamp,
+        expectedTimestamp,
+    };
+}
+export async function getHistoricDistributions({ program, days = program.constants.dailyDistributionDataHistoryLength.toNumber(), }) {
+    const historicDistributions = await getHistoricDistributionsWithStatus({ program, days });
+    if (!historicDistributions.isUpToDate) {
+        throw new Error("Historic distributions are not up to date");
+    }
+    return historicDistributions.distributions;
 }
 //# sourceMappingURL=distribution.js.map
