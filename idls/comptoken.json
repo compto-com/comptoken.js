@@ -289,54 +289,6 @@
       "args": []
     },
     {
-      "name": "get_valid_blockhashes",
-      "discriminator": [
-        19,
-        134,
-        134,
-        42,
-        30,
-        157,
-        237,
-        235
-      ],
-      "accounts": [
-        {
-          "name": "global_data",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  103,
-                  108,
-                  111,
-                  98,
-                  97,
-                  108,
-                  95,
-                  100,
-                  97,
-                  116,
-                  97
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "slot_hashes"
-        }
-      ],
-      "args": [],
-      "returns": {
-        "defined": {
-          "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"
-        }
-      }
-    },
-    {
       "name": "initialize",
       "discriminator": [
         175,
@@ -1012,6 +964,54 @@
           }
         }
       ]
+    },
+    {
+      "name": "sync_valid_blockhashes",
+      "discriminator": [
+        127,
+        131,
+        158,
+        199,
+        184,
+        137,
+        182,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "slot_hashes"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "CurrentBlockhashes"
+        }
+      }
     },
     {
       "name": "unstake",
@@ -1951,6 +1951,30 @@
       }
     },
     {
+      "name": "CurrentBlockhashes",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "announced",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "DailyDistributionData",
       "repr": {
         "kind": "c"
@@ -2028,7 +2052,7 @@
             "name": "valid_blockhashes",
             "type": {
               "defined": {
-                "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes"
+                "name": "ValidBlockhashes"
               }
             }
           }
@@ -2369,64 +2393,7 @@
       }
     },
     {
-      "name": "WorldIdVerificationData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "root_hash",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "nullifier_hash",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "proof",
-            "type": {
-              "array": [
-                "u8",
-                256
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "announced",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "valid",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes",
+      "name": "ValidBlockhashes",
       "repr": {
         "kind": "c"
       },
@@ -2456,6 +2423,39 @@
           {
             "name": "valid_blockhash_time",
             "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WorldIdVerificationData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "proof",
+            "type": {
+              "array": [
+                "u8",
+                256
+              ]
+            }
           }
         ]
       }

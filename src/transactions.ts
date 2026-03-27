@@ -50,27 +50,27 @@ export async function dailyDistribution({
     return methodBuilders.dailyDistributionBuilder({ program }).rpc();
 }
 
-function getValidBlockhashesRPC({
+function syncValidBlockhashesRPC({
     program, //
 }: {
     program: ComptokenProgram;
 }): Promise<TransactionSignature> {
-    return methodBuilders.getValidBlockhashesBuilder({ program }).rpc();
+    return methodBuilders.syncValidBlockhashesBuilder({ program }).rpc();
 }
 
 /**
- * Helper to get valid blockhashes by calling the getValidBlockhashes instruction and parsing the return data.
+ * Helper to sync valid blockhashes by calling the syncValidBlockhashes instruction and parsing the return data.
  * Unlike other instructions, this does not just submit a transaction; it also retrieves and decodes the return data.
  *
- * to manually retrieve valid blockhashes, use {@link utils.getValidBlockhashesReturn|getValidBlockhashesReturn} on the returned signature.
+ * to manually retrieve valid blockhashes, use {@link utils.syncValidBlockhashesReturn|syncValidBlockhashesReturn} on the returned signature.
  */
-export async function getValidBlockhashes({
+export async function syncValidBlockhashes({
     program, //
 }: {
     program: ComptokenProgram;
 }): Promise<{ sig: TransactionSignature; result: { announced: Buffer; valid: Buffer } }> {
-    const sig = await getValidBlockhashesRPC({ program });
-    const result = await utils.getValidBlockhashesReturn({ program, sig });
+    const sig = await syncValidBlockhashesRPC({ program });
+    const result = await utils.syncValidBlockhashesReturn({ program, sig });
     return { sig, result };
 }
 

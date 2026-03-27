@@ -8,5 +8,5 @@ export type * from "./types.js";
 
 import * as util from "./utils.js";
 export namespace utils {
-    export const { decodeValidBlockhashesReturn, getReturnLog, getValidBlockhashesReturn, normalizeTimestamp } = util;
+    export const { decodeValidBlockhashesReturn, getReturnLog, syncValidBlockhashesReturn, normalizeTimestamp } = util;
 }

@@ -73,15 +73,15 @@ export function dailyDistributionBuilder({
     return program.methods.dailyDistribution().accounts({});
 }
 
-type GetValidBlockhashesIdlIx = ComptokenIdl["instructions"][number] & { name: "getValidBlockhashes" };
-type GetValidBlockhashesBuilder = MethodsBuilder<ComptokenIdl, GetValidBlockhashesIdlIx>;
+type SyncValidBlockhashesIdlIx = ComptokenIdl["instructions"][number] & { name: "syncValidBlockhashes" };
+type SyncValidBlockhashesBuilder = MethodsBuilder<ComptokenIdl, SyncValidBlockhashesIdlIx>;
 
-export function getValidBlockhashesBuilder({
+export function syncValidBlockhashesBuilder({
     program, //
 }: {
     program: ComptokenProgram;
-}): GetValidBlockhashesBuilder {
-    return program.methods.getValidBlockhashes().accounts({
+}): SyncValidBlockhashesBuilder {
+    return program.methods.syncValidBlockhashes().accounts({
         slotHashes: SYSVAR_SLOT_HASHES_PUBKEY,
     });
 }
