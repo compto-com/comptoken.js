@@ -361,7 +361,7 @@ export type Comptoken = {
           "signer": true
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -385,7 +385,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -743,7 +743,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -767,7 +767,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -836,7 +836,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "mintStaked"
+                "path": "stakedMint"
               }
             ],
             "program": {
@@ -1056,7 +1056,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1080,7 +1080,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1150,7 +1150,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "mintStaked"
+                "path": "stakedMint"
               }
             ],
             "program": {
@@ -1236,7 +1236,8 @@ export type Comptoken = {
         {
           "name": "userWallet",
           "docs": [
-            "and user data accounts."
+            "",
+            "intentionally not a Signer since the user may not have access to the wallet used in the original verification"
           ],
           "relations": [
             "worldIdNullifier"
@@ -2304,30 +2305,6 @@ export type Comptoken = {
       }
     },
     {
-      "name": "testMintStakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "testMintUnstakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
       "name": "unstakeArgs",
       "type": {
         "kind": "struct",
@@ -2514,7 +2491,7 @@ export type Comptoken = {
     {
       "name": "earlyAdopterCount",
       "type": "u32",
-      "value": "1000000"
+      "value": "1000000000"
     },
     {
       "name": "endGoalPercentIncrease",

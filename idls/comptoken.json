@@ -355,7 +355,7 @@
           "signer": true
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -379,7 +379,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -737,7 +737,7 @@
           }
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -761,7 +761,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -830,7 +830,7 @@
               },
               {
                 "kind": "account",
-                "path": "mint_staked"
+                "path": "staked_mint"
               }
             ],
             "program": {
@@ -1050,7 +1050,7 @@
           }
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1074,7 +1074,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1144,7 +1144,7 @@
               },
               {
                 "kind": "account",
-                "path": "mint_staked"
+                "path": "staked_mint"
               }
             ],
             "program": {
@@ -1230,7 +1230,8 @@
         {
           "name": "user_wallet",
           "docs": [
-            "and user data accounts."
+            "",
+            "intentionally not a Signer since the user may not have access to the wallet used in the original verification"
           ],
           "relations": [
             "world_id_nullifier"
@@ -2298,30 +2299,6 @@
       }
     },
     {
-      "name": "TestMintStakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "TestMintUnstakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
       "name": "UnstakeArgs",
       "type": {
         "kind": "struct",
@@ -2508,7 +2485,7 @@
     {
       "name": "EARLY_ADOPTER_COUNT",
       "type": "u32",
-      "value": "1000000"
+      "value": "1000000000"
     },
     {
       "name": "END_GOAL_PERCENT_INCREASE",
