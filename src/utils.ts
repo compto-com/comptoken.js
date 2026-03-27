@@ -47,7 +47,7 @@ export async function syncValidBlockhashesReturn({
     return decodeValidBlockhashesReturn(program, buffer);
 }
 
-export function normalizeToBN(input: number | BN | BigInt): BN {
+export function normalizeToBN(input: number | BN | bigint): BN {
     if (typeof input === "bigint") {
         return new BN(input.toString());
     } else if (typeof input === "number") {
