@@ -1,9 +1,9 @@
 import type { MethodsBuilder } from "@coral-xyz/anchor/dist/cjs/program/namespace/methods.js";
-import { PublicKey, SYSVAR_SLOT_HASHES_PUBKEY, type Signer } from "@solana/web3.js";
+import { type PublicKey, SYSVAR_SLOT_HASHES_PUBKEY, type Signer } from "@solana/web3.js";
 import BN from "bn.js";
 
 import * as addresses from "./addresses.js";
-import { ComptokenProof } from "./comptokenProof.js";
+import type { ComptokenProof } from "./comptokenProof.js";
 import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 import * as utils from "./utils.js";
 
@@ -98,7 +98,7 @@ export function resizeUserDataAccountBuilder({
     },
 }: {
     program: ComptokenProgram;
-    newCapacity: number | BN | BigInt;
+    newCapacity: number | BN | bigint;
     accounts: {
         userWallet: Signer;
         payer?: Signer;
@@ -162,7 +162,7 @@ export function stakeBuilder({
     },
 }: {
     program: ComptokenProgram;
-    amount: number | BN | BigInt;
+    amount: number | BN | bigint;
     accounts: {
         userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
@@ -218,7 +218,7 @@ export function unstakeBuilder({
     },
 }: {
     program: ComptokenProgram;
-    amount: number | BN | BigInt;
+    amount: number | BN | bigint;
     accounts: {
         userWallet: Signer;
         userUnstakedTokenAccount?: PublicKey;
@@ -267,7 +267,6 @@ export function unverifyBuilder({
             userWallet: user,
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
-            worldIdConfig: addresses.getWorldIdConfigAddress(solanaWorldIdProgram),
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
         });
 }
