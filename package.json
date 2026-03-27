@@ -5,6 +5,8 @@
     "description": "helper functions for calling the Comptoken RPC calls on Solana",
     "main": "index.js",
     "scripts": {
+        "build": "tsc",
+        "prepare": "npm run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
