@@ -1221,16 +1221,16 @@ export type Comptoken = {
       ]
     },
     {
-      "name": "unverify",
+      "name": "unverifyWithProofRecovery",
       "discriminator": [
-        55,
-        1,
-        25,
-        88,
-        115,
-        67,
-        20,
-        24
+        79,
+        111,
+        27,
+        98,
+        224,
+        170,
+        111,
+        39
       ],
       "accounts": [
         {
@@ -1420,16 +1420,16 @@ export type Comptoken = {
       ]
     },
     {
-      "name": "unverify2",
+      "name": "unverifyWithWalletSignature",
       "discriminator": [
-        245,
-        253,
-        215,
-        46,
-        19,
-        130,
-        22,
-        32
+        61,
+        189,
+        57,
+        95,
+        92,
+        139,
+        234,
+        206
       ],
       "accounts": [
         {
@@ -1521,7 +1521,7 @@ export type Comptoken = {
           "name": "args",
           "type": {
             "defined": {
-              "name": "unverify2Args"
+              "name": "unverifyWithWalletSignatureArgs"
             }
           }
         }
@@ -2341,7 +2341,7 @@ export type Comptoken = {
       }
     },
     {
-      "name": "unverify2Args",
+      "name": "unverifyWithWalletSignatureArgs",
       "type": {
         "kind": "struct",
         "fields": [

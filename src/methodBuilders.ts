@@ -235,10 +235,10 @@ export function unstakeBuilder({
         .signers([userWallet]);
 }
 
-type UnverifyIdlIx = ComptokenIdl["instructions"][number] & { name: "unverify" };
-type UnverifyBuilder = MethodsBuilder<ComptokenIdl, UnverifyIdlIx>;
+type UnverifyWithProofRecoveryIdlIx = ComptokenIdl["instructions"][number] & { name: "unverifyWithProofRecovery" };
+type UnverifyWithProofRecoveryBuilder = MethodsBuilder<ComptokenIdl, UnverifyWithProofRecoveryIdlIx>;
 
-export function unverifyBuilder({
+export function unverifyBuilderWithProofRecovery({
     program,
     solanaWorldIdProgram,
     rootHash,
@@ -256,9 +256,9 @@ export function unverifyBuilder({
     accounts: {
         user: PublicKey;
     };
-}): UnverifyBuilder {
+}): UnverifyWithProofRecoveryBuilder {
     return program.methods
-        .unverify({
+        .unverifyWithProofRecovery({
             rootHash: { 0: [...rootHash] },
             nullifierHash: { 0: [...nullifierHash] },
             proof: [...proof],
@@ -271,10 +271,10 @@ export function unverifyBuilder({
         });
 }
 
-type Unverify2IdlIx = ComptokenIdl["instructions"][number] & { name: "unverify2" };
-type Unverify2Builder = MethodsBuilder<ComptokenIdl, Unverify2IdlIx>;
+type UnverifyWithWalletSignatureIdlIx = ComptokenIdl["instructions"][number] & { name: "unverifyWithWalletSignature" };
+type UnverifyWithWalletSignatureBuilder = MethodsBuilder<ComptokenIdl, UnverifyWithWalletSignatureIdlIx>;
 
-export function unverify2Builder({
+export function unverifyWithWalletSignatureBuilder({
     program,
     nullifierHash,
     accounts: {
@@ -286,9 +286,9 @@ export function unverify2Builder({
     accounts: {
         userWallet: Signer;
     };
-}): Unverify2Builder {
+}): UnverifyWithWalletSignatureBuilder {
     return program.methods
-        .unverify2({
+        .unverifyWithWalletSignature({
             nullifierHash: { 0: [...nullifierHash] },
         })
         .accountsPartial({

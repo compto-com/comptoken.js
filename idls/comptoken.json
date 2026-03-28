@@ -1215,16 +1215,16 @@
       ]
     },
     {
-      "name": "unverify",
+      "name": "unverify_with_proof_recovery",
       "discriminator": [
-        55,
-        1,
-        25,
-        88,
-        115,
-        67,
-        20,
-        24
+        79,
+        111,
+        27,
+        98,
+        224,
+        170,
+        111,
+        39
       ],
       "accounts": [
         {
@@ -1414,16 +1414,16 @@
       ]
     },
     {
-      "name": "unverify2",
+      "name": "unverify_with_wallet_signature",
       "discriminator": [
-        245,
-        253,
-        215,
-        46,
-        19,
-        130,
-        22,
-        32
+        61,
+        189,
+        57,
+        95,
+        92,
+        139,
+        234,
+        206
       ],
       "accounts": [
         {
@@ -1515,7 +1515,7 @@
           "name": "args",
           "type": {
             "defined": {
-              "name": "Unverify2Args"
+              "name": "UnverifyWithWalletSignatureArgs"
             }
           }
         }
@@ -2335,7 +2335,7 @@
       }
     },
     {
-      "name": "Unverify2Args",
+      "name": "UnverifyWithWalletSignatureArgs",
       "type": {
         "kind": "struct",
         "fields": [
