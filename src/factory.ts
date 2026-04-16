@@ -1,14 +1,11 @@
 import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 
 import { AnchorProvider, Wallet, web3, type Provider } from "@coral-xyz/anchor";
 
+import comptokenIdlJson from "../idls/comptoken.json" with { type: "json" };
+import solanaWorldIdIdlJson from "../idls/solana_world_id_program.json" with { type: "json" };
 import { getConstants, ProgramWithConstants } from "./programWithConstants.js";
 import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
-
-const dirPath = path.dirname(fileURLToPath(import.meta.url));
-const projectRoot = path.resolve(dirPath, "..");
 
 export function getComptokenIdl(idlPath: string): ComptokenIdl {
     const idl: ComptokenIdl = JSON.parse(fs.readFileSync(idlPath, "utf8"));
@@ -21,15 +18,13 @@ export function getSolanaWorldIdIdl(idlPath: string): SolanaWorldIdIdl {
 }
 
 export function getDefaultComptokenIdl(): ComptokenIdl {
-    const idl: ComptokenIdl = JSON.parse(fs.readFileSync(path.resolve(`${projectRoot}/idls/comptoken.json`), "utf8"));
-    return idl;
+    // this technically allows for mutation of the default IDL, but I don't see a reason to mutate it, and this is simpler and faster
+    return comptokenIdlJson as ComptokenIdl;
 }
 
 export function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIdl {
-    const idl: SolanaWorldIdIdl = JSON.parse(
-        fs.readFileSync(path.resolve(`${projectRoot}/idls/solana_world_id_program.json`), "utf8"),
-    );
-    return idl;
+    // this technically allows for mutation of the default IDL, but I don't see a reason to mutate it, and this is simpler and faster
+    return solanaWorldIdIdlJson as SolanaWorldIdIdl;
 }
 
 export function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ComptokenProgram {
