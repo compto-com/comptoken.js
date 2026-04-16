@@ -7,11 +7,11 @@ const VERIFICATION_TYPE = getComptokenConstants().verificationType;
 
 // importing spl-token takes ~10s (for some reason), so this is just a trimmed down version of an export from spl-token
 function getAssociatedTokenAddressSync(mint: PublicKey, owner: PublicKey): PublicKey {
-    const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+    const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
     const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
 
     const [address] = PublicKey.findProgramAddressSync(
-        [owner.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+        [owner.toBuffer(), TOKEN_2022_PROGRAM_ID.toBuffer(), mint.toBuffer()],
         ASSOCIATED_TOKEN_PROGRAM_ID,
     );
     return address;
