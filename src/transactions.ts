@@ -203,7 +203,7 @@ export async function unverifyWithProofRecovery({
     };
 }): Promise<TransactionSignature> {
     return methodBuilders
-        .unverifyBuilderWithProofRecovery({
+        .unverifyWithProofRecoveryBuilder({
             program,
             solanaWorldIdProgram,
             rootHash,
