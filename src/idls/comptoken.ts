@@ -535,7 +535,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
@@ -1271,7 +1271,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
@@ -1581,7 +1581,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
