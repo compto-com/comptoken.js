@@ -295,54 +295,6 @@ export type Comptoken = {
       "args": []
     },
     {
-      "name": "getValidBlockhashes",
-      "discriminator": [
-        19,
-        134,
-        134,
-        42,
-        30,
-        157,
-        237,
-        235
-      ],
-      "accounts": [
-        {
-          "name": "globalData",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  103,
-                  108,
-                  111,
-                  98,
-                  97,
-                  108,
-                  95,
-                  100,
-                  97,
-                  116,
-                  97
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "slotHashes"
-        }
-      ],
-      "args": [],
-      "returns": {
-        "defined": {
-          "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"
-        }
-      }
-    },
-    {
       "name": "initialize",
       "discriminator": [
         175,
@@ -361,7 +313,7 @@ export type Comptoken = {
           "signer": true
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -385,7 +337,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -583,7 +535,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
@@ -743,7 +695,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -767,7 +719,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -836,7 +788,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "mintStaked"
+                "path": "stakedMint"
               }
             ],
             "program": {
@@ -1020,6 +972,54 @@ export type Comptoken = {
       ]
     },
     {
+      "name": "syncValidBlockhashes",
+      "discriminator": [
+        127,
+        131,
+        158,
+        199,
+        184,
+        137,
+        182,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "globalData",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "slotHashes"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "currentBlockhashes"
+        }
+      }
+    },
+    {
       "name": "unstake",
       "discriminator": [
         90,
@@ -1056,7 +1056,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintStaked",
+          "name": "stakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1080,7 +1080,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "mintUnstaked",
+          "name": "unstakedMint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1150,7 +1150,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "mintStaked"
+                "path": "stakedMint"
               }
             ],
             "program": {
@@ -1221,22 +1221,23 @@ export type Comptoken = {
       ]
     },
     {
-      "name": "unverify",
+      "name": "unverifyWithProofRecovery",
       "discriminator": [
-        55,
-        1,
-        25,
-        88,
-        115,
-        67,
-        20,
-        24
+        79,
+        111,
+        27,
+        98,
+        224,
+        170,
+        111,
+        39
       ],
       "accounts": [
         {
           "name": "userWallet",
           "docs": [
-            "and user data accounts."
+            "",
+            "intentionally not a Signer since the user may not have access to the wallet used in the original verification"
           ],
           "relations": [
             "worldIdNullifier"
@@ -1270,7 +1271,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
@@ -1419,16 +1420,16 @@ export type Comptoken = {
       ]
     },
     {
-      "name": "unverify2",
+      "name": "unverifyWithWalletSignature",
       "discriminator": [
-        245,
-        253,
-        215,
-        46,
-        19,
-        130,
-        22,
-        32
+        61,
+        189,
+        57,
+        95,
+        92,
+        139,
+        234,
+        206
       ],
       "accounts": [
         {
@@ -1520,7 +1521,7 @@ export type Comptoken = {
           "name": "args",
           "type": {
             "defined": {
-              "name": "unverify2Args"
+              "name": "unverifyWithWalletSignatureArgs"
             }
           }
         }
@@ -1580,7 +1581,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdProgram",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "worldIdRoot",
@@ -1956,6 +1957,30 @@ export type Comptoken = {
       }
     },
     {
+      "name": "currentBlockhashes",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "announced",
+            "type": {
+              "defined": {
+                "name": "hash"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "type": {
+              "defined": {
+                "name": "hash"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "dailyDistributionData",
       "repr": {
         "kind": "c"
@@ -2033,7 +2058,7 @@ export type Comptoken = {
             "name": "validBlockhashes",
             "type": {
               "defined": {
-                "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes"
+                "name": "validBlockhashes"
               }
             }
           }
@@ -2304,30 +2329,6 @@ export type Comptoken = {
       }
     },
     {
-      "name": "testMintStakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "testMintUnstakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
       "name": "unstakeArgs",
       "type": {
         "kind": "struct",
@@ -2340,7 +2341,7 @@ export type Comptoken = {
       }
     },
     {
-      "name": "unverify2Args",
+      "name": "unverifyWithWalletSignatureArgs",
       "type": {
         "kind": "struct",
         "fields": [
@@ -2398,64 +2399,7 @@ export type Comptoken = {
       }
     },
     {
-      "name": "worldIdVerificationData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "rootHash",
-            "type": {
-              "defined": {
-                "name": "hash"
-              }
-            }
-          },
-          {
-            "name": "nullifierHash",
-            "type": {
-              "defined": {
-                "name": "hash"
-              }
-            }
-          },
-          {
-            "name": "proof",
-            "type": {
-              "array": [
-                "u8",
-                256
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "announced",
-            "type": {
-              "defined": {
-                "name": "hash"
-              }
-            }
-          },
-          {
-            "name": "valid",
-            "type": {
-              "defined": {
-                "name": "hash"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes",
+      "name": "validBlockhashes",
       "repr": {
         "kind": "c"
       },
@@ -2488,6 +2432,39 @@ export type Comptoken = {
           }
         ]
       }
+    },
+    {
+      "name": "worldIdVerificationData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rootHash",
+            "type": {
+              "defined": {
+                "name": "hash"
+              }
+            }
+          },
+          {
+            "name": "nullifierHash",
+            "type": {
+              "defined": {
+                "name": "hash"
+              }
+            }
+          },
+          {
+            "name": "proof",
+            "type": {
+              "array": [
+                "u8",
+                256
+              ]
+            }
+          }
+        ]
+      }
     }
   ],
   "constants": [
@@ -2505,24 +2482,6 @@ export type Comptoken = {
       "name": "comptokenDistributionMultiplier",
       "type": "u64",
       "value": "146000"
-    },
-    {
-      "name": "comptokenMiningProofTarget",
-      "type": {
-        "defined": {
-          "name": "hash"
-        }
-      },
-      "value": "Hash(111112z4ztA9iySwNGQrNAcfusiGHxskGMbRamTedu)"
-    },
-    {
-      "name": "comptokenMiningProofTargetDevnet",
-      "type": {
-        "defined": {
-          "name": "hash"
-        }
-      },
-      "value": "Hash(zJTTCFkUQoNtgFdHbR17NeG3MaWmeHZZWH3x4W4QYoH)"
     },
     {
       "name": "dailyDistributionDataHistoryLength",
@@ -2563,6 +2522,16 @@ export type Comptoken = {
       "name": "nullifierSeed",
       "type": "bytes",
       "value": "[110, 117, 108, 108, 105, 102, 105, 101, 114]"
+    },
+    {
+      "name": "proofDifficultyNbits",
+      "type": "u32",
+      "value": "403615192"
+    },
+    {
+      "name": "proofDifficultyNbitsDevnet",
+      "type": "u32",
+      "value": "487501272"
     },
     {
       "name": "stakedMintSeed",

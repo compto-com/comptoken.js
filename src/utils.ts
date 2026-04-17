@@ -32,7 +32,7 @@ async function getTransaction(connection: Connection, sig: TransactionSignature,
     throw new Error("Failed to fetch transaction after multiple attempts");
 }
 
-export async function getValidBlockhashesReturn({
+export async function syncValidBlockhashesReturn({
     program,
     sig,
 }: {
@@ -47,7 +47,7 @@ export async function getValidBlockhashesReturn({
     return decodeValidBlockhashesReturn(program, buffer);
 }
 
-export function normalizeToBN(input: number | BN | BigInt): BN {
+export function normalizeToBN(input: number | BN | bigint): BN {
     if (typeof input === "bigint") {
         return new BN(input.toString());
     } else if (typeof input === "number") {
@@ -58,10 +58,7 @@ export function normalizeToBN(input: number | BN | BigInt): BN {
 }
 
 export function decodeValidBlockhashesReturn(program: ComptokenProgram, buffer: Buffer) {
-    const decoded = program.coder.types.decode(
-        "comptoken::instructions::getValidBlockhashes::validBlockhashes",
-        buffer,
-    );
+    const decoded = program.coder.types.decode("currentBlockhashes", buffer);
     return {
         announced: Buffer.from(decoded.announced[0]),
         valid: Buffer.from(decoded.valid[0]),

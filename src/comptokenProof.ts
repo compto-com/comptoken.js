@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 
 import { PublicKey } from "@solana/web3.js";
+import { getComptokenConstants } from "./factory.js";
 
 export class ComptokenProof {
     pubkey: PublicKey; // PublicKey
@@ -16,17 +17,18 @@ export class ComptokenProof {
     hash: Uint8Array; // [u8; 32]
 
     // larger difficulty means fewer leading zeroes, so the target is easier
-    static readonly #TARGET_DIFFICULTY_DEVNET = 29;
-    static readonly #TARGET_DIFFICULTY_MAINNET = 24;
+    static readonly #TARGET_DIFFICULTY_DEVNET = getComptokenConstants().proofDifficultyNbitsDevnet;
+    static readonly #TARGET_DIFFICULTY_MAINNET = getComptokenConstants().proofDifficultyNbits;
 
     static readonly TARGET_BYTES = ComptokenProof.#makeTargetBytes(ComptokenProof.#TARGET_DIFFICULTY_MAINNET);
     static readonly TARGET_BYTES_DEVNET = ComptokenProof.#makeTargetBytes(ComptokenProof.#TARGET_DIFFICULTY_DEVNET);
 
-    static #makeTargetBytes(difficulty: number): number[] {
+    static #makeTargetBytes(nbits: number): number[] {
+        const difficulty = (nbits >> 24) & 0xff;
         let target_bytes = Array.from({ length: 32 }, () => 0);
-        target_bytes[32 - (difficulty + 3)] = 0x0e;
-        target_bytes[32 - (difficulty + 2)] = 0xad;
-        target_bytes[32 - (difficulty + 1)] = 0xd8;
+        target_bytes[32 - (difficulty + 3)] = (nbits >> 16) & 0xff;
+        target_bytes[32 - (difficulty + 2)] = (nbits >> 8) & 0xff;
+        target_bytes[32 - (difficulty + 1)] = nbits & 0xff;
         return target_bytes;
     }
 
@@ -134,7 +136,7 @@ export class ComptokenProof {
         const timestamp = Buffer.allocUnsafe(4);
         timestamp.writeUInt32LE(this.timestamp);
 
-        const n = 0x180eadd8;
+        const n = getComptokenConstants().proofDifficultyNbits;
         const nbits = Buffer.allocUnsafe(4);
         nbits.writeUInt32LE(n);
 
