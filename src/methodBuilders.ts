@@ -238,7 +238,7 @@ export function unstakeBuilder({
 type UnverifyWithProofRecoveryIdlIx = ComptokenIdl["instructions"][number] & { name: "unverifyWithProofRecovery" };
 type UnverifyWithProofRecoveryBuilder = MethodsBuilder<ComptokenIdl, UnverifyWithProofRecoveryIdlIx>;
 
-export function unverifyBuilderWithProofRecovery({
+export function unverifyWithProofRecoveryBuilder({
     program,
     solanaWorldIdProgram,
     rootHash,
