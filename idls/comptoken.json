@@ -289,54 +289,6 @@
       "args": []
     },
     {
-      "name": "get_valid_blockhashes",
-      "discriminator": [
-        19,
-        134,
-        134,
-        42,
-        30,
-        157,
-        237,
-        235
-      ],
-      "accounts": [
-        {
-          "name": "global_data",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  103,
-                  108,
-                  111,
-                  98,
-                  97,
-                  108,
-                  95,
-                  100,
-                  97,
-                  116,
-                  97
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "slot_hashes"
-        }
-      ],
-      "args": [],
-      "returns": {
-        "defined": {
-          "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes"
-        }
-      }
-    },
-    {
       "name": "initialize",
       "discriminator": [
         175,
@@ -355,7 +307,7 @@
           "signer": true
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -379,7 +331,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -577,7 +529,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "world_id_root",
@@ -737,7 +689,7 @@
           }
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -761,7 +713,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -830,7 +782,7 @@
               },
               {
                 "kind": "account",
-                "path": "mint_staked"
+                "path": "staked_mint"
               }
             ],
             "program": {
@@ -1014,6 +966,54 @@
       ]
     },
     {
+      "name": "sync_valid_blockhashes",
+      "discriminator": [
+        127,
+        131,
+        158,
+        199,
+        184,
+        137,
+        182,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "global_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "slot_hashes"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "CurrentBlockhashes"
+        }
+      }
+    },
+    {
       "name": "unstake",
       "discriminator": [
         90,
@@ -1050,7 +1050,7 @@
           }
         },
         {
-          "name": "mint_staked",
+          "name": "staked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1074,7 +1074,7 @@
           }
         },
         {
-          "name": "mint_unstaked",
+          "name": "unstaked_mint",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1144,7 +1144,7 @@
               },
               {
                 "kind": "account",
-                "path": "mint_staked"
+                "path": "staked_mint"
               }
             ],
             "program": {
@@ -1215,22 +1215,23 @@
       ]
     },
     {
-      "name": "unverify",
+      "name": "unverify_with_proof_recovery",
       "discriminator": [
-        55,
-        1,
-        25,
-        88,
-        115,
-        67,
-        20,
-        24
+        79,
+        111,
+        27,
+        98,
+        224,
+        170,
+        111,
+        39
       ],
       "accounts": [
         {
           "name": "user_wallet",
           "docs": [
-            "and user data accounts."
+            "",
+            "intentionally not a Signer since the user may not have access to the wallet used in the original verification"
           ],
           "relations": [
             "world_id_nullifier"
@@ -1264,7 +1265,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "world_id_root",
@@ -1413,16 +1414,16 @@
       ]
     },
     {
-      "name": "unverify2",
+      "name": "unverify_with_wallet_signature",
       "discriminator": [
-        245,
-        253,
-        215,
-        46,
-        19,
-        130,
-        22,
-        32
+        61,
+        189,
+        57,
+        95,
+        92,
+        139,
+        234,
+        206
       ],
       "accounts": [
         {
@@ -1514,7 +1515,7 @@
           "name": "args",
           "type": {
             "defined": {
-              "name": "Unverify2Args"
+              "name": "UnverifyWithWalletSignatureArgs"
             }
           }
         }
@@ -1574,7 +1575,7 @@
         },
         {
           "name": "world_id_program",
-          "address": "5a3BkvmSEWSkWnBaFZGAUiywmjoqBqzspje9UmxcwG6L"
+          "address": "7UyhiPLoB6zwVZMYzEcizhDQeCF5ixQgp4sFeAyu8U1g"
         },
         {
           "name": "world_id_root",
@@ -1950,6 +1951,30 @@
       }
     },
     {
+      "name": "CurrentBlockhashes",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "announced",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "DailyDistributionData",
       "repr": {
         "kind": "c"
@@ -2027,7 +2052,7 @@
             "name": "valid_blockhashes",
             "type": {
               "defined": {
-                "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes"
+                "name": "ValidBlockhashes"
               }
             }
           }
@@ -2298,30 +2323,6 @@
       }
     },
     {
-      "name": "TestMintStakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "TestMintUnstakedUncheckedArgs",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
       "name": "UnstakeArgs",
       "type": {
         "kind": "struct",
@@ -2334,7 +2335,7 @@
       }
     },
     {
-      "name": "Unverify2Args",
+      "name": "UnverifyWithWalletSignatureArgs",
       "type": {
         "kind": "struct",
         "fields": [
@@ -2392,64 +2393,7 @@
       }
     },
     {
-      "name": "WorldIdVerificationData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "root_hash",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "nullifier_hash",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "proof",
-            "type": {
-              "array": [
-                "u8",
-                256
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::instructions::get_valid_blockhashes::ValidBlockhashes",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "announced",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          },
-          {
-            "name": "valid",
-            "type": {
-              "defined": {
-                "name": "Hash"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "comptoken::state::global_data::valid_blockhashes::ValidBlockhashes",
+      "name": "ValidBlockhashes",
       "repr": {
         "kind": "c"
       },
@@ -2482,6 +2426,39 @@
           }
         ]
       }
+    },
+    {
+      "name": "WorldIdVerificationData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "defined": {
+                "name": "Hash"
+              }
+            }
+          },
+          {
+            "name": "proof",
+            "type": {
+              "array": [
+                "u8",
+                256
+              ]
+            }
+          }
+        ]
+      }
     }
   ],
   "constants": [
@@ -2508,7 +2485,7 @@
     {
       "name": "EARLY_ADOPTER_COUNT",
       "type": "u32",
-      "value": "1000000"
+      "value": "1000000000"
     },
     {
       "name": "END_GOAL_PERCENT_INCREASE",

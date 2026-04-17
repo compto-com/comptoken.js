@@ -50,27 +50,27 @@ export async function dailyDistribution({
     return methodBuilders.dailyDistributionBuilder({ program }).rpc();
 }
 
-function getValidBlockhashesRPC({
+function syncValidBlockhashesRPC({
     program, //
 }: {
     program: ComptokenProgram;
 }): Promise<TransactionSignature> {
-    return methodBuilders.getValidBlockhashesBuilder({ program }).rpc();
+    return methodBuilders.syncValidBlockhashesBuilder({ program }).rpc();
 }
 
 /**
- * Helper to get valid blockhashes by calling the getValidBlockhashes instruction and parsing the return data.
+ * Helper to sync valid blockhashes by calling the syncValidBlockhashes instruction and parsing the return data.
  * Unlike other instructions, this does not just submit a transaction; it also retrieves and decodes the return data.
  *
- * to manually retrieve valid blockhashes, use {@link utils.getValidBlockhashesReturn|getValidBlockhashesReturn} on the returned signature.
+ * to manually retrieve valid blockhashes, use {@link utils.syncValidBlockhashesReturn|syncValidBlockhashesReturn} on the returned signature.
  */
-export async function getValidBlockhashes({
+export async function syncValidBlockhashes({
     program, //
 }: {
     program: ComptokenProgram;
 }): Promise<{ sig: TransactionSignature; result: { announced: Buffer; valid: Buffer } }> {
-    const sig = await getValidBlockhashesRPC({ program });
-    const result = await utils.getValidBlockhashesReturn({ program, sig });
+    const sig = await syncValidBlockhashesRPC({ program });
+    const result = await utils.syncValidBlockhashesReturn({ program, sig });
     return { sig, result };
 }
 
@@ -183,7 +183,7 @@ export async function unstake({
     return methodBuilders.unstakeBuilder({ program, amount, accounts: { userWallet, userUnstakedTokenAccount } }).rpc();
 }
 
-export async function unverify({
+export async function unverifyWithProofRecovery({
     program,
     solanaWorldIdProgram,
     rootHash,
@@ -203,11 +203,18 @@ export async function unverify({
     };
 }): Promise<TransactionSignature> {
     return methodBuilders
-        .unverifyBuilder({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { user } })
+        .unverifyWithProofRecoveryBuilder({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { user },
+        })
         .rpc();
 }
 
-export async function unverify2({
+export async function unverifyWithWalletSignature({
     program,
     nullifierHash,
     accounts: {
@@ -220,7 +227,9 @@ export async function unverify2({
         userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
-    return methodBuilders.unverify2Builder({ program, nullifierHash, accounts: { userWallet } }).rpc();
+    return methodBuilders
+        .unverifyWithWalletSignatureBuilder({ program, nullifierHash, accounts: { userWallet } })
+        .rpc();
 }
 
 export async function verify({

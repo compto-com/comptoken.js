@@ -1,4 +1,11 @@
-import { default as anchor, Program, type Coder, type CustomAccountResolver, type Provider } from "@coral-xyz/anchor";
+import {
+    Program,
+    utils,
+    type Idl as AnchorIdl,
+    type Coder,
+    type CustomAccountResolver,
+    type Provider,
+} from "@coral-xyz/anchor";
 import { convertIdlToCamelCase } from "@coral-xyz/anchor/dist/cjs/idl.js";
 import type {
     IdlConst,
@@ -13,9 +20,9 @@ import type {
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
-const { bs58 } = anchor.utils.bytes;
+const { bs58 } = utils.bytes;
 
-export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
+export class ProgramWithConstants<Idl extends AnchorIdl> extends Program<Idl> {
     constants: Constants<Idl["constants"]>;
 
     constructor(
@@ -30,7 +37,7 @@ export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
     }
 }
 
-export function getConstants<Idl extends anchor.Idl>(idl: Idl): Constants<Idl["constants"]> {
+export function getConstants<Idl extends AnchorIdl>(idl: Idl): Constants<Idl["constants"]> {
     const rawConstants = convertIdlToCamelCase(idl).constants;
     if (!rawConstants) {
         return {} as Constants<Idl["constants"]>;
@@ -43,7 +50,7 @@ export function getConstants<Idl extends anchor.Idl>(idl: Idl): Constants<Idl["c
     return constants;
 }
 
-function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
+function constantToValue<T extends IdlConst>(constant: T): IdlTypeToJSType<T> {
     switch (constant.type) {
         // potentially too big for number
         case "u64":
@@ -52,20 +59,20 @@ function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
         case "i128":
         case "u256":
         case "i256":
-            return new BN(constant.value);
+            return new BN(constant.value) as IdlTypeToJSType<T>;
 
         case "string":
-            return constant.value;
+            return constant.value as IdlTypeToJSType<T>;
 
         case "pubkey":
-            return new PublicKey(constant.value);
+            return new PublicKey(constant.value) as IdlTypeToJSType<T>;
 
         case "bytes":
-            return Uint8Array.from(JSON.parse(constant.value));
+            return Uint8Array.from(JSON.parse(constant.value)) as IdlTypeToJSType<T>;
 
         case "f64":
         case "f32":
-            return parseFloat(constant.value);
+            return parseFloat(constant.value) as IdlTypeToJSType<T>;
 
         case "u8":
         case "i8":
@@ -73,10 +80,10 @@ function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
         case "i16":
         case "u32":
         case "i32":
-            return parseInt(constant.value);
+            return parseInt(constant.value) as IdlTypeToJSType<T>;
 
         case "bool":
-            return constant.value === "true";
+            return (constant.value === "true") as IdlTypeToJSType<T>;
 
         default:
             if (typeof constant.type === "object") {
@@ -87,38 +94,40 @@ function constantToValue(constant: IdlConst): IdlTypeToJSType<IdlConst> {
                     const arr = JSON.parse(constant.value) as any[];
                     return arr.map((item) =>
                         constantToValue({ name: constant.name, type, value: JSON.stringify(item) }),
-                    );
+                    ) as IdlTypeToJSType<T>;
                 } else if ("vec" in constant.type) {
                     const type = constant.type.vec;
                     const arr = JSON.parse(constant.value) as any[];
                     return arr.map((item) =>
                         constantToValue({ name: constant.name, type, value: JSON.stringify(item) }),
-                    );
+                    ) as IdlTypeToJSType<T>;
                 } else if ("option" in constant.type) {
                     if (constant.value === "null") {
-                        return null;
+                        return null as IdlTypeToJSType<T>;
                     }
                     const type = constant.type.option;
-                    return constantToValue({ name: constant.name, type, value: constant.value });
+                    return constantToValue({ name: constant.name, type, value: constant.value }) as IdlTypeToJSType<T>;
                 } else if ("coption" in constant.type) {
                     if (constant.value === "null") {
-                        return null;
+                        return null as IdlTypeToJSType<T>;
                     }
                     const type = constant.type.coption;
-                    return constantToValue({ name: constant.name, type, value: constant.value });
+                    return constantToValue({ name: constant.name, type, value: constant.value }) as IdlTypeToJSType<T>;
                 }
             }
             throw new Error(`Unknown constant type: ${JSON.stringify(constant.type)}`);
     }
 }
 
-function constantDefinedToValue(constant: { name: string; type: IdlTypeDefined; value: string }) {
+function constantDefinedToValue<T extends { name: string; type: IdlTypeDefined; value: string }>(
+    constant: T,
+): IdlTypeToJSType<T> {
     switch (constant.type.defined.name) {
         case "Hash":
         case "hash": {
-            // Hash(<hash in base64?>)
+            // Hash(<hash in base58>)
             const buf = bs58.decode(constant.value.slice(5, -1));
-            return Uint8Array.from(buf);
+            return Uint8Array.from(buf) as IdlTypeToJSType<T>;
         }
     }
     throw new Error(`Unknown defined constant type: ${constant.type.defined.name}`);
@@ -156,10 +165,12 @@ type IdlTypeToJSType<T extends { type: IdlType }> = T extends { type: IdlBNTypes
                         ? IdlTypeToJSType<{ type: T["type"]["coption"] }> | null
                         : unknown;
 
-type IdlTypeDefinedToJSType<T extends { type: IdlTypeDefined }> = T extends { type: { defined: { name: "hash" } } }
+type IdlTypeDefinedToJSType<T extends { type: IdlTypeDefined }> = T extends {
+    type: { defined: { name: "hash" | "Hash" } };
+}
     ? Uint8Array
     : unknown;
 
-type Constants<ConstantsType extends anchor.Idl["constants"]> = ConstantsType extends IdlConst[]
+type Constants<ConstantsType extends AnchorIdl["constants"]> = ConstantsType extends IdlConst[]
     ? { [key in ConstantsType[number] as key["name"]]: IdlTypeToJSType<key> }
     : {};

@@ -136,7 +136,7 @@ export class ComptokenProof {
         const timestamp = Buffer.allocUnsafe(4);
         timestamp.writeUInt32LE(this.timestamp);
 
-        const n = 0x180eadd8;
+        const n = getComptokenConstants().proofDifficultyNbits;
         const nbits = Buffer.allocUnsafe(4);
         nbits.writeUInt32LE(n);
 

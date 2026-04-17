@@ -20,7 +20,7 @@ type RustToTypeScript<S extends string> = S extends `${infer First}::${infer Res
 
 type TypeScriptToRust<S extends string> = S extends `${infer First}::${infer Rest}`
     ? `${CamelToSnakeCase<First>}::${TypeScriptToRust<Rest>}`
-    : Capitalize<S>;
+    : S;
 
 type AccountNames<Idl extends anchor.Idl> = Extract<
     Idl["accounts"] extends IdlAccount[] ? Idl["accounts"][number]["name"] : never,

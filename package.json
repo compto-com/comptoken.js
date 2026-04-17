@@ -4,7 +4,15 @@
     "version": "0.3.0",
     "description": "helper functions for calling the Comptoken RPC calls on Solana",
     "main": "index.js",
+    "exports": {
+        ".": "./index.js",
+        "./addresses": "./dist/addresses.js",
+        "./transactions": "./dist/transactions.js",
+        "./transactions/methodBuilders": "./dist/methodBuilders.js"
+    },
     "scripts": {
+        "build": "tsc",
+        "prepare": "npm run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -23,9 +31,9 @@
     "homepage": "https://github.com/compto-com/comptoken.js#readme",
     "dependencies": {
         "@coral-xyz/anchor": "^0.32.1",
-        "@solana/spl-token": "^0.4.8",
+        "@solana/spl-token": "^0.4.14",
         "@solana/web3.js": "^1.95.0",
-        "bn.js": "^5.2.2"
+        "bn.js": "^5.2.3"
     },
     "devDependencies": {
         "@types/bn.js": "^5.2.0",

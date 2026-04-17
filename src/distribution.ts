@@ -1,4 +1,4 @@
-import { PublicKey } from "@solana/web3.js";
+import type { PublicKey } from "@solana/web3.js";
 import type BN from "bn.js";
 
 import * as addresses from "./addresses.js";
@@ -29,11 +29,10 @@ export async function getDistributionOwed({
 
     const stakedAmount = stakedAccountInfo.value.uiAmount!;
 
-    const today = normalizeTimestamp(Math.floor(Date.now() / 1000)); // normalize to start of day UTC
-
     const dailyDistributionHistoryLength = program.constants.dailyDistributionDataHistoryLength.toNumber();
 
-    const daysSinceLastClaim = getDaysSinceLastClaim({ program, userData });
+    const daysSinceLastClaimUncapped = getDaysSinceLastClaim({ program, userData });
+    const daysSinceLastClaim = Math.min(daysSinceLastClaimUncapped, dailyDistributionHistoryLength);
 
     const { buffer: historicDistributionsBuffer, position } = globalData.dailyDistribution.historicDistributions as {
         buffer: HistoricDistribution[];
@@ -55,8 +54,7 @@ export async function getDistributionOwed({
             { overallRate: 0, totalUbiYield: 0 },
         );
 
-    const isVerified =
-        userData.lastVerifiedTimestamp.toNumber() + program.constants.verificationDuration.toNumber() > today;
+    const isVerified = isVerifiedHuman({ program, userData });
 
     return { interest: stakedAmount * overallRate, ubi: isVerified ? totalUbiYield : 0 };
 }
@@ -87,14 +85,14 @@ export function getDaysSinceLastClaim({
     user?: PublicKey;
     userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): number | Promise<number> {
-    const compute = function (lastClaimedTimestamp: number) {
-        const daysSinceLastClaimUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastClaimedTimestamp);
-
-        return daysSinceLastClaimUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
-    };
+    function compute(lastClaimedTimestamp: number) {
+        return daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastClaimedTimestamp);
+    }
 
     if (userData === undefined) {
-        if (user === undefined) throw new Error("Either user or userData must be provided");
+        if (user === undefined) {
+            throw new Error("Either user or userData must be provided");
+        }
         const userDataAddress = addresses.getUserDataAddress(program, user);
 
         return program.account.userData
@@ -131,14 +129,14 @@ export function getDaysSinceLastVerified({
     user?: PublicKey;
     userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): number | Promise<number> {
-    const compute = function (lastVerifiedTimestamp: number) {
-        const daysSinceLastVerifiedUncapped = daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastVerifiedTimestamp);
-
-        return daysSinceLastVerifiedUncapped % program.constants.dailyDistributionDataHistoryLength.toNumber();
-    };
+    function compute(lastVerifiedTimestamp: number) {
+        return daysSinceEpoch(Date.now() / 1000) - daysSinceEpoch(lastVerifiedTimestamp);
+    }
 
     if (userData === undefined) {
-        if (user === undefined) throw new Error("Either user or userData must be provided");
+        if (user === undefined) {
+            throw new Error("Either user or userData must be provided");
+        }
         const userDataAddress = addresses.getUserDataAddress(program, user);
 
         return program.account.userData
@@ -150,20 +148,14 @@ export function getDaysSinceLastVerified({
 }
 
 // overloads
-export function isVerifiedHuman({
-    program,
-    user,
-}: {
-    program: ComptokenProgram;
-    user: PublicKey;
-}): boolean | Promise<boolean>;
+export function isVerifiedHuman({ program, user }: { program: ComptokenProgram; user: PublicKey }): Promise<boolean>;
 export function isVerifiedHuman({
     program,
     userData,
 }: {
     program: ComptokenProgram;
     userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
-}): boolean | Promise<boolean>;
+}): boolean;
 
 // implementation
 export function isVerifiedHuman({
@@ -175,12 +167,10 @@ export function isVerifiedHuman({
     user?: PublicKey;
     userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
 }): boolean | Promise<boolean> {
-    const isStillVerified = function (lastVerifiedTimestamp: number) {
-        return (
-            lastVerifiedTimestamp + program.constants.verificationDuration.toNumber() >
-            normalizeTimestamp(Date.now() / 1000)
-        );
-    };
+    function isStillVerified(daysSinceLastVerified: number) {
+        const verificationDurationInDays = program.constants.verificationDuration.toNumber() / (24 * 60 * 60);
+        return daysSinceLastVerified < verificationDurationInDays;
+    }
 
     if (user === undefined) {
         if (userData === undefined) {
@@ -190,4 +180,62 @@ export function isVerifiedHuman({
     }
 
     return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
+}
+
+export type HistoricDistributionsWithStatus = {
+    distributions: HistoricDistribution[];
+    isUpToDate: boolean;
+    lastUpdateTimestamp: number;
+    expectedTimestamp: number;
+};
+
+export async function getHistoricDistributionsWithStatus({
+    program,
+    days = program.constants.dailyDistributionDataHistoryLength.toNumber(),
+}: {
+    program: ComptokenProgram;
+    days?: number;
+}): Promise<HistoricDistributionsWithStatus> {
+    const globalDataAddress = addresses.getGlobalDataAddress(program);
+    const globalData = await program.account.globalData.fetch(globalDataAddress);
+
+    const lastUpdateTimestamp = globalData.dailyDistribution.lastUpdateTimestamp.toNumber();
+    const expectedTimestamp = normalizeTimestamp(Math.floor(Date.now() / 1000));
+
+    const { buffer: historicDistributionsBuffer, position } = globalData.dailyDistribution.historicDistributions as {
+        buffer: HistoricDistribution[];
+        position: BN;
+    };
+
+    const historicDistributions = { buffer: historicDistributionsBuffer, position: position.toNumber() };
+    const distributions = [
+        ...ringBufferGetLastN(
+            historicDistributions,
+            program.constants.dailyDistributionDataHistoryLength.toNumber(),
+            days,
+        ),
+    ];
+
+    return {
+        distributions,
+        isUpToDate: lastUpdateTimestamp === expectedTimestamp,
+        lastUpdateTimestamp,
+        expectedTimestamp,
+    };
+}
+
+export async function getHistoricDistributions({
+    program,
+    days = program.constants.dailyDistributionDataHistoryLength.toNumber(),
+}: {
+    program: ComptokenProgram;
+    days?: number;
+}): Promise<HistoricDistribution[]> {
+    const historicDistributions = await getHistoricDistributionsWithStatus({ program, days });
+
+    if (!historicDistributions.isUpToDate) {
+        throw new Error("Historic distributions are not up to date");
+    }
+
+    return historicDistributions.distributions;
 }
