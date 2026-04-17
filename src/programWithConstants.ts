@@ -1,4 +1,11 @@
-import { default as anchor, Program, type Coder, type CustomAccountResolver, type Provider } from "@coral-xyz/anchor";
+import {
+    Program,
+    utils,
+    type Idl as AnchorIdl,
+    type Coder,
+    type CustomAccountResolver,
+    type Provider,
+} from "@coral-xyz/anchor";
 import { convertIdlToCamelCase } from "@coral-xyz/anchor/dist/cjs/idl.js";
 import type {
     IdlConst,
@@ -13,9 +20,9 @@ import type {
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
-const { bs58 } = anchor.utils.bytes;
+const { bs58 } = utils.bytes;
 
-export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
+export class ProgramWithConstants<Idl extends AnchorIdl> extends Program<Idl> {
     constants: Constants<Idl["constants"]>;
 
     constructor(
@@ -30,7 +37,7 @@ export class ProgramWithConstants<Idl extends anchor.Idl> extends Program<Idl> {
     }
 }
 
-export function getConstants<Idl extends anchor.Idl>(idl: Idl): Constants<Idl["constants"]> {
+export function getConstants<Idl extends AnchorIdl>(idl: Idl): Constants<Idl["constants"]> {
     const rawConstants = convertIdlToCamelCase(idl).constants;
     if (!rawConstants) {
         return {} as Constants<Idl["constants"]>;
@@ -164,6 +171,6 @@ type IdlTypeDefinedToJSType<T extends { type: IdlTypeDefined }> = T extends {
     ? Uint8Array
     : unknown;
 
-type Constants<ConstantsType extends anchor.Idl["constants"]> = ConstantsType extends IdlConst[]
+type Constants<ConstantsType extends AnchorIdl["constants"]> = ConstantsType extends IdlConst[]
     ? { [key in ConstantsType[number] as key["name"]]: IdlTypeToJSType<key> }
     : {};

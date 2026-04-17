@@ -183,7 +183,7 @@ export async function unstake({
     return methodBuilders.unstakeBuilder({ program, amount, accounts: { userWallet, userUnstakedTokenAccount } }).rpc();
 }
 
-export async function unverify({
+export async function unverifyWithProofRecovery({
     program,
     solanaWorldIdProgram,
     rootHash,
@@ -203,11 +203,18 @@ export async function unverify({
     };
 }): Promise<TransactionSignature> {
     return methodBuilders
-        .unverifyBuilder({ program, solanaWorldIdProgram, rootHash, nullifierHash, proof, accounts: { user } })
+        .unverifyWithProofRecoveryBuilder({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { user },
+        })
         .rpc();
 }
 
-export async function unverify2({
+export async function unverifyWithWalletSignature({
     program,
     nullifierHash,
     accounts: {
@@ -220,7 +227,9 @@ export async function unverify2({
         userWallet: Signer;
     };
 }): Promise<TransactionSignature> {
-    return methodBuilders.unverify2Builder({ program, nullifierHash, accounts: { userWallet } }).rpc();
+    return methodBuilders
+        .unverifyWithWalletSignatureBuilder({ program, nullifierHash, accounts: { userWallet } })
+        .rpc();
 }
 
 export async function verify({
