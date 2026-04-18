@@ -232,7 +232,7 @@ export type SolanaWorldIdProgram = {
       ],
       "accounts": [
         {
-          "name": "guardianSignatures",
+          "name": "guardianSignaturesBuffer",
           "writable": true
         },
         {
@@ -240,7 +240,7 @@ export type SolanaWorldIdProgram = {
           "writable": true,
           "signer": true,
           "relations": [
-            "guardianSignatures"
+            "guardianSignaturesBuffer"
           ]
         }
       ],
@@ -432,7 +432,7 @@ export type SolanaWorldIdProgram = {
           "signer": true
         },
         {
-          "name": "guardianSignatures",
+          "name": "guardianSignaturesBuffer",
           "writable": true,
           "signer": true
         },
@@ -733,7 +733,7 @@ export type SolanaWorldIdProgram = {
           ]
         },
         {
-          "name": "guardianSignatures",
+          "name": "guardianSignaturesBuffer",
           "docs": [
             "Stores unverified guardian signatures as they are too large to fit in the instruction data."
           ],
@@ -817,7 +817,7 @@ export type SolanaWorldIdProgram = {
           "name": "refundRecipient",
           "writable": true,
           "relations": [
-            "guardianSignatures"
+            "guardianSignaturesBuffer"
           ]
         },
         {
@@ -1000,16 +1000,16 @@ export type SolanaWorldIdProgram = {
       ]
     },
     {
-      "name": "guardianSignatures",
+      "name": "guardianSignaturesBuffer",
       "discriminator": [
-        203,
-        184,
-        130,
-        157,
-        113,
-        14,
-        184,
-        83
+        22,
+        158,
+        134,
+        98,
+        94,
+        154,
+        172,
+        114
       ]
     },
     {
@@ -1253,7 +1253,7 @@ export type SolanaWorldIdProgram = {
       }
     },
     {
-      "name": "guardianSignatures",
+      "name": "guardianSignaturesBuffer",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1285,6 +1285,9 @@ export type SolanaWorldIdProgram = {
     },
     {
       "name": "initializeArgs",
+      "docs": [
+        "Initial admin-controlled settings for the World ID bridge program."
+      ],
       "type": {
         "kind": "struct",
         "fields": [

@@ -1958,6 +1958,9 @@ export type Comptoken = {
     },
     {
       "name": "currentBlockhashes",
+      "docs": [
+        "The announced and currently valid blockhashes after a sync operation."
+      ],
       "type": {
         "kind": "struct",
         "fields": [
@@ -2313,6 +2316,9 @@ export type Comptoken = {
     },
     {
       "name": "submitMiningProofArgs",
+      "docs": [
+        "Raw proof bytes submitted by the client for Bitcoin-style proof-of-work validation."
+      ],
       "type": {
         "kind": "struct",
         "fields": [
@@ -2435,6 +2441,9 @@ export type Comptoken = {
     },
     {
       "name": "worldIdVerificationData",
+      "docs": [
+        "Proof inputs needed to verify a user's World ID membership proof on-chain."
+      ],
       "type": {
         "kind": "struct",
         "fields": [

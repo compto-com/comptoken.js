@@ -226,7 +226,7 @@
       ],
       "accounts": [
         {
-          "name": "guardian_signatures",
+          "name": "guardian_signatures_buffer",
           "writable": true
         },
         {
@@ -234,7 +234,7 @@
           "writable": true,
           "signer": true,
           "relations": [
-            "guardian_signatures"
+            "guardian_signatures_buffer"
           ]
         }
       ],
@@ -426,7 +426,7 @@
           "signer": true
         },
         {
-          "name": "guardian_signatures",
+          "name": "guardian_signatures_buffer",
           "writable": true,
           "signer": true
         },
@@ -727,7 +727,7 @@
           ]
         },
         {
-          "name": "guardian_signatures",
+          "name": "guardian_signatures_buffer",
           "docs": [
             "Stores unverified guardian signatures as they are too large to fit in the instruction data."
           ],
@@ -811,7 +811,7 @@
           "name": "refund_recipient",
           "writable": true,
           "relations": [
-            "guardian_signatures"
+            "guardian_signatures_buffer"
           ]
         },
         {
@@ -994,16 +994,16 @@
       ]
     },
     {
-      "name": "GuardianSignatures",
+      "name": "GuardianSignaturesBuffer",
       "discriminator": [
-        203,
-        184,
-        130,
-        157,
-        113,
-        14,
-        184,
-        83
+        22,
+        158,
+        134,
+        98,
+        94,
+        154,
+        172,
+        114
       ]
     },
     {
@@ -1247,7 +1247,7 @@
       }
     },
     {
-      "name": "GuardianSignatures",
+      "name": "GuardianSignaturesBuffer",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1279,6 +1279,9 @@
     },
     {
       "name": "InitializeArgs",
+      "docs": [
+        "Initial admin-controlled settings for the World ID bridge program."
+      ],
       "type": {
         "kind": "struct",
         "fields": [
