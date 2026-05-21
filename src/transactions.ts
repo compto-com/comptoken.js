@@ -285,8 +285,8 @@ export async function getComptokenBalance({
         program.provider.connection.getTokenAccountBalance(userUnstakedTokenAccount),
     ]);
 
-    const stakedAmount = Number(stakedAccountInfo.value.uiAmountString);
-    const unstakedAmount = Number(unstakedAccountInfo.value.uiAmountString);
+    const stakedAmount = Number(stakedAccountInfo.value.amount);
+    const unstakedAmount = Number(unstakedAccountInfo.value.amount);
 
-    return stakedAmount! + unstakedAmount!;
+    return stakedAmount + unstakedAmount;
 }
