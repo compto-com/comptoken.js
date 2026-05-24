@@ -27,7 +27,7 @@ export async function getDistributionOwed({
         program.account.globalData.fetch(addresses.getGlobalDataAddress(program)),
     ]);
 
-    const stakedAmount = stakedAccountInfo.value.uiAmount!;
+    const stakedAmount = +stakedAccountInfo.value.amount;
 
     const dailyDistributionHistoryLength = program.constants.dailyDistributionDataHistoryLength.toNumber();
 
@@ -56,7 +56,18 @@ export async function getDistributionOwed({
 
     const isVerified = isVerifiedHuman({ program, userData });
 
-    return { interest: stakedAmount * overallRate, ubi: isVerified ? totalUbiYield : 0 };
+    return { interest: bankersRound(stakedAmount * overallRate), ubi: isVerified ? totalUbiYield : 0 };
+}
+
+function bankersRound(num: number): number {
+    const rounded = Math.round(num);
+    const diff = Math.abs(num - rounded);
+
+    if (diff === 0.5) {
+        return rounded % 2 === 0 ? rounded : rounded - 1;
+    }
+
+    return rounded;
 }
 
 // overloads
