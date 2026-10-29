@@ -5,7 +5,7 @@ export * from "./factory.js";
 export * from "./programWithConstants.js";
 export * as transactions from "./transactions.js";
 
-export type { ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
+export type { ComptokenIdl, ComptokenProgram, Register, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
 
 import * as util from "./utils.js";
 export namespace utils {

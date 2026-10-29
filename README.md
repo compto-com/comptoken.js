@@ -199,9 +199,29 @@ await transferChecked(
 Notes
 
 - `transactions.*` methods expect a `Signer` for `accounts.userWallet` (for example, a `Keypair`).
-- `getComptokenConstants()` returns constants directly from the bundled default comptoken IDL.
+- `getComptokenConstants()` returns constants from the bundled default comptoken IDL, or from the IDL passed to it.
 - `program.constants` is available on wrapped programs and contains useful IDL constants (seeds, mint decimals, reward amounts, etc.).
 - `ComptokenProof.mine(...)` is test-only convenience and should not be used in production mining paths.
+
+Using a newer IDL than the bundled one (e.g. in comptoken-program)
+
+- Runtime: pass your IDL in, e.g. `createComptokenProgram(getComptokenIdl("target/idl/comptoken.json"), provider)` and `getComptokenConstants(idl)`.
+- Types: augment `Register` in any `.d.ts` file your tsconfig includes, and every helper will be typed against your IDL:
+
+    ```ts
+    import type { Comptoken } from "../target/types/comptoken";
+    import type { SolanaWorldIdProgram } from "../target/types/solana_world_id_program";
+
+    declare module "@compto/comptoken.js" {
+        interface Register {
+            comptokenIdl: Comptoken;
+            solanaWorldIdIdl: SolanaWorldIdProgram;
+        }
+    }
+    ```
+
+- Drift check: `npx comptoken-sync-idl --check` in an anchor workspace exits with 1 if the bundled IDLs differ from `target/idl`.
+- Updating the bundled IDLs: `npm run sync-idl -- ../comptoken-program` in this repo.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

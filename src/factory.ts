@@ -58,6 +58,7 @@ export function createDummyProvider(): Provider {
     return new AnchorProvider(connection, dummyWallet);
 }
 
-export function getComptokenConstants() {
-    return getConstants(getDefaultComptokenIdl());
+// defaults to the bundled IDL, pass an IDL to avoid using stale constants
+export function getComptokenConstants(idl: ComptokenIdl = getDefaultComptokenIdl()) {
+    return getConstants(idl);
 }
