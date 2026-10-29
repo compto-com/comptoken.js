@@ -1,20 +1,23 @@
 import fs from "fs";
 
-import { AnchorProvider, Wallet, web3, type Provider } from "@coral-xyz/anchor";
+import { AnchorProvider, Wallet, web3, type Idl as anchorIdl, type Provider } from "@coral-xyz/anchor";
 
 import comptokenIdlJson from "../idls/comptoken.json" with { type: "json" };
 import solanaWorldIdIdlJson from "../idls/solana_world_id_program.json" with { type: "json" };
 import { getConstants, ProgramWithConstants } from "./programWithConstants.js";
-import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
+import type { BetterProgram, ComptokenIdl, ComptokenProgram, SolanaWorldIdIdl, SolanaWorldIdProgram } from "./types.js";
 
-export function getComptokenIdl(idlPath: string): ComptokenIdl {
-    const idl: ComptokenIdl = JSON.parse(fs.readFileSync(idlPath, "utf8"));
+function _getIdl<IDL>(idlPath: string): IDL {
+    const idl: IDL = JSON.parse(fs.readFileSync(idlPath, "utf8"));
     return idl;
 }
 
+export function getComptokenIdl(idlPath: string): ComptokenIdl {
+    return _getIdl(idlPath);
+}
+
 export function getSolanaWorldIdIdl(idlPath: string): SolanaWorldIdIdl {
-    const idl: SolanaWorldIdIdl = JSON.parse(fs.readFileSync(idlPath, "utf8"));
-    return idl;
+    return _getIdl(idlPath);
 }
 
 export function getDefaultComptokenIdl(): ComptokenIdl {
@@ -27,20 +30,23 @@ export function getDefaultSolanaWorldIdIdl(): SolanaWorldIdIdl {
     return solanaWorldIdIdlJson as SolanaWorldIdIdl;
 }
 
-export function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ComptokenProgram {
+function _createBetterProgram<Idl extends anchorIdl>(idl: Idl, provider: Provider): BetterProgram<Idl> {
     // the unknown cast is needed b/c of an issue with instruction coder types not matching up
     // even though ComptokenProgram should be a subtype of ProgramWithConstants<ComptokenIdl>
     // (it has stricter typing for coder.accounts/types), I don't see a reason to manually invoke
     // the instruction coder, and the underlying type is unchanged, so this is safe
-    return new ProgramWithConstants<ComptokenIdl>(comptokenIdl, provider) as unknown as ComptokenProgram;
+    return new ProgramWithConstants<Idl>(idl, provider) as unknown as BetterProgram<Idl>;
+}
+
+export function createComptokenProgram(comptokenIdl: ComptokenIdl, provider: Provider): ComptokenProgram {
+    return _createBetterProgram(comptokenIdl, provider);
 }
 
 export function createSolanaWorldIdProgram(
     solanaWorldIdIdl: SolanaWorldIdIdl,
     provider: Provider,
 ): SolanaWorldIdProgram {
-    // see comment in createComptokenProgram for explanation of unknown cast
-    return new ProgramWithConstants<SolanaWorldIdIdl>(solanaWorldIdIdl, provider) as unknown as SolanaWorldIdProgram;
+    return _createBetterProgram(solanaWorldIdIdl, provider);
 }
 
 export function createDummyProvider(): Provider {
