@@ -1,6 +1,7 @@
 import fs from "fs";
 
-import { AnchorProvider, Wallet, web3, type Idl as anchorIdl, type Provider } from "@anchor-lang/core";
+import anchor, { type Idl as anchorIdl, type Provider } from "@anchor-lang/core";
+const { AnchorProvider, Wallet, web3 } = anchor;
 
 import comptokenIdlJson from "../idls/comptoken.json" with { type: "json" };
 import solanaWorldIdIdlJson from "../idls/solana_world_id_program.json" with { type: "json" };
