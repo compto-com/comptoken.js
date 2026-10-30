@@ -1,6 +1,13 @@
-import type { default as anchor, BorshAccountsCoder, BorshCoder, IdlAccounts, IdlTypes } from "@coral-xyz/anchor";
-import type { BorshTypesCoder } from "@coral-xyz/anchor/dist/cjs/coder/borsh/types.js";
-import type { IdlAccount, IdlTypeDef } from "@coral-xyz/anchor/dist/cjs/idl.js";
+import type {
+    default as anchor,
+    BorshAccountsCoder,
+    BorshCoder,
+    IdlAccount,
+    IdlAccounts,
+    IdlTypeDef,
+    IdlTypes,
+} from "@anchor-lang/core";
+type BorshTypesCoder<T extends string> = BorshCoder<string, T>["types"];
 
 type SnakeToPascalCase<S extends string> = S extends `${infer First}_${infer Rest}`
     ? `${Capitalize<First>}${SnakeToPascalCase<Capitalize<Rest>>}`

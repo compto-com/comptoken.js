@@ -8,11 +8,297 @@ export type Comptoken = {
   "address": "7j8p5AoS4z1LCPaDujSae6CXLRLKNThFbK5qqniGw9Nf",
   "metadata": {
     "name": "comptoken",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
   "instructions": [
+    {
+      "name": "addLiquidity",
+      "discriminator": [
+        181,
+        157,
+        89,
+        67,
+        143,
+        182,
+        52,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "globalData",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "unstakedMint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdcMint",
+          "address": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+        },
+        {
+          "name": "lpMint",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "comptokenLiquidityTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdcLiquidityTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  85,
+                  83,
+                  68,
+                  67
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "comptokenLpTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "globalData"
+              },
+              {
+                "kind": "account",
+                "path": "tokenProgram"
+              },
+              {
+                "kind": "account",
+                "path": "lpMint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "poolComptokenVault",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "poolUsdcVault",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "poolState",
+          "writable": true,
+          "address": "2wRw8foEASWECmNLu1aWsEtSr4wfVfWqGXPkqYGU1BcE"
+        },
+        {
+          "name": "ammConfig",
+          "docs": [
+            "address validated against pool_state in the handler"
+          ]
+        },
+        {
+          "name": "raydiumAuthority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "raydiumCpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "observationState",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "raydiumCpSwapProgram",
+          "address": "GVSzpfu4CzCxgU7wNeNy4eCeDX6R7ecY3vKSRLuDJfu1"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token2022Program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "associatedTokenProgram",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
     {
       "name": "collect",
       "discriminator": [
@@ -136,7 +422,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "tokenProgram",
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
@@ -268,6 +554,7 @@ export type Comptoken = {
         },
         {
           "name": "unstakedMint",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -290,6 +577,37 @@ export type Comptoken = {
               }
             ]
           }
+        },
+        {
+          "name": "comptokenLiquidityTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token2022Program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
       "args": []
@@ -363,6 +681,10 @@ export type Comptoken = {
           }
         },
         {
+          "name": "usdcMint",
+          "address": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+        },
+        {
           "name": "globalData",
           "writable": true,
           "pda": {
@@ -387,10 +709,68 @@ export type Comptoken = {
           }
         },
         {
+          "name": "comptokenLiquidityTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdcLiquidityTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  85,
+                  83,
+                  68,
+                  67
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "slotHashes"
         },
         {
           "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -502,10 +882,7 @@ export type Comptoken = {
       "accounts": [
         {
           "name": "userWallet",
-          "signer": true,
-          "relations": [
-            "worldIdNullifier"
-          ]
+          "signer": true
         },
         {
           "name": "userData",
@@ -623,6 +1000,7 @@ export type Comptoken = {
         },
         {
           "name": "worldIdNullifier",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -784,7 +1162,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "tokenProgram"
+                "path": "token2022Program"
               },
               {
                 "kind": "account",
@@ -839,7 +1217,7 @@ export type Comptoken = {
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
-          "name": "tokenProgram",
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -956,7 +1334,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "tokenProgram",
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
@@ -1146,7 +1524,7 @@ export type Comptoken = {
               },
               {
                 "kind": "account",
-                "path": "tokenProgram"
+                "path": "token2022Program"
               },
               {
                 "kind": "account",
@@ -1201,7 +1579,7 @@ export type Comptoken = {
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
-          "name": "tokenProgram",
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -1744,7 +2122,7 @@ export type Comptoken = {
           }
         },
         {
-          "name": "tokenProgram",
+          "name": "token2022Program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -1765,6 +2143,19 @@ export type Comptoken = {
     }
   ],
   "accounts": [
+    {
+      "name": "ammConfig",
+      "discriminator": [
+        218,
+        244,
+        33,
+        104,
+        203,
+        203,
+        43,
+        111
+      ]
+    },
     {
       "name": "config",
       "discriminator": [
@@ -1818,6 +2209,32 @@ export type Comptoken = {
       ]
     },
     {
+      "name": "observationState",
+      "discriminator": [
+        122,
+        174,
+        197,
+        53,
+        129,
+        9,
+        165,
+        132
+      ]
+    },
+    {
+      "name": "poolState",
+      "discriminator": [
+        247,
+        237,
+        227,
+        245,
+        215,
+        195,
+        222,
+        70
+      ]
+    },
+    {
       "name": "root",
       "discriminator": [
         46,
@@ -1852,56 +2269,136 @@ export type Comptoken = {
     },
     {
       "code": 6001,
+      "name": "sessionAlreadyInUse",
+      "msg": "Session already in use"
+    },
+    {
+      "code": 6002,
       "name": "userDataNotCurrent",
       "msg": "User data account is not current"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "invalidMiningProof",
       "msg": "Invalid mining proof submitted"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "duplicateMiningProof",
       "msg": "Duplicate mining proof submitted"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "userDataProofsCapacityExceeded",
       "msg": "User data proofs capacity exceeded, consider increasing capacity"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "invalidNullifierOwner",
       "msg": "Invalid nullifier owner"
     },
     {
-      "code": 6006,
-      "name": "invalidNullifierHash",
-      "msg": "Invalid nullifier hash for user data"
+      "code": 6007,
+      "name": "invalidVerification",
+      "msg": "Invalid verification for user data"
     },
     {
-      "code": 6007,
+      "code": 6008,
+      "name": "accountAlreadyVerified",
+      "msg": "Account has already been verified"
+    },
+    {
+      "code": 6009,
       "name": "invalidCapacity",
       "msg": "Invalid capacity for resizing user data account"
     },
     {
-      "code": 6008,
+      "code": 6010,
       "name": "insufficientFunds",
       "msg": "Insufficient funds in token account"
     },
     {
-      "code": 6009,
+      "code": 6011,
       "name": "accountAlreadyInitialized",
       "msg": "Account has already been initialized"
     },
     {
-      "code": 6010,
+      "code": 6012,
       "name": "staleValidBlockhash",
       "msg": "Stale valid blockhash"
+    },
+    {
+      "code": 6013,
+      "name": "liquidityPoolFeeNotZero",
+      "msg": "Liquidity pool has non-zero fee"
+    },
+    {
+      "code": 6014,
+      "name": "liquidityPoolEmpty",
+      "msg": "Liquidity pool is empty"
     }
   ],
   "types": [
+    {
+      "name": "ammConfig",
+      "docs": [
+        "Holds the current owner of the factory"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "disableCreatePool",
+            "type": "bool"
+          },
+          {
+            "name": "index",
+            "type": "u16"
+          },
+          {
+            "name": "tradeFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "createPoolFee",
+            "type": "u64"
+          },
+          {
+            "name": "protocolOwner",
+            "type": "pubkey"
+          },
+          {
+            "name": "fundOwner",
+            "type": "pubkey"
+          },
+          {
+            "name": "creatorFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                15
+              ]
+            }
+          }
+        ]
+      }
+    },
     {
       "name": "config",
       "type": {
@@ -2168,7 +2665,6 @@ export type Comptoken = {
     },
     {
       "name": "nullifier",
-      "serialization": "bytemuck",
       "repr": {
         "kind": "c"
       },
@@ -2178,6 +2674,220 @@ export type Comptoken = {
           {
             "name": "userWallet",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "observation",
+      "docs": [
+        "The element of observations in ObservationState"
+      ],
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "blockTimestamp",
+            "type": "u64"
+          },
+          {
+            "name": "cumulativeToken0PriceX32",
+            "type": "u128"
+          },
+          {
+            "name": "cumulativeToken1PriceX32",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "observationState",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "observationIndex",
+            "type": "u16"
+          },
+          {
+            "name": "poolId",
+            "type": "pubkey"
+          },
+          {
+            "name": "observations",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "observation"
+                  }
+                },
+                100
+              ]
+            }
+          },
+          {
+            "name": "lastUpdateTimestamp",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "poolState",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ammConfig",
+            "type": "pubkey"
+          },
+          {
+            "name": "poolCreator",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0Vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1Vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "lpMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0Mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1Mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token0Program",
+            "type": "pubkey"
+          },
+          {
+            "name": "token1Program",
+            "type": "pubkey"
+          },
+          {
+            "name": "observationKey",
+            "type": "pubkey"
+          },
+          {
+            "name": "authBump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "lpMintDecimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint0Decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint1Decimals",
+            "type": "u8"
+          },
+          {
+            "name": "lpSupply",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeesToken0",
+            "type": "u64"
+          },
+          {
+            "name": "protocolFeesToken1",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeesToken0",
+            "type": "u64"
+          },
+          {
+            "name": "fundFeesToken1",
+            "type": "u64"
+          },
+          {
+            "name": "openTime",
+            "type": "u64"
+          },
+          {
+            "name": "recentEpoch",
+            "type": "u64"
+          },
+          {
+            "name": "creatorFeeOn",
+            "type": "u8"
+          },
+          {
+            "name": "enableCreatorFee",
+            "type": "bool"
+          },
+          {
+            "name": "padding1",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "creatorFeesToken0",
+            "type": "u64"
+          },
+          {
+            "name": "creatorFeesToken1",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                28
+              ]
+            }
           }
         ]
       }
@@ -2376,10 +3086,10 @@ export type Comptoken = {
             "type": "i64"
           },
           {
-            "name": "nullifierHash",
+            "name": "verification",
             "type": {
               "defined": {
-                "name": "hash"
+                "name": "verification"
               }
             }
           },
@@ -2440,6 +3150,49 @@ export type Comptoken = {
       }
     },
     {
+      "name": "verification",
+      "docs": [
+        "Tracks which World ID verification flow (if any) a user is currently bound to.",
+        "`ubi_claimed` is carried through every variant and is only ever set true, never reset,",
+        "so the one-time early adopter UBI cannot be re-claimed by unverifying and verifying",
+        "again (v3, v4, or across versions)."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "unverified"
+          },
+          {
+            "name": "nullifier",
+            "fields": [
+              {
+                "name": "hash",
+                "type": {
+                  "defined": {
+                    "name": "hash"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "session",
+            "fields": [
+              {
+                "name": "id",
+                "type": {
+                  "defined": {
+                    "name": "hash"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "worldIdVerificationData",
       "docs": [
         "Proof inputs needed to verify a user's World ID membership proof on-chain."
@@ -2493,6 +3246,16 @@ export type Comptoken = {
       "value": "146000"
     },
     {
+      "name": "comptokenLiquidityTokenAccountSeed",
+      "type": "bytes",
+      "value": "[108, 105, 113, 117, 105, 100, 105, 116, 121, 95, 67, 79, 77, 80]"
+    },
+    {
+      "name": "compUsdcPoolAddress",
+      "type": "pubkey",
+      "value": "2wRw8foEASWECmNLu1aWsEtSr4wfVfWqGXPkqYGU1BcE"
+    },
+    {
       "name": "dailyDistributionDataHistoryLength",
       "type": "u64",
       "value": "365"
@@ -2513,9 +3276,24 @@ export type Comptoken = {
       "value": "[103, 108, 111, 98, 97, 108, 95, 100, 97, 116, 97]"
     },
     {
+      "name": "liquidityMaxPriceDeviationBps",
+      "type": "u64",
+      "value": "200"
+    },
+    {
+      "name": "liquidityPoolPercent",
+      "type": "f64",
+      "value": "0.05"
+    },
+    {
+      "name": "liquidityTwapMinWindowSeconds",
+      "type": "u64",
+      "value": "1440"
+    },
+    {
       "name": "miningRewardAmount",
       "type": "u64",
-      "value": "100"
+      "value": "10000"
     },
     {
       "name": "mintDecimals",
@@ -2543,6 +3321,16 @@ export type Comptoken = {
       "value": "487501272"
     },
     {
+      "name": "raydiumAmmConfigIndex",
+      "type": "u16",
+      "value": "0"
+    },
+    {
+      "name": "reverifySignalAction",
+      "type": "bytes",
+      "value": "[114, 101, 118, 101, 114, 105, 102, 121]"
+    },
+    {
       "name": "stakedMintSeed",
       "type": "bytes",
       "value": "[115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
@@ -2553,6 +3341,21 @@ export type Comptoken = {
       "value": "[117, 110, 115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
     },
     {
+      "name": "unverifySignalAction",
+      "type": "bytes",
+      "value": "[117, 110, 118, 101, 114, 105, 102, 121]"
+    },
+    {
+      "name": "usdcLiquidityTokenAccountSeed",
+      "type": "bytes",
+      "value": "[108, 105, 113, 117, 105, 100, 105, 116, 121, 95, 85, 83, 68, 67]"
+    },
+    {
+      "name": "usdcMintAddress",
+      "type": "pubkey",
+      "value": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+    },
+    {
       "name": "userDataSeed",
       "type": "bytes",
       "value": "[117, 115, 101, 114, 95, 100, 97, 116, 97]"
@@ -2560,7 +3363,7 @@ export type Comptoken = {
     {
       "name": "userDataSizeWithoutProofs",
       "type": "u64",
-      "value": "92"
+      "value": "100"
     },
     {
       "name": "verificationDuration",
@@ -2578,6 +3381,11 @@ export type Comptoken = {
       "value": "[0]"
     },
     {
+      "name": "verifySignalAction",
+      "type": "bytes",
+      "value": "[118, 101, 114, 105, 102, 121]"
+    },
+    {
       "name": "worldAction",
       "type": "bytes",
       "value": "[118, 101, 114, 105, 102, 121, 104, 117, 109, 97, 110]"
@@ -2585,12 +3393,32 @@ export type Comptoken = {
     {
       "name": "worldAppId",
       "type": "bytes",
-      "value": "[]"
+      "value": "[97, 112, 112, 95, 54, 53, 57, 57, 57, 54, 52, 97, 50, 57, 54, 52, 49, 101, 52, 55, 99, 54, 102, 51, 56, 99, 53, 54, 50, 100, 97, 48, 54, 50, 56, 100]"
     },
     {
       "name": "worldIdProofLength",
       "type": "u64",
       "value": "256"
+    },
+    {
+      "name": "worldIdV4Action",
+      "type": "bytes",
+      "value": "[118, 101, 114, 105, 102, 121, 104, 117, 109, 97, 110, 45, 118, 52]"
+    },
+    {
+      "name": "worldIdV4CredentialGenesisIssuedAtMin",
+      "type": "u64",
+      "value": "0"
+    },
+    {
+      "name": "worldIdV4RpId",
+      "type": "u64",
+      "value": "1"
+    },
+    {
+      "name": "worldIdV4SessionSeed",
+      "type": "bytes",
+      "value": "[119, 111, 114, 108, 100, 95, 105, 100, 95, 115, 101, 115, 115, 105, 111, 110]"
     }
   ]
 };

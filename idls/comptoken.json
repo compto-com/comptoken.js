@@ -2,11 +2,297 @@
   "address": "7j8p5AoS4z1LCPaDujSae6CXLRLKNThFbK5qqniGw9Nf",
   "metadata": {
     "name": "comptoken",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
   "instructions": [
+    {
+      "name": "add_liquidity",
+      "discriminator": [
+        181,
+        157,
+        89,
+        67,
+        143,
+        182,
+        52,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "global_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "unstaked_mint",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101,
+                  100,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint",
+          "address": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+        },
+        {
+          "name": "lp_mint",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "comptoken_liquidity_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_liquidity_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  85,
+                  83,
+                  68,
+                  67
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "comptoken_lp_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "global_data"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "lp_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "pool_comptoken_vault",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_usdc_vault",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_state",
+          "writable": true,
+          "address": "2wRw8foEASWECmNLu1aWsEtSr4wfVfWqGXPkqYGU1BcE"
+        },
+        {
+          "name": "amm_config",
+          "docs": [
+            "address validated against pool_state in the handler"
+          ]
+        },
+        {
+          "name": "raydium_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "raydium_cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "observation_state",
+          "docs": [
+            "validated against pool_state in the handler"
+          ],
+          "writable": true
+        },
+        {
+          "name": "raydium_cp_swap_program",
+          "address": "GVSzpfu4CzCxgU7wNeNy4eCeDX6R7ecY3vKSRLuDJfu1"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_2022_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
     {
       "name": "collect",
       "discriminator": [
@@ -130,7 +416,7 @@
           }
         },
         {
-          "name": "token_program",
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
@@ -262,6 +548,7 @@
         },
         {
           "name": "unstaked_mint",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -284,6 +571,37 @@
               }
             ]
           }
+        },
+        {
+          "name": "comptoken_liquidity_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_2022_program",
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
       "args": []
@@ -357,6 +675,10 @@
           }
         },
         {
+          "name": "usdc_mint",
+          "address": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+        },
+        {
           "name": "global_data",
           "writable": true,
           "pda": {
@@ -381,10 +703,68 @@
           }
         },
         {
+          "name": "comptoken_liquidity_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  67,
+                  79,
+                  77,
+                  80
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_liquidity_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  105,
+                  113,
+                  117,
+                  105,
+                  100,
+                  105,
+                  116,
+                  121,
+                  95,
+                  85,
+                  83,
+                  68,
+                  67
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "slot_hashes"
         },
         {
           "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -496,10 +876,7 @@
       "accounts": [
         {
           "name": "user_wallet",
-          "signer": true,
-          "relations": [
-            "world_id_nullifier"
-          ]
+          "signer": true
         },
         {
           "name": "user_data",
@@ -617,6 +994,7 @@
         },
         {
           "name": "world_id_nullifier",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -778,7 +1156,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_program"
+                "path": "token_2022_program"
               },
               {
                 "kind": "account",
@@ -833,7 +1211,7 @@
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
-          "name": "token_program",
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -950,7 +1328,7 @@
           }
         },
         {
-          "name": "token_program",
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         }
       ],
@@ -1140,7 +1518,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_program"
+                "path": "token_2022_program"
               },
               {
                 "kind": "account",
@@ -1195,7 +1573,7 @@
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
-          "name": "token_program",
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -1738,7 +2116,7 @@
           }
         },
         {
-          "name": "token_program",
+          "name": "token_2022_program",
           "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         },
         {
@@ -1759,6 +2137,19 @@
     }
   ],
   "accounts": [
+    {
+      "name": "AmmConfig",
+      "discriminator": [
+        218,
+        244,
+        33,
+        104,
+        203,
+        203,
+        43,
+        111
+      ]
+    },
     {
       "name": "Config",
       "discriminator": [
@@ -1812,6 +2203,32 @@
       ]
     },
     {
+      "name": "ObservationState",
+      "discriminator": [
+        122,
+        174,
+        197,
+        53,
+        129,
+        9,
+        165,
+        132
+      ]
+    },
+    {
+      "name": "PoolState",
+      "discriminator": [
+        247,
+        237,
+        227,
+        245,
+        215,
+        195,
+        222,
+        70
+      ]
+    },
+    {
       "name": "Root",
       "discriminator": [
         46,
@@ -1846,56 +2263,136 @@
     },
     {
       "code": 6001,
+      "name": "SessionAlreadyInUse",
+      "msg": "Session already in use"
+    },
+    {
+      "code": 6002,
       "name": "UserDataNotCurrent",
       "msg": "User data account is not current"
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "InvalidMiningProof",
       "msg": "Invalid mining proof submitted"
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "DuplicateMiningProof",
       "msg": "Duplicate mining proof submitted"
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "UserDataProofsCapacityExceeded",
       "msg": "User data proofs capacity exceeded, consider increasing capacity"
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "InvalidNullifierOwner",
       "msg": "Invalid nullifier owner"
     },
     {
-      "code": 6006,
-      "name": "InvalidNullifierHash",
-      "msg": "Invalid nullifier hash for user data"
+      "code": 6007,
+      "name": "InvalidVerification",
+      "msg": "Invalid verification for user data"
     },
     {
-      "code": 6007,
+      "code": 6008,
+      "name": "AccountAlreadyVerified",
+      "msg": "Account has already been verified"
+    },
+    {
+      "code": 6009,
       "name": "InvalidCapacity",
       "msg": "Invalid capacity for resizing user data account"
     },
     {
-      "code": 6008,
+      "code": 6010,
       "name": "InsufficientFunds",
       "msg": "Insufficient funds in token account"
     },
     {
-      "code": 6009,
+      "code": 6011,
       "name": "AccountAlreadyInitialized",
       "msg": "Account has already been initialized"
     },
     {
-      "code": 6010,
+      "code": 6012,
       "name": "StaleValidBlockhash",
       "msg": "Stale valid blockhash"
+    },
+    {
+      "code": 6013,
+      "name": "LiquidityPoolFeeNotZero",
+      "msg": "Liquidity pool has non-zero fee"
+    },
+    {
+      "code": 6014,
+      "name": "LiquidityPoolEmpty",
+      "msg": "Liquidity pool is empty"
     }
   ],
   "types": [
+    {
+      "name": "AmmConfig",
+      "docs": [
+        "Holds the current owner of the factory"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "disable_create_pool",
+            "type": "bool"
+          },
+          {
+            "name": "index",
+            "type": "u16"
+          },
+          {
+            "name": "trade_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "create_pool_fee",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "fund_owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator_fee_rate",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                15
+              ]
+            }
+          }
+        ]
+      }
+    },
     {
       "name": "Config",
       "type": {
@@ -2162,7 +2659,6 @@
     },
     {
       "name": "Nullifier",
-      "serialization": "bytemuck",
       "repr": {
         "kind": "c"
       },
@@ -2172,6 +2668,220 @@
           {
             "name": "user_wallet",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Observation",
+      "docs": [
+        "The element of observations in ObservationState"
+      ],
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "block_timestamp",
+            "type": "u64"
+          },
+          {
+            "name": "cumulative_token_0_price_x32",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_token_1_price_x32",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ObservationState",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "observation_index",
+            "type": "u16"
+          },
+          {
+            "name": "pool_id",
+            "type": "pubkey"
+          },
+          {
+            "name": "observations",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Observation"
+                  }
+                },
+                100
+              ]
+            }
+          },
+          {
+            "name": "last_update_timestamp",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolState",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amm_config",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool_creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_0_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_1_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "observation_key",
+            "type": "pubkey"
+          },
+          {
+            "name": "auth_bump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "lp_mint_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint_0_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "mint_1_decimals",
+            "type": "u8"
+          },
+          {
+            "name": "lp_supply",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token_0",
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_0",
+            "type": "u64"
+          },
+          {
+            "name": "fund_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "open_time",
+            "type": "u64"
+          },
+          {
+            "name": "recent_epoch",
+            "type": "u64"
+          },
+          {
+            "name": "creator_fee_on",
+            "type": "u8"
+          },
+          {
+            "name": "enable_creator_fee",
+            "type": "bool"
+          },
+          {
+            "name": "padding1",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "creator_fees_token_0",
+            "type": "u64"
+          },
+          {
+            "name": "creator_fees_token_1",
+            "type": "u64"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                28
+              ]
+            }
           }
         ]
       }
@@ -2370,10 +3080,10 @@
             "type": "i64"
           },
           {
-            "name": "nullifier_hash",
+            "name": "verification",
             "type": {
               "defined": {
-                "name": "Hash"
+                "name": "Verification"
               }
             }
           },
@@ -2434,6 +3144,49 @@
       }
     },
     {
+      "name": "Verification",
+      "docs": [
+        "Tracks which World ID verification flow (if any) a user is currently bound to.",
+        "`ubi_claimed` is carried through every variant and is only ever set true, never reset,",
+        "so the one-time early adopter UBI cannot be re-claimed by unverifying and verifying",
+        "again (v3, v4, or across versions)."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Unverified"
+          },
+          {
+            "name": "Nullifier",
+            "fields": [
+              {
+                "name": "hash",
+                "type": {
+                  "defined": {
+                    "name": "Hash"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "Session",
+            "fields": [
+              {
+                "name": "id",
+                "type": {
+                  "defined": {
+                    "name": "Hash"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "WorldIdVerificationData",
       "docs": [
         "Proof inputs needed to verify a user's World ID membership proof on-chain."
@@ -2487,6 +3240,16 @@
       "value": "146000"
     },
     {
+      "name": "COMPTOKEN_LIQUIDITY_TOKEN_ACCOUNT_SEED",
+      "type": "bytes",
+      "value": "[108, 105, 113, 117, 105, 100, 105, 116, 121, 95, 67, 79, 77, 80]"
+    },
+    {
+      "name": "COMP_USDC_POOL_ADDRESS",
+      "type": "pubkey",
+      "value": "2wRw8foEASWECmNLu1aWsEtSr4wfVfWqGXPkqYGU1BcE"
+    },
+    {
       "name": "DAILY_DISTRIBUTION_DATA_HISTORY_LENGTH",
       "type": "u64",
       "value": "365"
@@ -2507,9 +3270,24 @@
       "value": "[103, 108, 111, 98, 97, 108, 95, 100, 97, 116, 97]"
     },
     {
+      "name": "LIQUIDITY_MAX_PRICE_DEVIATION_BPS",
+      "type": "u64",
+      "value": "200"
+    },
+    {
+      "name": "LIQUIDITY_POOL_PERCENT",
+      "type": "f64",
+      "value": "0.05"
+    },
+    {
+      "name": "LIQUIDITY_TWAP_MIN_WINDOW_SECONDS",
+      "type": "u64",
+      "value": "1440"
+    },
+    {
       "name": "MINING_REWARD_AMOUNT",
       "type": "u64",
-      "value": "100"
+      "value": "10000"
     },
     {
       "name": "MINT_DECIMALS",
@@ -2537,6 +3315,16 @@
       "value": "487501272"
     },
     {
+      "name": "RAYDIUM_AMM_CONFIG_INDEX",
+      "type": "u16",
+      "value": "0"
+    },
+    {
+      "name": "REVERIFY_SIGNAL_ACTION",
+      "type": "bytes",
+      "value": "[114, 101, 118, 101, 114, 105, 102, 121]"
+    },
+    {
       "name": "STAKED_MINT_SEED",
       "type": "bytes",
       "value": "[115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
@@ -2547,6 +3335,21 @@
       "value": "[117, 110, 115, 116, 97, 107, 101, 100, 95, 109, 105, 110, 116]"
     },
     {
+      "name": "UNVERIFY_SIGNAL_ACTION",
+      "type": "bytes",
+      "value": "[117, 110, 118, 101, 114, 105, 102, 121]"
+    },
+    {
+      "name": "USDC_LIQUIDITY_TOKEN_ACCOUNT_SEED",
+      "type": "bytes",
+      "value": "[108, 105, 113, 117, 105, 100, 105, 116, 121, 95, 85, 83, 68, 67]"
+    },
+    {
+      "name": "USDC_MINT_ADDRESS",
+      "type": "pubkey",
+      "value": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+    },
+    {
       "name": "USER_DATA_SEED",
       "type": "bytes",
       "value": "[117, 115, 101, 114, 95, 100, 97, 116, 97]"
@@ -2554,7 +3357,7 @@
     {
       "name": "USER_DATA_SIZE_WITHOUT_PROOFS",
       "type": "u64",
-      "value": "92"
+      "value": "100"
     },
     {
       "name": "VERIFICATION_DURATION",
@@ -2572,6 +3375,11 @@
       "value": "[0]"
     },
     {
+      "name": "VERIFY_SIGNAL_ACTION",
+      "type": "bytes",
+      "value": "[118, 101, 114, 105, 102, 121]"
+    },
+    {
       "name": "WORLD_ACTION",
       "type": "bytes",
       "value": "[118, 101, 114, 105, 102, 121, 104, 117, 109, 97, 110]"
@@ -2579,12 +3387,32 @@
     {
       "name": "WORLD_APP_ID",
       "type": "bytes",
-      "value": "[]"
+      "value": "[97, 112, 112, 95, 54, 53, 57, 57, 57, 54, 52, 97, 50, 57, 54, 52, 49, 101, 52, 55, 99, 54, 102, 51, 56, 99, 53, 54, 50, 100, 97, 48, 54, 50, 56, 100]"
     },
     {
       "name": "WORLD_ID_PROOF_LENGTH",
       "type": "u64",
       "value": "256"
+    },
+    {
+      "name": "WORLD_ID_V4_ACTION",
+      "type": "bytes",
+      "value": "[118, 101, 114, 105, 102, 121, 104, 117, 109, 97, 110, 45, 118, 52]"
+    },
+    {
+      "name": "WORLD_ID_V4_CREDENTIAL_GENESIS_ISSUED_AT_MIN",
+      "type": "u64",
+      "value": "0"
+    },
+    {
+      "name": "WORLD_ID_V4_RP_ID",
+      "type": "u64",
+      "value": "1"
+    },
+    {
+      "name": "WORLD_ID_V4_SESSION_SEED",
+      "type": "bytes",
+      "value": "[119, 111, 114, 108, 100, 95, 105, 100, 95, 115, 101, 115, 115, 105, 111, 110]"
     }
   ]
 }

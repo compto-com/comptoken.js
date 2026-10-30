@@ -1,14 +1,14 @@
+import type { IdlTypes } from "@anchor-lang/core";
 import type { PublicKey } from "@solana/web3.js";
 import type BN from "bn.js";
 
 import * as addresses from "./addresses.js";
-import type { ComptokenProgram } from "./types.js";
+import type { ComptokenIdl, ComptokenProgram } from "./types.js";
 import { daysSinceEpoch, normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
 
-export type HistoricDistribution = {
-    yieldRate: number;
-    ubiYield: BN;
-};
+type UserData = Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+
+export type HistoricDistribution = IdlTypes<ComptokenIdl>["historicDistribution"];
 
 export async function getDistributionOwed({
     program,
@@ -160,13 +160,7 @@ export function getDaysSinceLastVerified({
 
 // overloads
 export function isVerifiedHuman({ program, user }: { program: ComptokenProgram; user: PublicKey }): Promise<boolean>;
-export function isVerifiedHuman({
-    program,
-    userData,
-}: {
-    program: ComptokenProgram;
-    userData: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
-}): boolean;
+export function isVerifiedHuman({ program, userData }: { program: ComptokenProgram; userData: UserData }): boolean;
 
 // implementation
 export function isVerifiedHuman({
@@ -176,21 +170,28 @@ export function isVerifiedHuman({
 }: {
     program: ComptokenProgram;
     user?: PublicKey;
-    userData?: Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+    userData?: UserData;
 }): boolean | Promise<boolean> {
     function isStillVerified(daysSinceLastVerified: number) {
         const verificationDurationInDays = program.constants.verificationDuration.toNumber() / (24 * 60 * 60);
         return daysSinceLastVerified < verificationDurationInDays;
     }
 
-    if (user === undefined) {
-        if (userData === undefined) {
-            throw new Error("Either user or userData must be provided");
-        }
-        return isStillVerified(getDaysSinceLastVerified({ program, userData }));
+    function compute(ud: UserData) {
+        // matches UserData::verification_status on-chain: unverifying clears `verification` but keeps the timestamp
+        return (
+            !("unverified" in ud.verification) && isStillVerified(getDaysSinceLastVerified({ program, userData: ud }))
+        );
     }
 
-    return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
+    if (userData === undefined) {
+        if (user === undefined) {
+            throw new Error("Either user or userData must be provided");
+        }
+        return program.account.userData.fetch(addresses.getUserDataAddress(program, user)).then(compute);
+    }
+
+    return compute(userData);
 }
 
 export type HistoricDistributionsWithStatus = {

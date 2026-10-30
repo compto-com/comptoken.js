@@ -102,3 +102,49 @@ export async function createUserUnstakedTokenAccount(
         TOKEN_2022_PROGRAM_ID,
     );
 }
+
+export function getComptokenLiquidityTokenAccountAddress(program: ComptokenProgram): PublicKey {
+    return PublicKey.findProgramAddressSync(
+        [program.constants.comptokenLiquidityTokenAccountSeed],
+        program.programId,
+    )[0];
+}
+
+export function getUsdcLiquidityTokenAccountAddress(program: ComptokenProgram): PublicKey {
+    return PublicKey.findProgramAddressSync([program.constants.usdcLiquidityTokenAccountSeed], program.programId)[0];
+}
+
+export function getRaydiumCpSwapProgramId(program: ComptokenProgram): PublicKey {
+    const address = program.rawIdl.instructions
+        .find((ix) => ix.name === "add_liquidity")
+        ?.accounts.find((account) => account.name === "raydium_cp_swap_program" && "address" in account);
+    if (address === undefined || !("address" in address) || address.address === undefined) {
+        throw new Error("raydium_cp_swap_program address not found in comptoken IDL");
+    }
+    return new PublicKey(address.address);
+}
+
+/**
+ * derives the Raydium CP-swap accounts for the comptoken/usdc pool that `add_liquidity` needs.
+ */
+export function getCompUsdcPoolAddresses(program: ComptokenProgram) {
+    const raydiumProgramId = getRaydiumCpSwapProgramId(program);
+    const poolState = program.constants.compUsdcPoolAddress;
+
+    const ammConfigIndex = Buffer.alloc(2);
+    ammConfigIndex.writeUInt16BE(program.constants.raydiumAmmConfigIndex);
+
+    const pda = (seeds: Buffer[]) => PublicKey.findProgramAddressSync(seeds, raydiumProgramId)[0];
+    const vault = (mint: PublicKey) => pda([Buffer.from("pool_vault"), poolState.toBuffer(), mint.toBuffer()]);
+
+    return {
+        poolState,
+        ammConfig: pda([Buffer.from("amm_config"), ammConfigIndex]),
+        lpMint: pda([Buffer.from("pool_lp_mint"), poolState.toBuffer()]),
+        poolComptokenVault: vault(getUnstakedMintAddress(program)),
+        poolUsdcVault: vault(program.constants.usdcMintAddress),
+        observationState: pda([Buffer.from("observation"), poolState.toBuffer()]),
+    };
+}
+
+export type CompUsdcPoolAddresses = ReturnType<typeof getCompUsdcPoolAddresses>;

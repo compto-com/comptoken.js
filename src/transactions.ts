@@ -8,6 +8,22 @@ import * as utils from "./utils.js";
 
 export { methodBuilders };
 
+export async function addLiquidity({
+    program,
+    accounts: {
+        payer,
+        pool = addresses.getCompUsdcPoolAddresses(program), //
+    } = {},
+}: {
+    program: ComptokenProgram;
+    accounts?: {
+        payer?: Signer;
+        pool?: Omit<addresses.CompUsdcPoolAddresses, "poolState">;
+    };
+}): Promise<TransactionSignature> {
+    return methodBuilders.addLiquidityBuilder({ program, accounts: { payer, pool } }).rpc();
+}
+
 export async function collect({
     program,
     accounts: {
