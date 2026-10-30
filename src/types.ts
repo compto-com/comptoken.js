@@ -1,4 +1,4 @@
-import type { Idl as anchorIdl } from "@coral-xyz/anchor";
+import type { Idl as anchorIdl } from "@anchor-lang/core";
 
 import type { BetterBorshCoder } from "./coder.js";
 import type { Comptoken as BundledComptokenIdl } from "./idls/comptoken.js";

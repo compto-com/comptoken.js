@@ -121,7 +121,7 @@ Typical workflow
 Example
 
 ```js
-import { AnchorProvider, web3 } from "@coral-xyz/anchor";
+import { AnchorProvider, web3 } from "@anchor-lang/core";
 import { TOKEN_2022_PROGRAM_ID, transferChecked } from "@solana/spl-token";
 import {
     ComptokenProof,
