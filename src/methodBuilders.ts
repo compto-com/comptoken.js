@@ -7,6 +7,38 @@ import type { ComptokenProof } from "./comptokenProof.js";
 import type { ComptokenIdl, ComptokenProgram, SolanaWorldIdProgram } from "./types.js";
 import * as utils from "./utils.js";
 
+type AddLiquidityIdlIx = ComptokenIdl["instructions"][number] & { name: "addLiquidity" };
+type AddLiquidityBuilder = MethodsBuilder<ComptokenIdl, AddLiquidityIdlIx>;
+
+/**
+ * permissionless; when no payer is given, the provider's wallet pays (it may need to create the program's lp token account).
+ */
+export function addLiquidityBuilder({
+    program,
+    accounts: {
+        payer,
+        pool = addresses.getCompUsdcPoolAddresses(program), //
+    } = {},
+}: {
+    program: ComptokenProgram;
+    accounts?: {
+        payer?: Signer;
+        pool?: Omit<addresses.CompUsdcPoolAddresses, "poolState">;
+    };
+}): AddLiquidityBuilder {
+    return program.methods
+        .addLiquidity()
+        .accountsPartial({
+            payer: payer?.publicKey ?? program.provider.publicKey,
+            lpMint: pool.lpMint,
+            poolComptokenVault: pool.poolComptokenVault,
+            poolUsdcVault: pool.poolUsdcVault,
+            ammConfig: pool.ammConfig,
+            observationState: pool.observationState,
+        })
+        .signers(payer === undefined ? [] : [payer]);
+}
+
 type CollectIdlIx = ComptokenIdl["instructions"][number] & { name: "collect" };
 type CollectBuilder = MethodsBuilder<ComptokenIdl, CollectIdlIx>;
 

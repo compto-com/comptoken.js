@@ -5,6 +5,8 @@ import * as addresses from "./addresses.js";
 import type { ComptokenProgram } from "./types.js";
 import { daysSinceEpoch, normalizeTimestamp, ringBufferGetLastN } from "./utils.js";
 
+type UserData = Awaited<ReturnType<ComptokenProgram["account"]["userData"]["fetch"]>>;
+
 export type HistoricDistribution = {
     yieldRate: number;
     ubiYield: BN;
@@ -183,14 +185,21 @@ export function isVerifiedHuman({
         return daysSinceLastVerified < verificationDurationInDays;
     }
 
-    if (user === undefined) {
-        if (userData === undefined) {
-            throw new Error("Either user or userData must be provided");
-        }
-        return isStillVerified(getDaysSinceLastVerified({ program, userData }));
+    function compute(ud: UserData) {
+        // matches UserData::verification_status on-chain: unverifying clears `verification` but keeps the timestamp
+        return (
+            !("unverified" in ud.verification) && isStillVerified(getDaysSinceLastVerified({ program, userData: ud }))
+        );
     }
 
-    return getDaysSinceLastVerified({ program, user }).then(isStillVerified);
+    if (userData === undefined) {
+        if (user === undefined) {
+            throw new Error("Either user or userData must be provided");
+        }
+        return program.account.userData.fetch(addresses.getUserDataAddress(program, user)).then(compute);
+    }
+
+    return compute(userData);
 }
 
 export type HistoricDistributionsWithStatus = {
