@@ -2,7 +2,7 @@
   "address": "7j8p5AoS4z1LCPaDujSae6CXLRLKNThFbK5qqniGw9Nf",
   "metadata": {
     "name": "comptoken",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
@@ -1014,6 +1014,31 @@
               {
                 "kind": "arg",
                 "path": "args.nullifier_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_data",
+          "writable": true,
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
               }
             ]
           }

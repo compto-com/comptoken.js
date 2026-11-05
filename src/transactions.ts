@@ -108,6 +108,21 @@ export async function resizeUserDataAccount({
     return methodBuilders.resizeUserDataAccountBuilder({ program, newCapacity, accounts: { userWallet, payer } }).rpc();
 }
 
+type ReverifyArgs = {
+    program: ComptokenProgram;
+    solanaWorldIdProgram: SolanaWorldIdProgram;
+    rootHash: Buffer;
+    nullifierHash: Buffer;
+    proof: Buffer;
+    accounts: {
+        userWallet: Signer;
+    };
+};
+
+/**
+ * fetches the user's data to decide whether globalData is needed (only when verification is `unverified`).
+ * use {@link reverifyTransfer} or {@link reverifySameAccount} to skip the fetch.
+ */
 export async function reverify({
     program,
     solanaWorldIdProgram,
@@ -117,16 +132,42 @@ export async function reverify({
     accounts: {
         userWallet, //
     },
-}: {
-    program: ComptokenProgram;
-    solanaWorldIdProgram: SolanaWorldIdProgram;
-    rootHash: Buffer;
-    nullifierHash: Buffer;
-    proof: Buffer;
+}: ReverifyArgs): Promise<TransactionSignature> {
+    const userData = await program.account.userData.fetch(addresses.getUserDataAddress(program, userWallet.publicKey));
+    if ("unverified" in userData.verification) {
+        return reverifyTransfer({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { userWallet },
+        });
+    }
+    return reverifySameAccount({
+        program,
+        solanaWorldIdProgram,
+        rootHash,
+        nullifierHash,
+        proof,
+        accounts: { userWallet },
+    });
+}
+
+/**
+ * reverify a World ID onto an account whose verification is `unverified` (e.g. moving a World ID to a new wallet); requires globalData.
+ * World ID must not already be bound to another account
+ */
+export async function reverifyTransfer({
+    program,
+    solanaWorldIdProgram,
+    rootHash,
+    nullifierHash,
+    proof,
     accounts: {
-        userWallet: Signer;
-    };
-}): Promise<TransactionSignature> {
+        userWallet, //
+    },
+}: ReverifyArgs): Promise<TransactionSignature> {
     return methodBuilders
         .reverifyBuilder({
             program,
@@ -134,7 +175,32 @@ export async function reverify({
             rootHash,
             nullifierHash,
             proof,
-            accounts: { userWallet },
+            accounts: { userWallet, globalData: addresses.getGlobalDataAddress(program) },
+        })
+        .rpc();
+}
+
+/**
+ * reverify the same World ID on the account it is already bound to; does not pass globalData.
+ */
+export async function reverifySameAccount({
+    program,
+    solanaWorldIdProgram,
+    rootHash,
+    nullifierHash,
+    proof,
+    accounts: {
+        userWallet, //
+    },
+}: ReverifyArgs): Promise<TransactionSignature> {
+    return methodBuilders
+        .reverifyBuilder({
+            program,
+            solanaWorldIdProgram,
+            rootHash,
+            nullifierHash,
+            proof,
+            accounts: { userWallet, globalData: null },
         })
         .rpc();
 }

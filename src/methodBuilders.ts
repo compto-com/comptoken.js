@@ -150,6 +150,10 @@ export function resizeUserDataAccountBuilder({
 type ReverifyIdlIx = ComptokenIdl["instructions"][number] & { name: "reverify" };
 type ReverifyBuilder = MethodsBuilder<ComptokenIdl, ReverifyIdlIx>;
 
+/**
+ * globalData is only required when the user data's verification is `unverified`,
+ * i.e. when a World ID is being transferred to this account; pass null otherwise.
+ */
 export function reverifyBuilder({
     program,
     solanaWorldIdProgram,
@@ -157,7 +161,8 @@ export function reverifyBuilder({
     nullifierHash,
     proof,
     accounts: {
-        userWallet, //
+        userWallet,
+        globalData = addresses.getGlobalDataAddress(program), //
     },
 }: {
     program: ComptokenProgram;
@@ -167,6 +172,7 @@ export function reverifyBuilder({
     proof: Buffer;
     accounts: {
         userWallet: Signer;
+        globalData: PublicKey | null;
     };
 }): ReverifyBuilder {
     return program.methods
@@ -180,6 +186,7 @@ export function reverifyBuilder({
             worldIdRoot: addresses.getWorldIdRootAddress(solanaWorldIdProgram, rootHash),
             worldIdLatestRoot: addresses.getWorldIdLatestRootAddress(solanaWorldIdProgram),
             worldIdNullifier: addresses.getWorldIdNullifierAddress(program, nullifierHash),
+            globalData,
         })
         .signers([userWallet]);
 }
