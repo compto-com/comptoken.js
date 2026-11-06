@@ -30,7 +30,7 @@
     },
     "homepage": "https://github.com/compto-com/comptoken.js#readme",
     "dependencies": {
-        "@coral-xyz/anchor": "^0.32.1",
+        "@anchor-lang/core": "^1.2.2",
         "@solana/spl-token": "^0.4.14",
         "@solana/web3.js": "^1.95.0",
         "bn.js": "^5.2.3"
