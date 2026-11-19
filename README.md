@@ -220,9 +220,6 @@ Using a newer IDL than the bundled one (e.g. in comptoken-program)
     }
     ```
 
-- Drift check: `npx comptoken-sync-idl --check` in an anchor workspace exits with 1 if the bundled IDLs differ from `target/idl`.
-- Updating the bundled IDLs: `npm run sync-idl -- ../comptoken-program` in this repo.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 See the [open issues](https://github.com/compto-com/comptoken.js/issues) for a full list of proposed features (and known issues).
