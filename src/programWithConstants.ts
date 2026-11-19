@@ -1,22 +1,20 @@
 import {
+    convertIdlToCamelCase,
     Program,
     utils,
     type Idl as AnchorIdl,
     type Coder,
     type CustomAccountResolver,
+    type IdlConst,
+    type IdlInstruction,
+    type IdlType,
+    type IdlTypeArray,
+    type IdlTypeCOption,
+    type IdlTypeDefined,
+    type IdlTypeOption,
+    type IdlTypeVec,
     type Provider,
-} from "@coral-xyz/anchor";
-import { convertIdlToCamelCase } from "@coral-xyz/anchor/dist/cjs/idl.js";
-import type {
-    IdlConst,
-    IdlInstruction,
-    IdlType,
-    IdlTypeArray,
-    IdlTypeCOption,
-    IdlTypeDefined,
-    IdlTypeOption,
-    IdlTypeVec,
-} from "@coral-xyz/anchor/dist/cjs/idl.ts";
+} from "@anchor-lang/core";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
